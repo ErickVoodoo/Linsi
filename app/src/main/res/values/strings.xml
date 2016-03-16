@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">VkCheck</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Настройки</string>
+
+    <string name="startScreenTextView">Напиши свое имя</string>
+    <string name="startScreenTitleButton">ГОТОВО</string>
+
+    <string name="notificationsTurnOn">Включить уведомления</string>
+    <string name="notificationsTurnOff">Выключить уведомления</string>
+
+    <string name="notificationsTurnedOn">Уведомления включены</string>
+    <string name="notificationsTurnedOff">Уведмоления выключены</string>
+    
+    <string name="errorWallClosed">Пользователь скрыл свою стену для не авторизированных пользователей</string>
+    <string name="errorHistoryEmpty">Ошибка. Пользователь не добавлен на сервере. Для устранения этой проблемы нажмите на кнопку ниже.</string>
+    <string name="historyEmpty">История посещений пока что пуста. Обновление истории на сервере происходит каждые 5 - 7 минут. Спасибо за понимание.</string>
+    <string name="historyFriendsEmpty">У Вас не содержится людей с которыми можно было бы сравнить данного пользователя. Добавьте других пользователей.</string>
+    <string name="errorHistoryEmptyButton">Исправить</string>
+</resources>
