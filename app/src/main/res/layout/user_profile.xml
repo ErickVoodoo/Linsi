@@ -24,7 +24,7 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <com.itibo.vkcheck.Activity.common.TopCropImageView
+                <com.itibo.linzon.Activity.common.TopCropImageView
                     android:id="@+id/mainView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -82,7 +82,7 @@
             android:layout_centerHorizontal="true"
             android:visibility="visible" />
 
-        <com.itibo.vkcheck.Activity.common.TouchImageView
+        <com.itibo.linzon.Activity.common.TouchImageView
             android:id="@+id/imageViewer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

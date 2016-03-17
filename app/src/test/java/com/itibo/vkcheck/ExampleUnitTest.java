@@ -1,4 +1,4 @@
-package com.itibo.vkcheck;
+package com.itibo.linzon;
 
 import org.junit.Test;
 
