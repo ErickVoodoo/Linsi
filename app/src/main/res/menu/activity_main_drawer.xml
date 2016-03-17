@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <group
         android:id="@+id/firstGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_users"
-            android:title="Пользователи" />
-        <item
-            android:id="@+id/nav_search"
-            android:title="Поиск" />
+            android:id="@+id/nav_popular"
+            android:title="Популярное" />
     </group>
 
     <group
         android:id="@+id/secondGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_share"
-            android:title="Поделиться" />
+            android:id="@+id/nav_send"
+            android:title="Доставка" />
         <item
             android:id="@+id/nav_logout"
-            android:title="Выйти" />
+            android:title="Прочее" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="О компании" />
     </group>
 </menu>
