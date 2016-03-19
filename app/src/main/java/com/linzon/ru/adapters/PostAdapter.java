@@ -2,10 +2,7 @@ package com.linzon.ru.adapters;
 
 
 import android.app.Activity;
-import android.graphics.PorterDuff;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -15,17 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.linzon.ru.common.CircleTransformation;
-import com.linzon.ru.common.CustomGridLayoutManager;
-import com.linzon.ru.common.TimeCommon;
 import com.linzon.ru.R;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     /*ArrayList<PostModel> arrayList;
@@ -33,7 +20,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false));
     }
 
     @Override
@@ -91,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         holder.postLikes.setText(String.valueOf(arrayList.get(position).getLikes().getCount()));
         holder.postReposts.setText(String.valueOf(arrayList.get(position).getReposts().getCount()));
 
-        PhotosAdapter adapterPhoto = new PhotosAdapter(arrayList.get(position).getPhotosFromAttachments(arrayList.get(position).getAttachments()), this.activity);
+        CategoryAdapter adapterPhoto = new CategoryAdapter(arrayList.get(position).getPhotosFromAttachments(arrayList.get(position).getAttachments()), this.activity);
         if(adapterPhoto.getItemCount() != 0){
             LinearLayoutManager mLinearLayoutManagerPhoto = new CustomGridLayoutManager(this.activity.getApplicationContext(), 1);
             mLinearLayoutManagerPhoto.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -249,7 +236,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         public ViewHolder(View itemView) {
             super(itemView);
-            postPhoto = (ImageView) itemView.findViewById(R.id.postPhoto);
+            /*postPhoto = (ImageView) itemView.findViewById(R.id.postPhoto);
             likesPost = (ImageView) itemView.findViewById(R.id.likesPost);
             commentsPost = (ImageView) itemView.findViewById(R.id.commentsPost);
             repostsPost = (ImageView) itemView.findViewById(R.id.repostsPost);
@@ -262,7 +249,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postAttachementsPhoto = (RecyclerView) itemView.findViewById(R.id.postAttachementsPhoto);
             postAttachementsAudio = (RecyclerView) itemView.findViewById(R.id.postAttachementsAudio);
             postAttachementsVideo = (RecyclerView) itemView.findViewById(R.id.postAttachementsVideo);
-            postAttachementsDoc = (RecyclerView) itemView.findViewById(R.id.postAttachementsDoc);
+            postAttachementsDoc = (RecyclerView) itemView.findViewById(R.id.postAttachementsDoc);*/
         }
     }
 

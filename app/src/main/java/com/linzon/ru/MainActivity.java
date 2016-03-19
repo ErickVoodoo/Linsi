@@ -2,37 +2,29 @@ package com.linzon.ru;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.linzon.ru.common.SharedProperty;
-import com.linzon.ru.database.DBHelper;
+import com.linzon.ru.fragments.About;
+import com.linzon.ru.fragments.PostSend;
+import com.linzon.ru.fragments.HowToRoad;
 import com.linzon.ru.fragments.Popular;
 import com.linzon.ru.fragments.CategoryOffers;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,10 +36,17 @@ public class MainActivity extends AppCompatActivity
 
     private final static String CATEGORY_TAG = "CATEGORY_FRAGMENT";
     private final static String POPULAR_TAG = "POPULAR_FRAGMENT";
+    private final static String ABOUT_TAG = "ABOUT_FRAGMENT";
+    private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
+    private final static String HOWTOROAD_TAG = "GOWTOROAD_FRAGMENT";
 
     private NavigationView navigationView;
+
     private Popular popularFragment;
     private CategoryOffers categoryOffersFragment;
+    private About aboutFragment;
+    private PostSend postSendFragment;
+    private HowToRoad howToRoadFragment;
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
@@ -57,10 +56,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        ContentValues contentValues = DBHelper.setUserContentValues("111", 0);
-//        long i = DBHelper.getInstance().insertRows(contentValues);
-//
-//        Log.e("INSERTED", String.valueOf(i));
         setProgressRing();
         initToolbar();
         initNavigationView();
@@ -68,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         initFab();
         initTextViews();
         showPopular();
+        toolbar.setTitle(this.getResources().getString(R.string.drawer_popular));
     }
 
     private void setProgressRing() {
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showCategory() {
+    private void showCategory(int id) {
         if (!(selectedFragment instanceof CategoryOffers)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
@@ -102,21 +98,52 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().executePendingTransactions();
             selectedFragment = categoryOffersFragment;
         }
+        categoryOffersFragment.setCategory(id);
     }
 
-    private void showSendNotification() {
-        /*if (!(selectedFragment instanceof SendNotification)) {
+    private void showAbout() {
+        if (!(selectedFragment instanceof About)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
-            if (null == sendFragment) {
-                sendFragment = new SendNotification();
-                fragmentTransaction.add(R.id.mainPager, sendFragment, SEND_TAG);
+            if (null == aboutFragment) {
+                aboutFragment = new About();
+                fragmentTransaction.add(R.id.mainPager, aboutFragment, ABOUT_TAG);
             }
-            fragmentTransaction.show(sendFragment);
+            fragmentTransaction.show(aboutFragment);
             fragmentTransaction.commit();
             getFragmentManager().executePendingTransactions();
-            selectedFragment = sendFragment;
-        }*/
+            selectedFragment = aboutFragment;
+        }
+    }
+
+    private void showPostSend() {
+        if (!(selectedFragment instanceof PostSend)) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            hideFragments();
+            if (null == postSendFragment) {
+                postSendFragment = new PostSend();
+                fragmentTransaction.add(R.id.mainPager, postSendFragment, CONTACTS_TAG);
+            }
+            fragmentTransaction.show(postSendFragment);
+            fragmentTransaction.commit();
+            getFragmentManager().executePendingTransactions();
+            selectedFragment = postSendFragment;
+        }
+    }
+
+    private void showHowToRoad() {
+        if (!(selectedFragment instanceof HowToRoad)) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            hideFragments();
+            if (null == howToRoadFragment) {
+                howToRoadFragment = new HowToRoad();
+                fragmentTransaction.add(R.id.mainPager, howToRoadFragment, HOWTOROAD_TAG);
+            }
+            fragmentTransaction.show(howToRoadFragment);
+            fragmentTransaction.commit();
+            getFragmentManager().executePendingTransactions();
+            selectedFragment = howToRoadFragment;
+        }
     }
 
     private void hideFragments() {
@@ -131,10 +158,20 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(categoryOffersFragment);
         }
 
-        /*sendFragment = (SendNotification) getFragmentManager().findFragmentByTag(SEND_TAG);
-        if (null != sendFragment) {
-            fragmentTransaction.hide(sendFragment);
-        }*/
+        aboutFragment = (About) getFragmentManager().findFragmentByTag(ABOUT_TAG);
+        if (null != aboutFragment) {
+            fragmentTransaction.hide(aboutFragment);
+        }
+
+        postSendFragment = (PostSend) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
+        if (null != postSendFragment) {
+            fragmentTransaction.hide(postSendFragment);
+        }
+
+        howToRoadFragment = (HowToRoad) getFragmentManager().findFragmentByTag(HOWTOROAD_TAG);
+        if (null != howToRoadFragment) {
+            fragmentTransaction.hide(howToRoadFragment);
+        }
 
         fragmentTransaction.commit();
         getFragmentManager().executePendingTransactions();
@@ -149,71 +186,45 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().findItem(R.id.nav_popular).setChecked(true);
-        toolbar.setTitle("Популярное");
     }
 
     private void initDrawer() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                if(selectedFragment instanceof CategoryOffers) {
+                    ((CategoryOffers) selectedFragment).loadCategoryItems();
+                }
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
 
     private void initFab() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        /*fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBarMain.setVisibility(View.VISIBLE);
-                if (selectedFragment instanceof CategoryOffers) {
-                    Vk.asyncSearchUsers(search_status, new Vk.CallbackArraySearchModel() {
-                        @Override
-                        public void onSuccess(ArrayList<SearchModel> model) {
-                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.searchRecycler);
-                            recyclerView.setAdapter(new SearchAdapter(model, MainActivity.this, R.layout.fragment_search_item));
-                            progressBarMain.setVisibility(View.GONE);
-                        }
 
-                        @Override
-                        public void onError(String error) {
-
-                        }
-                    });
-                }
-                if (selectedFragment instanceof Popular) {
-                    String users = DBHelper.getStringUsers(null);
-                    if (users != null) {
-                        Vk.asyncGetUsersFull(users, new Vk.CallbackArraySearchModel() {
-                            @Override
-                            public void onSuccess(ArrayList<SearchModel> model) {
-                                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.userRecycler);
-                                recyclerView.setAdapter(new SearchAdapter(model, MainActivity.this, R.layout.fragment_user_item));
-                                progressBarMain.setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void onError(String error) {
-
-                            }
-                        });
-                    }
-                    fab.animate().cancel();
-                }
             }
-        });*/
+        });
     }
 
     private void initTextViews() {
         navHeaderUsername = (TextView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.navHeaderUsername);
-        //String vcal = SharedProperty.getInstance().getCurrentName();
         navHeaderUsername.setText("Привет, ");
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -235,42 +246,57 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        toolbar.setTitle(item.getTitle());
+        item.setChecked(true);
+        invalidateOptionsMenu();
+        showFab();
         switch (item.getItemId()) {
             case R.id.nav_popular: {
-                uncheckItems();
-                toolbar.setTitle("Пользователи");
-                fab.setImageResource(R.drawable.ic_loop_white_24dp);
-                item.setChecked(true);
                 showPopular();
-                showFab();
-                invalidateOptionsMenu();
                 break;
             }
-            case R.id.nav_send: {
-                uncheckItems();
-                toolbar.setTitle("Поиск");
-                fab.setImageResource(R.drawable.ic_search_white_24dp);
-                item.setChecked(true);
-                showCategory();
-                showFab();
-                invalidateOptionsMenu();
+            case R.id.nav_1: {
+                showCategory(1);
+                break;
+            }
+            case R.id.nav_10: {
+                showCategory(10);
+                break;
+            }
+            case R.id.nav_13: {
+                showCategory(13);
+                break;
+            }
+            case R.id.nav_14: {
+                showCategory(14);
+                break;
+            }
+            case R.id.nav_15: {
+                showCategory(15);
+                break;
+            }
+            case R.id.nav_16: {
+                showCategory(16);
+                break;
+            }
+            case R.id.nav_2: {
+                showCategory(2);
+                break;
+            }
+            case R.id.nav_7: {
+                showCategory(7);
+                break;
+            }
+            case R.id.nav_postsend: {
+                showPostSend();
+                break;
+            }
+            case R.id.nav_howtoroad: {
+                showHowToRoad();
                 break;
             }
             case R.id.nav_about: {
-                uncheckItems();
-                toolbar.setTitle("Поделиться");
-                item.setChecked(true);
-                showSendNotification();
-                hideFab();
-                invalidateOptionsMenu();
-                break;
-            }
-            case R.id.nav_logout: {
-                SharedProperty.getInstance().setCurrentName("");
-                Intent intent = new Intent(MainActivity.this, StartScreen.class);
-                startActivity(intent);
-                this.finish();
+                showAbout();
                 break;
             }
         }
@@ -279,28 +305,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private void uncheckItems() {
-        Menu items = navigationView.getMenu();
-
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem item = items.getItem(i);
-            item.setChecked(false);
-        }
-    }
-
-    /*private int countCheckedItems() {
-        Menu items = navigationView.getMenu();
-        int count = 0;
-
-        for (int i = 0; i < items.size(); i++) {
-            MenuItem item = items.getItem(i);
-            if (item.isChecked()) {
-                count++;
-            }
-        }
-        return count;
-    }*/
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

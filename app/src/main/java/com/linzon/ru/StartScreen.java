@@ -27,6 +27,10 @@ public class StartScreen extends AppCompatActivity implements View.OnClickListen
         editText = (EditText) findViewById(R.id.startScreenSelectedName);
 
         button.setOnClickListener(this);
+
+        Intent intent = new Intent(StartScreen.this, MainActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     @Override

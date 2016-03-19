@@ -1,5 +1,7 @@
 package com.linzon.ru.common;
 
+import java.util.HashMap;
+
 /**
  * Created by erick on 14.10.15.
  */

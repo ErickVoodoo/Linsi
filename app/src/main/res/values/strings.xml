@@ -1,23 +1,24 @@
 <resources>
-    <string name="app_name">VkCheck</string>
+    <string name="app_name">Linsi</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Настройки</string>
-
     <string name="startScreenTextView">Напиши свое имя</string>
     <string name="startScreenTitleButton">ГОТОВО</string>
 
-    <string name="notificationsTurnOn">Включить уведомления</string>
-    <string name="notificationsTurnOff">Выключить уведомления</string>
+    <string name="drawer_popular">Популярные</string>
+    <string name="drawer_nav_1">Однодневные линзы</string>
+    <string name="drawer_nav_14">Двухнедельные линзы</string>
+    <string name="drawer_nav_2">Дышащие линзы</string>
+    <string name="drawer_nav_15">Линзы на месяц</string>
+    <string name="drawer_nav_7">Цветные линзы</string>
+    <string name="drawer_nav_16">Квартальные линзы</string>
+    <string name="drawer_nav_13">Торические линзы</string>
+    <string name="drawer_nav_10">Растворы для линз</string>
+    <string name="drawer_nav_send">Доставка</string>
+    <string name="drawer_nav_howtoroad">Как доехать</string>
+    <string name="drawer_nav_about">О компании</string>
 
-    <string name="notificationsTurnedOn">Уведомления включены</string>
-    <string name="notificationsTurnedOff">Уведмоления выключены</string>
-    
-    <string name="errorWallClosed">Пользователь скрыл свою стену для не авторизированных пользователей</string>
-    <string name="errorHistoryEmpty">Ошибка. Пользователь не добавлен на сервере. Для устранения этой проблемы нажмите на кнопку ниже.</string>
-    <string name="historyEmpty">История посещений пока что пуста. Обновление истории на сервере происходит каждые 5 - 7 минут. Спасибо за понимание.</string>
-    <string name="historyFriendsEmpty">У Вас не содержится людей с которыми можно было бы сравнить данного пользователя. Добавьте других пользователей.</string>
-    <string name="errorHistoryEmptyButton">Исправить</string>
+    <string name="static_price">Цена: </string>
+    <string name="static_vendor">Производитель: </string>
 </resources>

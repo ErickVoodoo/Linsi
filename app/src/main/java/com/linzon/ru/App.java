@@ -14,7 +14,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         DBHelper.init(getApplicationContext());
-
+        //DBHelper.getInstance().dropDatabase();
         /*Intent service = new Intent(this, NotificationService.class);
         service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startService(service);*/

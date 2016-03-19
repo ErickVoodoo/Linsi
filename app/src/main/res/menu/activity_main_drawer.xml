@@ -5,20 +5,44 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_popular"
-            android:title="Популярное" />
+            android:title="@string/drawer_popular" />
+        <item
+            android:id="@+id/nav_1"
+            android:title="@string/drawer_nav_1" />
+        <item
+            android:id="@+id/nav_14"
+            android:title="@string/drawer_nav_14" />
+        <item
+            android:id="@+id/nav_2"
+            android:title="@string/drawer_nav_2" />
+        <item
+            android:id="@+id/nav_15"
+            android:title="@string/drawer_nav_15" />
+        <item
+            android:id="@+id/nav_7"
+            android:title="@string/drawer_nav_7" />
+        <item
+            android:id="@+id/nav_16"
+            android:title="@string/drawer_nav_16" />
+        <item
+            android:id="@+id/nav_13"
+            android:title="@string/drawer_nav_13" />
+        <item
+            android:id="@+id/nav_10"
+            android:title="@string/drawer_nav_10" />
     </group>
 
     <group
         android:id="@+id/secondGroup"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_send"
-            android:title="Доставка" />
+            android:id="@+id/nav_postsend"
+            android:title="@string/drawer_nav_send" />
         <item
-            android:id="@+id/nav_logout"
-            android:title="Прочее" />
+            android:id="@+id/nav_howtoroad"
+            android:title="@string/drawer_nav_howtoroad" />
         <item
             android:id="@+id/nav_about"
-            android:title="О компании" />
+            android:title="@string/drawer_nav_about" />
     </group>
 </menu>

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.MainOffer;
 import com.linzon.ru.models.OCategories;
 import com.linzon.ru.models.OCategory;
@@ -27,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ApiConnector {
     public static abstract class CallbackGetOfferList {
@@ -41,18 +43,18 @@ public class ApiConnector {
         public abstract void onError(String error);
     }
 
-    public static void asyncGetOfferList(String query, final CallbackGetOfferList callback) {
+    public static void asyncGetOfferList(final String query, final CallbackGetOfferList callback) {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
+                Log.e("START_PARSING", "------------------------------");
                 String result = "";
                 String responseLine = "";
-                String myUrl = Constants.STATIC_APP;
 
                 MainOffer mainOffer = new MainOffer();
 
                 try {
-                    HttpURLConnection connection = (HttpURLConnection) new URL(myUrl).openConnection();
+                    HttpURLConnection connection = (HttpURLConnection) new URL(query).openConnection();
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("Content-Length", "0");
                     connection.setConnectTimeout(10000);
@@ -142,18 +144,41 @@ public class ApiConnector {
                             offer.setParam_PWR(newString.split(","));
                         }
                         offerArrayList.add(offer);
+
+                        String param_BC = Arrays.toString(offer.getParam_BC());
+                        String param_AX = Arrays.toString(offer.getParam_AX());
+                        String param_CYL = Arrays.toString(offer.getParam_CYL());
+                        String param_PWR = Arrays.toString(offer.getParam_PWR());
+                        String param_COLOR = Arrays.toString(offer.getParam_COLOR());
+
+                        DBHelper.getInstance().insertRows(
+                                DBHelper.OFFERS,
+                                DBHelper.setContentValues(
+                                        offer.getId(),
+                                        offer.getPrice(),
+                                        offer.getName(),
+                                        offer.getDescription(),
+                                        offer.getPicture(),
+                                        offer.getCurrencyId(),
+                                        offer.getCategoryId(),
+                                        offer.getVendor(),
+                                        param_BC.substring(1, param_BC.length() - 1),
+                                        param_PWR.substring(1, param_PWR.length() - 1),
+                                        param_AX.substring(1, param_AX.length() - 1),
+                                        param_CYL.substring(1, param_CYL.length() - 1),
+                                        param_COLOR.substring(1, param_COLOR.length() - 1))
+                        );
                     }
-                    categories.setCategory(categoryArrayList);
+                    /*sample.setCategory(categoryArrayList);
                     shopOffers.setOffer(offerArrayList);
 
-                    shop.setCategories(categories);
+                    shop.setCategories(sample);
                     shop.setOffers(shopOffers);
-                    mainOffer.setShop(shop);
-                    Log.e("FINISH", "TODO");
+                    mainOffer.setShop(shop);*/
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
-                return "Okay";
+                return "true";
             }
 
             @Override

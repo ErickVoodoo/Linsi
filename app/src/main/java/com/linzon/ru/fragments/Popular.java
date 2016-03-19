@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.linzon.ru.MainActivity;
 import com.linzon.ru.api.ApiConnector;
+import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.R;
 
@@ -26,14 +27,29 @@ public class Popular extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.fragment_user, container, false);
-        /*Log.e("onCreateView()", "Popular");*/
+        view = inflater.inflate(R.layout.fragment_popular, container, false);
         serRecycler();
+
+        //setFab();
+        if(DBHelper.getInstance().selectRows(DBHelper.OFFERS,null , null, null, null).getCount() == 0) {
+            ApiConnector.asyncGetOfferList(Constants.STATIC_APP, new ApiConnector.CallbackGetOfferList() {
+                @Override
+                public void onSuccess(String success) {
+                    Log.e("WOWO", "ITS WORK");
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+
         return  view;
     }
 
     private void serRecycler() {
-        recyclerView = (RecyclerView) view.findViewById(R.id.userRecycler);
+        recyclerView = (RecyclerView) view.findViewById(R.id.popularRecycler);
 
         recyclerView.setAdapter(null);
 
@@ -42,19 +58,6 @@ public class Popular extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mLinearLayoutManager);
-
-        setFab();
-        ApiConnector.asyncGetOfferList("", new ApiConnector.CallbackGetOfferList() {
-            @Override
-            public void onSuccess(String success) {
-                Log.e("WOWO", "ITS WORK");
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
     }
 
     @Override
@@ -69,7 +72,7 @@ public class Popular extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));*/
     }
 
-    private void setFab() {
+    /*private void setFab() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                                              private static final int HIDE_THRESHOLD = 20;
                                              private int scrolledDistance = 0;
@@ -94,5 +97,5 @@ public class Popular extends Fragment {
                                              }
                                          }
         );
-    }
+    }*/
 }
