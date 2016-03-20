@@ -1,8 +1,5 @@
 package com.linzon.ru.models;
 
-/**
- * Created by erick on 17.3.16.
- */
 public class OCategory {
     private String id;
 

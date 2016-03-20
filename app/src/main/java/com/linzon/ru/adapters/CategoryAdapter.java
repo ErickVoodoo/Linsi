@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.linzon.ru.MainActivity;
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.models.OOffer;
@@ -15,9 +17,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * Created by erick on 20.10.15.
- */
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     ArrayList<OOffer> arrayList;
     private Activity activity;
@@ -44,8 +43,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .into(holder.picture);
         holder.description.setText(arrayList.get(position).getDescription());
         holder.name.setText(arrayList.get(position).getName());
-        holder.vendor.setText(this.activity.getResources().getString(R.string.static_vendor) + arrayList.get(position).getVendor());
-        holder.price.setText(this.activity.getResources().getString(R.string.static_price) + arrayList.get(position).getPrice());
+        holder.vendor.setText(this.activity.getResources().getString(R.string.static_vendor) + " " + arrayList.get(position).getVendor());
+        holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + arrayList.get(position).getPrice() + " " + this.activity.getResources().getString(R.string.static_exchange));
+
+        holder.itemMainContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) CategoryAdapter.this.activity)
+                        .showOffer(Integer.parseInt(CategoryAdapter.this.arrayList.get(position).getId()));
+            }
+        });
     }
 
     @Override
@@ -55,6 +62,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout itemMainContainer;
         public ImageView picture;
         public TextView name;
         public TextView vendor;
@@ -63,6 +71,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemMainContainer = (LinearLayout) itemView.findViewById(R.id.itemMainContainer);
             picture = (ImageView) itemView.findViewById(R.id.categoryPicture);
             name = (TextView) itemView.findViewById(R.id.categoryName);
             vendor = (TextView) itemView.findViewById(R.id.categoryVendor);

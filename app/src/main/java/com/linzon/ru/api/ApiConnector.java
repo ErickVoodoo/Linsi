@@ -14,6 +14,7 @@ import com.linzon.ru.models.OShop;
 import com.linzon.ru.models.OShopOffers;
 import com.linzon.ru.models.PCategories;
 import com.linzon.ru.models.PCategory;
+import com.linzon.ru.models.POffer;
 import com.linzon.ru.models.PShop;
 
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class ApiConnector {
     }
 
     public static abstract class CallbackGetPriceList {
-        public abstract void onSuccess(String success);
+        public abstract void onSuccess(ArrayList<POffer> success);
 
         public abstract void onError(String error);
     }
@@ -47,12 +48,8 @@ public class ApiConnector {
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
-                Log.e("START_PARSING", "------------------------------");
                 String result = "";
                 String responseLine = "";
-
-                MainOffer mainOffer = new MainOffer();
-
                 try {
                     HttpURLConnection connection = (HttpURLConnection) new URL(query).openConnection();
                     connection.setRequestMethod("GET");
@@ -66,14 +63,11 @@ public class ApiConnector {
 
                     JSONObject rootObj = new JSONObject(result);
                     JSONObject shopObj = rootObj.getJSONObject("shop");
-                    JSONArray caregotiesArray = shopObj.getJSONObject("categories").getJSONArray("category");
+                    //JSONArray caregotiesArray = shopObj.getJSONObject("categories").getJSONArray("category");
                     JSONArray offersArray = shopObj.getJSONObject("offers").getJSONArray("offer");
 
-                    OShop shop = new OShop();
-                    OCategories categories = new OCategories();
-                    ArrayList<OCategory> categoryArrayList = new ArrayList<>();
+                    /*ArrayList<OCategory> categoryArrayList = new ArrayList<>();
 
-                    OShopOffers shopOffers = new OShopOffers();
                     ArrayList<OOffer> offerArrayList = new ArrayList<>();
 
                     for (int i = 0; i < caregotiesArray.length(); i++) {
@@ -84,7 +78,7 @@ public class ApiConnector {
                         if (currentCategory.has("name"))
                             category.setName(currentCategory.getString("name"));
                         categoryArrayList.add(category);
-                    }
+                    }*/
 
                     for(int j = 0; j < offersArray.length(); j++) {
                         JSONObject currentOffer = offersArray.getJSONObject(j);
@@ -143,7 +137,7 @@ public class ApiConnector {
                                 newString = newString.substring(1, newString.length()).substring(0, newString.length() - 2).replace("\"", "");
                             offer.setParam_PWR(newString.split(","));
                         }
-                        offerArrayList.add(offer);
+                        //offerArrayList.add(offer);
 
                         String param_BC = Arrays.toString(offer.getParam_BC());
                         String param_AX = Arrays.toString(offer.getParam_AX());
@@ -169,20 +163,71 @@ public class ApiConnector {
                                         param_COLOR.substring(1, param_COLOR.length() - 1))
                         );
                     }
-                    /*sample.setCategory(categoryArrayList);
-                    shopOffers.setOffer(offerArrayList);
-
-                    shop.setCategories(sample);
-                    shop.setOffers(shopOffers);
-                    mainOffer.setShop(shop);*/
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
+                    callback.onError("Server error");
                 }
                 return "true";
             }
 
             @Override
             protected void onPostExecute(String result) {
+                callback.onSuccess(result);
+            }
+        }.execute(query);
+    }
+
+    public static void asyncGetPrice(final String query, final CallbackGetPriceList callback) {
+        new AsyncTask<String, Void, ArrayList<POffer>>() {
+            @Override
+            protected ArrayList<POffer> doInBackground(String... params) {
+                Log.e("START_PARSING", "------------------------------");
+                String result = "";
+                String responseLine = "";
+                ArrayList<POffer> offerArrayList = new ArrayList<>();
+
+                try {
+                    HttpURLConnection connection = (HttpURLConnection) new URL(query).openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setRequestProperty("Content-Length", "0");
+                    connection.setConnectTimeout(10000);
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    while ((responseLine = bufferedReader.readLine()) != null) {
+                        result += responseLine;
+                    }
+                    bufferedReader.close();
+
+                    JSONObject rootObj = new JSONObject(result);
+                    JSONObject shopObj = rootObj.getJSONObject("shop");
+                    JSONArray offersArray = shopObj.getJSONObject("offers").getJSONArray("offer");
+
+                    for(int j = 0; j < offersArray.length(); j++) {
+                        JSONObject currentOffer = offersArray.getJSONObject(j);
+                        POffer offer = new POffer();
+                        if(currentOffer.has("id")) {
+                            offer.setId(currentOffer.getString("id"));
+                        }
+                        if(currentOffer.has("name")) {
+                            offer.setName(currentOffer.getString("name"));
+                        }
+                        if(currentOffer.has("picture")) {
+                            offer.setPicture(currentOffer.getString("picture"));
+                        }
+                        if(currentOffer.has("price")) {
+                            offer.setPrice(currentOffer.getString("price"));
+                        }
+
+                        offerArrayList.add(offer);
+                    }
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    callback.onError("Server error");
+                }
+                return offerArrayList;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<POffer> result) {
                 callback.onSuccess(result);
             }
         }.execute(query);

@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by erick on 14.10.15.
- */
 public class SharedProperty {
     private static SharedProperty instance;
     private static Activity activity;

@@ -2,9 +2,6 @@ package com.linzon.ru;
 
 import android.support.v7.app.AppCompatActivity;
 
-/**
- * Created by erick on 15.10.15.
- */
 public class UserProfile extends AppCompatActivity {
     /*private Toolbar toolbar;
 

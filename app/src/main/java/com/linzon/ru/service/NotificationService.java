@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by erick on 28.10.15.
- */
 public class NotificationService extends Service {
     /*private static final long SYNC_NOTIFY_INTERVAL = 300000;
 

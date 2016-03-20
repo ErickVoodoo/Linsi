@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 
 import com.linzon.ru.R;
 
-/**
- * Created by Admin on 19.03.2016.
- */
 public class PostSend extends Fragment {
     View view;
 

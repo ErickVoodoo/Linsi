@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linzon.ru.fragments.About;
+import com.linzon.ru.fragments.OfferInfo;
 import com.linzon.ru.fragments.PostSend;
 import com.linzon.ru.fragments.HowToRoad;
 import com.linzon.ru.fragments.Popular;
@@ -36,14 +38,16 @@ public class MainActivity extends AppCompatActivity
 
     private final static String CATEGORY_TAG = "CATEGORY_FRAGMENT";
     private final static String POPULAR_TAG = "POPULAR_FRAGMENT";
+    private final static String OFFER_TAG = "OFFER_FRAGMENT";
     private final static String ABOUT_TAG = "ABOUT_FRAGMENT";
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
-    private final static String HOWTOROAD_TAG = "GOWTOROAD_FRAGMENT";
+    private final static String HOWTOROAD_TAG = "HOWTOROAD_FRAGMENT";
 
     private NavigationView navigationView;
 
     private Popular popularFragment;
     private CategoryOffers categoryOffersFragment;
+    private OfferInfo offerInfoFragment;
     private About aboutFragment;
     private PostSend postSendFragment;
     private HowToRoad howToRoadFragment;
@@ -98,7 +102,25 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().executePendingTransactions();
             selectedFragment = categoryOffersFragment;
         }
-        categoryOffersFragment.setCategory(id);
+        Log.e(String.valueOf(categoryOffersFragment.selectedCategory), String.valueOf(id));
+        if(categoryOffersFragment.selectedCategory != id)
+            categoryOffersFragment.setCategory(id);
+    }
+
+    public void showOffer(int id) {
+        if (!(selectedFragment instanceof OfferInfo)) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            hideFragments();
+            if (null == offerInfoFragment) {
+                offerInfoFragment = new OfferInfo();
+                fragmentTransaction.add(R.id.mainPager, offerInfoFragment, OFFER_TAG);
+            }
+            fragmentTransaction.show(offerInfoFragment);
+            fragmentTransaction.commit();
+            getFragmentManager().executePendingTransactions();
+            selectedFragment = offerInfoFragment;
+        }
+        offerInfoFragment.setOffer(id);
     }
 
     private void showAbout() {
@@ -173,6 +195,11 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(howToRoadFragment);
         }
 
+        offerInfoFragment = (OfferInfo) getFragmentManager().findFragmentByTag(OFFER_TAG);
+        if (null != offerInfoFragment) {
+            fragmentTransaction.hide(offerInfoFragment);
+        }
+
         fragmentTransaction.commit();
         getFragmentManager().executePendingTransactions();
     }
@@ -227,6 +254,8 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if(selectedFragment instanceof OfferInfo) {
+            showCategory(-1);
         } else {
             super.onBackPressed();
         }
@@ -328,5 +357,13 @@ public class MainActivity extends AppCompatActivity
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         int fabBottomMargin = lp.bottomMargin;
         fab.animate().translationY(fab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    public void showProgressBar() {
+        progressBarMain.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progressBarMain.setVisibility(View.GONE);
     }
 }

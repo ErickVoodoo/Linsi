@@ -5,11 +5,6 @@ import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- * ImageView to display top-crop scale of an image view.
- *
- * @author Chris Arriola
- */
 public class TopCropImageView extends ImageView {
     public TopCropImageView(Context context)
     {

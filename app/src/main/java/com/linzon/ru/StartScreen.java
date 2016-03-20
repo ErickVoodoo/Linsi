@@ -10,9 +10,6 @@ import android.widget.EditText;
 
 import com.linzon.ru.common.SharedProperty;
 
-/**
- * Created by erick on 14.10.15.
- */
 public class StartScreen extends AppCompatActivity implements View.OnClickListener{
     private Button button;
     private EditText editText;

@@ -1,8 +1,5 @@
 package com.linzon.ru.models;
 
-/**
- * Created by erick on 19.10.15.
- */
 public class MainOffer {
 
     private OShop shop;

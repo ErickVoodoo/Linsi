@@ -6,7 +6,6 @@ import android.content.Intent;
 
 import com.linzon.ru.service.NotificationService;
 
-
 public class Boot extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

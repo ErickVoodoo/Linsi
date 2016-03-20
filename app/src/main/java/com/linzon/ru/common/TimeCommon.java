@@ -4,9 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
- * Created by erick on 15.10.15.
- */
 public class TimeCommon {
     public static int getYearNumber(){
         return Calendar.getInstance(TimeZone.getDefault()).get(Calendar.YEAR);

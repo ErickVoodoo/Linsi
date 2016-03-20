@@ -6,9 +6,6 @@ import android.util.DisplayMetrics;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
- * Created by erick on 16.10.15.
- */
 public class Values {
     public static int GET_SCREEN_WIDTH(Context context){
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();

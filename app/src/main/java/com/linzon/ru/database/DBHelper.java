@@ -28,6 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static final String OFFERS = "offers";
+    public static final String BASKET = "basket";
 
     private static final String DbName = "linzon";
 
@@ -49,6 +50,17 @@ public class DBHelper extends SQLiteOpenHelper {
                         "currencyId text," +
                         "categoryId text," +
                         "vendor text," +
+                        "param_BC text," +
+                        "param_PWR text," +
+                        "param_AX text," +
+                        "param_CYL text," +
+                        "param_COLOR text" +
+                        ")");
+        db.execSQL(
+                "create table " + OFFERS + " (" +
+                        "id int PRIMARY KEY, " +
+                        "price text, " +
+                        "name text," +
                         "param_BC text," +
                         "param_PWR text," +
                         "param_AX text," +
@@ -158,6 +170,28 @@ public class DBHelper extends SQLiteOpenHelper {
             while (rows.moveToNext());
         }
         return arrayList;
+    }
+
+    public static OOffer getOfferInfo(String where) {
+        OOffer offer = new OOffer();
+        Cursor rows = getInstance().selectRows(OFFERS, null, "id = '" + where + "'", null, "id");
+        if (rows.moveToFirst()) {
+            do {
+                offer.setId(rows.getString(rows.getColumnIndex("id")));
+                offer.setPrice(rows.getString(rows.getColumnIndex("price")));
+                offer.setName(rows.getString(rows.getColumnIndex("name")));
+                offer.setDescription(rows.getString(rows.getColumnIndex("description")));
+                offer.setVendor(rows.getString(rows.getColumnIndex("vendor")));
+                offer.setPicture(rows.getString(rows.getColumnIndex("picture")));
+                offer.setParam_AX(rows.getString(rows.getColumnIndex("param_AX")).split(","));
+                offer.setParam_BC(rows.getString(rows.getColumnIndex("param_BC")).split(","));
+                offer.setParam_CYL(rows.getString(rows.getColumnIndex("param_CYL")).split(","));
+                offer.setParam_PWR(rows.getString(rows.getColumnIndex("param_PWR")).split(","));
+                offer.setParam_COLOR(rows.getString(rows.getColumnIndex("param_COLOR")).split(","));
+            }
+            while (rows.moveToNext());
+        }
+        return offer;
     }
 
     /*public static MainOffer getUserFromDatabase(String uid) {

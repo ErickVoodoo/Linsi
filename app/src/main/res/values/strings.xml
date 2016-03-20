@@ -19,6 +19,10 @@
     <string name="drawer_nav_howtoroad">Как доехать</string>
     <string name="drawer_nav_about">О компании</string>
 
-    <string name="static_price">Цена: </string>
-    <string name="static_vendor">Производитель: </string>
+    <string name="static_price">Цена:</string>
+    <string name="static_vendor">Производитель:</string>
+    <string name="static_exchange">руб.</string>
+
+    <string name="offer_leftPart">Левый глаз</string>
+    <string name="offer_rightPart">Правый глаз</string>
 </resources>
