@@ -23,6 +23,14 @@
     <string name="static_vendor">Производитель:</string>
     <string name="static_exchange">руб.</string>
 
+    <string name="offer_params">Параметры</string>
     <string name="offer_leftPart">Левый глаз</string>
     <string name="offer_rightPart">Правый глаз</string>
+    <string name="offer_count">Количество</string>
+    <string name="offer_BC">Раудиус кривизны</string>
+    <string name="offer_PWR">Оптическая сила</string>
+    <string name="offer_AX">offer_AX</string>
+    <string name="offer_CYL">offer_CYL</string>
+    <string name="offer_COLOR">offer_COLOR</string>
+    <string name="buttonAddToBasket">ДОБАВИТЬ В КОРЗИНУ</string>
 </resources>

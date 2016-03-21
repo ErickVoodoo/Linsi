@@ -56,17 +56,6 @@ public class DBHelper extends SQLiteOpenHelper {
                         "param_CYL text," +
                         "param_COLOR text" +
                         ")");
-        db.execSQL(
-                "create table " + OFFERS + " (" +
-                        "id int PRIMARY KEY, " +
-                        "price text, " +
-                        "name text," +
-                        "param_BC text," +
-                        "param_PWR text," +
-                        "param_AX text," +
-                        "param_CYL text," +
-                        "param_COLOR text" +
-                        ")");
     }
 
     @Override
