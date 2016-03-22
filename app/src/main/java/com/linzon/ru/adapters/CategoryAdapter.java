@@ -1,6 +1,7 @@
 package com.linzon.ru.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.linzon.ru.MainActivity;
 import com.linzon.ru.R;
+import com.linzon.ru.Offer;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
@@ -49,8 +50,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.itemMainContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) CategoryAdapter.this.activity)
-                        .showOffer(Integer.parseInt(CategoryAdapter.this.arrayList.get(position).getId()));
+                Intent intent = new Intent(activity, Offer.class);
+                intent.putExtra("OFFER_ID", CategoryAdapter.this.arrayList.get(position).getId());
+                activity.startActivity(intent);
+
+//                ((MainActivity) CategoryAdapter.this.activity)
+//                        .showOffer(Integer.parseInt();
             }
         });
     }

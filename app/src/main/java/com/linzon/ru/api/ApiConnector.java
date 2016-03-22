@@ -1,21 +1,11 @@
 package com.linzon.ru.api;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBHelper;
-import com.linzon.ru.models.MainOffer;
-import com.linzon.ru.models.OCategories;
-import com.linzon.ru.models.OCategory;
 import com.linzon.ru.models.OOffer;
-import com.linzon.ru.models.OShop;
-import com.linzon.ru.models.OShopOffers;
-import com.linzon.ru.models.PCategories;
-import com.linzon.ru.models.PCategory;
 import com.linzon.ru.models.POffer;
-import com.linzon.ru.models.PShop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,8 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,11 +144,11 @@ public class ApiConnector {
                                         offer.getCurrencyId(),
                                         offer.getCategoryId(),
                                         offer.getVendor(),
-                                        param_BC.substring(1, param_BC.length() - 1),
-                                        param_PWR.substring(1, param_PWR.length() - 1),
-                                        param_AX.substring(1, param_AX.length() - 1),
-                                        param_CYL.substring(1, param_CYL.length() - 1),
-                                        param_COLOR.substring(1, param_COLOR.length() - 1))
+                                        param_BC.equals("null") ? "" : param_BC.substring(1, param_BC.length() - 1),
+                                        param_PWR.equals("null") ? "" : param_PWR.substring(1, param_PWR.length() - 1),
+                                        param_AX.equals("null") ? "" : param_AX.substring(1, param_AX.length() - 1),
+                                        param_CYL.equals("null") ? "" : param_CYL.substring(1, param_CYL.length() - 1),
+                                        param_COLOR.equals("null") ? "" : param_COLOR.substring(1, param_COLOR.length() - 1))
                         );
                     }
                 } catch (IOException | JSONException e) {

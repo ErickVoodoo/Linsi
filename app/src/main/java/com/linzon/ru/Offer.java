@@ -1,8 +1,211 @@
 package com.linzon.ru;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-public class UserProfile extends AppCompatActivity {
+import com.linzon.ru.common.Constants;
+import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.models.OOffer;
+import com.squareup.picasso.Picasso;
+
+public class Offer extends AppCompatActivity {
+    int selectedOffer;
+
+    ImageView offerPicture;
+    TextView offerName;
+    TextView offerVendor;
+    TextView offerDescription;
+    TextView offerPrice;
+
+    Spinner offerCountLeft;
+    Spinner offerCountRight;
+    Spinner offerPWRLeft;
+    Spinner offerPWRRight;
+    Spinner offerBCLeft;
+    Spinner offerBCRight;
+    Spinner offerAXRight;
+    Spinner offerAXLeft;
+    Spinner offerCYLRight;
+    Spinner offerCYLLeft;
+    Spinner offerCOLORRight;
+    Spinner offerCOLORLeft;
+
+    ScrollView offerScrollView;
+
+    ProgressBar progressBar;
+
+    Toolbar toolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_offer_info);
+
+        initToolbar();
+        setTextView();
+        setProgressBar();
+        setImageView();
+        setSpinners();
+        setScrollView();
+        
+        Intent intent = this.getIntent();
+        selectedOffer = Integer.parseInt(intent.getStringExtra("OFFER_ID"));
+        setOffer();
+    }
+
+    public void setOffer() {
+        showProgressBar();
+        loadOfferInfo();
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.offerToolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    public void setProgressBar() {
+        progressBar = (ProgressBar) findViewById(R.id.progressBarOffer);
+    }
+
+    public void setImageView() {
+        offerPicture = (ImageView) findViewById(R.id.offerPicture);
+    }
+
+    public void setTextView() {
+        offerName = (TextView) findViewById(R.id.offerName);
+        offerVendor = (TextView) findViewById(R.id.offerVendor);
+        offerDescription = (TextView) findViewById(R.id.offerDesciption);
+        offerPrice = (TextView) findViewById(R.id.offerPrice);
+    }
+
+    public void setSpinners() {
+        offerCountLeft = (Spinner) findViewById(R.id.offerCountLeft);
+        offerCountRight = (Spinner) findViewById(R.id.offerCountRight);
+        offerPWRLeft = (Spinner) findViewById(R.id.offerPWRLeft);
+        offerPWRRight = (Spinner) findViewById(R.id.offerPWRRight);
+        offerBCLeft = (Spinner) findViewById(R.id.offerBCLeft);
+        offerBCRight = (Spinner) findViewById(R.id.offerBCRight);
+        offerAXLeft = (Spinner) findViewById(R.id.offerAXLeft);
+        offerAXRight = (Spinner) findViewById(R.id.offerAXRight);
+        offerCYLLeft = (Spinner) findViewById(R.id.offerCYLLeft);
+        offerCYLRight = (Spinner) findViewById(R.id.offerCYLRight);
+        offerCOLORLeft = (Spinner) findViewById(R.id.offerCOLORLeft);
+        offerCOLORRight = (Spinner) findViewById(R.id.offerCOLORRight);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        offerCountLeft.setAdapter(adapter);
+        offerCountLeft.setSelection(1);
+
+        offerCountRight.setAdapter(adapter);
+        offerCountRight.setSelection(1);
+    }
+
+    public void setScrollView() {
+        offerScrollView = (ScrollView) findViewById(R.id.offerScrollView);
+    }
+
+    public void loadOfferInfo() {
+        offerScrollView.setVisibility(View.GONE);
+        DBAsync.asyncGetOfferInfo(this.selectedOffer, new DBAsync.CallbackGetOffer() {
+            @Override
+            public void onSuccess(OOffer success) {
+                Offer.this.hideProgressBar();
+
+                if (success.getVendor() == null)
+                    offerVendor.setVisibility(View.GONE);
+
+                if (success.getPrice() == null)
+                    offerPrice.setVisibility(View.GONE);
+
+                offerName.setText(success.getName());
+                offerDescription.setText(success.getDescription());
+                offerVendor.setText(Offer.this.getResources().getString(R.string.static_vendor) + " " + success.getVendor());
+                offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + success.getPrice() + " " + Offer.this.getResources().getString(R.string.static_exchange));
+                Picasso.with(Offer.this)
+                        .load(Constants.STATIC_SERVER + success.getPicture())
+                        .into(offerPicture);
+                offerScrollView.setVisibility(View.VISIBLE);
+
+                if(success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
+                    ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_PWR());
+                    adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    offerPWRLeft.setAdapter(adapterPWR);
+                    offerPWRLeft.setSelection(success.getParam_PWR().length / 2);
+                    offerPWRRight.setAdapter(adapterPWR);
+                    offerPWRRight.setSelection(success.getParam_PWR().length / 2);
+                } else {
+                    findViewById(R.id.mainOfferLayoutPWR).setVisibility(View.GONE);
+                }
+
+                if(success.getParam_BC() != null && success.getParam_BC().length != 0 && !success.getParam_BC()[0].equals("")) {
+                    ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_BC());
+                    adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    offerBCLeft.setAdapter(adapterBC);
+                    offerBCLeft.setSelection(success.getParam_BC().length / 2);
+                    offerBCRight.setAdapter(adapterBC);
+                    offerBCRight.setSelection(success.getParam_BC().length / 2);
+                } else {
+                    findViewById(R.id.mainOfferLayoutBC).setVisibility(View.GONE);
+                }
+
+                if(success.getParam_AX() != null && success.getParam_AX().length != 0 && !success.getParam_AX()[0].equals("")) {
+                    ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_AX());
+                    adapterAX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    offerAXLeft.setAdapter(adapterAX);
+                    offerAXLeft.setSelection(success.getParam_AX().length / 2);
+                    offerAXRight.setAdapter(adapterAX);
+                    offerAXRight.setSelection(success.getParam_AX().length / 2);
+                } else {
+                    findViewById(R.id.mainOfferLayoutAX).setVisibility(View.GONE);
+                }
+
+                if(success.getParam_CYL() != null && success.getParam_CYL().length != 0 && !success.getParam_CYL()[0].equals("")) {
+                    ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_CYL());
+                    adapterCYL.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    offerCYLLeft.setAdapter(adapterCYL);
+                    offerCYLLeft.setSelection(success.getParam_CYL().length / 2);
+                    offerCYLRight.setAdapter(adapterCYL);
+                    offerCYLRight.setSelection(success.getParam_CYL().length / 2);
+                } else {
+                    findViewById(R.id.mainOfferLayoutCYL).setVisibility(View.GONE);
+                }
+
+                if(success.getParam_COLOR() != null && success.getParam_COLOR().length != 0 && !success.getParam_COLOR()[0].equals("")) {
+                    ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_COLOR());
+                    adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    offerCOLORLeft.setAdapter(adapterCOLOR);
+                    offerCOLORLeft.setSelection(0);
+                    offerCOLORRight.setAdapter(adapterCOLOR);
+                    offerCOLORRight.setSelection(0);
+                } else {
+                    findViewById(R.id.mainOfferLayoutCOLOR).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Offer.this.hideProgressBar();
+            }
+        });
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
     /*private Toolbar toolbar;
 
     private Intent intent;
@@ -105,7 +308,7 @@ public class UserProfile extends AppCompatActivity {
 
     public void setFab() {
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
@@ -372,7 +575,7 @@ public class UserProfile extends AppCompatActivity {
                 .load(url)
                 .into(imageViewer);
         this.url = url;
-        imageViewContainer.setVisibility(View.VISIBLE);
+        imageViewContainer.setVisibility(VISIBLE);
         imageViewContainer.animate().alpha(1).setDuration(250).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -381,7 +584,7 @@ public class UserProfile extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                imageViewContainer.setVisibility(View.VISIBLE);
+                imageViewContainer.setVisibility(VISIBLE);
             }
 
             @Override
@@ -406,9 +609,9 @@ public class UserProfile extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                imageViewContainer.setVisibility(View.GONE);
+                imageViewContainer.setVisibility(GONE);
                 imageViewer.resetScale();
-                Picasso.with(UserProfile.this)
+                Picasso.with(Offer.this)
                         .load(R.drawable.default_avatar)
                         .into(imageViewer);
             }

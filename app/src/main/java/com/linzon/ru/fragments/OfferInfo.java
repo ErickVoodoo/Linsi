@@ -45,7 +45,7 @@ public class OfferInfo extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_offer_info, container, false);
+        view = inflater.inflate(R.layout.activity_offer_info, container, false);
         setTextView();
         setImageView();
         setSpinners();
