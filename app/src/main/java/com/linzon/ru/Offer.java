@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 public class Offer extends AppCompatActivity {
     int selectedOffer;
+    String selectedCategory;
 
     ImageView offerPicture;
     TextView offerName;
@@ -26,8 +27,7 @@ public class Offer extends AppCompatActivity {
     TextView offerDescription;
     TextView offerPrice;
 
-    Spinner offerCountLeft;
-    Spinner offerCountRight;
+    Spinner offerCount;
     Spinner offerPWRLeft;
     Spinner offerPWRRight;
     Spinner offerBCLeft;
@@ -50,15 +50,16 @@ public class Offer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_info);
 
+        Intent intent = this.getIntent();
+        selectedOffer = Integer.parseInt(intent.getStringExtra("OFFER_ID"));
+        selectedCategory = intent.getStringExtra("CATEGORY_ID");
+
         initToolbar();
         setTextView();
         setProgressBar();
         setImageView();
         setSpinners();
         setScrollView();
-        
-        Intent intent = this.getIntent();
-        selectedOffer = Integer.parseInt(intent.getStringExtra("OFFER_ID"));
         setOffer();
     }
 
@@ -70,6 +71,16 @@ public class Offer extends AppCompatActivity {
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.offerToolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Offer.this.finish();
+            }
+        });
+        toolbar.setTitle(Constants.CATEGORIES.get(selectedCategory));
     }
 
     public void setProgressBar() {
@@ -88,8 +99,7 @@ public class Offer extends AppCompatActivity {
     }
 
     public void setSpinners() {
-        offerCountLeft = (Spinner) findViewById(R.id.offerCountLeft);
-        offerCountRight = (Spinner) findViewById(R.id.offerCountRight);
+        offerCount = (Spinner) findViewById(R.id.offerCount);
         offerPWRLeft = (Spinner) findViewById(R.id.offerPWRLeft);
         offerPWRRight = (Spinner) findViewById(R.id.offerPWRRight);
         offerBCLeft = (Spinner) findViewById(R.id.offerBCLeft);
@@ -103,11 +113,8 @@ public class Offer extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        offerCountLeft.setAdapter(adapter);
-        offerCountLeft.setSelection(1);
-
-        offerCountRight.setAdapter(adapter);
-        offerCountRight.setSelection(1);
+        offerCount.setAdapter(adapter);
+        offerCount.setSelection(1);
     }
 
     public void setScrollView() {
@@ -119,77 +126,91 @@ public class Offer extends AppCompatActivity {
         DBAsync.asyncGetOfferInfo(this.selectedOffer, new DBAsync.CallbackGetOffer() {
             @Override
             public void onSuccess(OOffer success) {
-                Offer.this.hideProgressBar();
-
                 if (success.getVendor() == null)
                     offerVendor.setVisibility(View.GONE);
+                else
+                    offerVendor.setText(Offer.this.getResources().getString(R.string.static_vendor) + " " + success.getVendor());
 
                 if (success.getPrice() == null)
                     offerPrice.setVisibility(View.GONE);
+                else
+                    offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + success.getPrice() + " " + Offer.this.getResources().getString(R.string.static_exchange));
 
                 offerName.setText(success.getName());
                 offerDescription.setText(success.getDescription());
-                offerVendor.setText(Offer.this.getResources().getString(R.string.static_vendor) + " " + success.getVendor());
-                offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + success.getPrice() + " " + Offer.this.getResources().getString(R.string.static_exchange));
+
                 Picasso.with(Offer.this)
                         .load(Constants.STATIC_SERVER + success.getPicture())
                         .into(offerPicture);
+
+                if(selectedCategory.equals("10")) {
+                    findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
+                    findViewById(R.id.viewLineEye).setVisibility(View.GONE);
+                    findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
+                } else {
+                    if(success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
+                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_PWR());
+                        adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        offerPWRLeft.setAdapter(adapterPWR);
+                        offerPWRLeft.setSelection(success.getParam_PWR().length / 2);
+                        offerPWRRight.setAdapter(adapterPWR);
+                        offerPWRRight.setSelection(success.getParam_PWR().length / 2);
+                    } else {
+                        findViewById(R.id.mainOfferLayoutPWR).setVisibility(View.GONE);
+                        findViewById(R.id.viewLinePWR).setVisibility(View.GONE);
+                    }
+
+                    if(success.getParam_BC() != null && success.getParam_BC().length != 0 && !success.getParam_BC()[0].equals("")) {
+                        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_BC());
+                        adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        offerBCLeft.setAdapter(adapterBC);
+                        offerBCLeft.setSelection(success.getParam_BC().length / 2);
+                        offerBCRight.setAdapter(adapterBC);
+                        offerBCRight.setSelection(success.getParam_BC().length / 2);
+                    } else {
+                        findViewById(R.id.mainOfferLayoutBC).setVisibility(View.GONE);
+                        findViewById(R.id.viewLineBC).setVisibility(View.GONE);
+                    }
+
+                    if(success.getParam_AX() != null && success.getParam_AX().length != 0 && !success.getParam_AX()[0].equals("")) {
+                        ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_AX());
+                        adapterAX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        offerAXLeft.setAdapter(adapterAX);
+                        offerAXLeft.setSelection(success.getParam_AX().length / 2);
+                        offerAXRight.setAdapter(adapterAX);
+                        offerAXRight.setSelection(success.getParam_AX().length / 2);
+                    } else {
+                        findViewById(R.id.mainOfferLayoutAX).setVisibility(View.GONE);
+                        findViewById(R.id.viewLineAX).setVisibility(View.GONE);
+                    }
+
+                    if(success.getParam_CYL() != null && success.getParam_CYL().length != 0 && !success.getParam_CYL()[0].equals("")) {
+                        ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_CYL());
+                        adapterCYL.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        offerCYLLeft.setAdapter(adapterCYL);
+                        offerCYLLeft.setSelection(success.getParam_CYL().length / 2);
+                        offerCYLRight.setAdapter(adapterCYL);
+                        offerCYLRight.setSelection(success.getParam_CYL().length / 2);
+                    } else {
+                        findViewById(R.id.mainOfferLayoutCYL).setVisibility(View.GONE);
+                        findViewById(R.id.viewLineCYL).setVisibility(View.GONE);
+                    }
+
+                    if(success.getParam_COLOR() != null && success.getParam_COLOR().length != 0 && !success.getParam_COLOR()[0].equals("")) {
+                        ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_COLOR());
+                        adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        offerCOLORLeft.setAdapter(adapterCOLOR);
+                        offerCOLORLeft.setSelection(0);
+                        offerCOLORRight.setAdapter(adapterCOLOR);
+                        offerCOLORRight.setSelection(0);
+                    } else {
+                        findViewById(R.id.mainOfferLayoutCOLOR).setVisibility(View.GONE);
+                        findViewById(R.id.viewLineCOLOR).setVisibility(View.GONE);
+                    }
+                }
+
+                Offer.this.hideProgressBar();
                 offerScrollView.setVisibility(View.VISIBLE);
-
-                if(success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
-                    ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_PWR());
-                    adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    offerPWRLeft.setAdapter(adapterPWR);
-                    offerPWRLeft.setSelection(success.getParam_PWR().length / 2);
-                    offerPWRRight.setAdapter(adapterPWR);
-                    offerPWRRight.setSelection(success.getParam_PWR().length / 2);
-                } else {
-                    findViewById(R.id.mainOfferLayoutPWR).setVisibility(View.GONE);
-                }
-
-                if(success.getParam_BC() != null && success.getParam_BC().length != 0 && !success.getParam_BC()[0].equals("")) {
-                    ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_BC());
-                    adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    offerBCLeft.setAdapter(adapterBC);
-                    offerBCLeft.setSelection(success.getParam_BC().length / 2);
-                    offerBCRight.setAdapter(adapterBC);
-                    offerBCRight.setSelection(success.getParam_BC().length / 2);
-                } else {
-                    findViewById(R.id.mainOfferLayoutBC).setVisibility(View.GONE);
-                }
-
-                if(success.getParam_AX() != null && success.getParam_AX().length != 0 && !success.getParam_AX()[0].equals("")) {
-                    ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_AX());
-                    adapterAX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    offerAXLeft.setAdapter(adapterAX);
-                    offerAXLeft.setSelection(success.getParam_AX().length / 2);
-                    offerAXRight.setAdapter(adapterAX);
-                    offerAXRight.setSelection(success.getParam_AX().length / 2);
-                } else {
-                    findViewById(R.id.mainOfferLayoutAX).setVisibility(View.GONE);
-                }
-
-                if(success.getParam_CYL() != null && success.getParam_CYL().length != 0 && !success.getParam_CYL()[0].equals("")) {
-                    ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_CYL());
-                    adapterCYL.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    offerCYLLeft.setAdapter(adapterCYL);
-                    offerCYLLeft.setSelection(success.getParam_CYL().length / 2);
-                    offerCYLRight.setAdapter(adapterCYL);
-                    offerCYLRight.setSelection(success.getParam_CYL().length / 2);
-                } else {
-                    findViewById(R.id.mainOfferLayoutCYL).setVisibility(View.GONE);
-                }
-
-                if(success.getParam_COLOR() != null && success.getParam_COLOR().length != 0 && !success.getParam_COLOR()[0].equals("")) {
-                    ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_COLOR());
-                    adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    offerCOLORLeft.setAdapter(adapterCOLOR);
-                    offerCOLORLeft.setSelection(0);
-                    offerCOLORRight.setAdapter(adapterCOLOR);
-                    offerCOLORRight.setSelection(0);
-                } else {
-                    findViewById(R.id.mainOfferLayoutCOLOR).setVisibility(View.GONE);
-                }
             }
 
             @Override

@@ -52,6 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(activity, Offer.class);
                 intent.putExtra("OFFER_ID", CategoryAdapter.this.arrayList.get(position).getId());
+                intent.putExtra("CATEGORY_ID", CategoryAdapter.this.arrayList.get(position).getCategoryId());
                 activity.startActivity(intent);
 
 //                ((MainActivity) CategoryAdapter.this.activity)

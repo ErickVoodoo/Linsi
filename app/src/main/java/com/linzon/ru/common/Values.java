@@ -1,6 +1,8 @@
 package com.linzon.ru.common;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 
 import java.util.Calendar;
@@ -50,4 +52,10 @@ public class Values {
     public static final String USER_GET_ISPLAYING = "userprofile.isplaying";
     public static final String SERVICE_GET_URL = "service.get_url";
     public static final String SERVICE_GET_ISPLAYING = "service.isplaying";
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 }

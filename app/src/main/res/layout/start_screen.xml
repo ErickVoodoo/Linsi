@@ -9,23 +9,23 @@
     <TextView
         android:gravity="center"
         android:textSize="@dimen/textLarge"
-        android:text="@string/startScreenTextView"
+        android:text="@string/startScreenLoadInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/startScreenSelectedName"
-        android:gravity="center"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+    <ProgressBar
+        android:id="@+id/progressBarStartScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/startScreenButton"
+        android:id="@+id/startScreenRetryDownload"
         android:layout_gravity="center"
         style="?attr/buttonBarButtonStyle"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="@string/startScreenTitleButton"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@color/colorPrimary"
+        android:text="@string/startScreenRetryLoad"
+        android:textColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

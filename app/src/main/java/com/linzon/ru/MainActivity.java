@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linzon.ru.fragments.About;
-import com.linzon.ru.fragments.OfferInfo;
-import com.linzon.ru.fragments.PostSend;
+import com.linzon.ru.fragments.CategoryOffers;
 import com.linzon.ru.fragments.HowToRoad;
 import com.linzon.ru.fragments.Popular;
-import com.linzon.ru.fragments.CategoryOffers;
+import com.linzon.ru.fragments.PostSend;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity
 
     private Popular popularFragment;
     private CategoryOffers categoryOffersFragment;
-    private OfferInfo offerInfoFragment;
     private About aboutFragment;
     private PostSend postSendFragment;
     private HowToRoad howToRoadFragment;
@@ -102,25 +99,8 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().executePendingTransactions();
             selectedFragment = categoryOffersFragment;
         }
-        Log.e(String.valueOf(categoryOffersFragment.selectedCategory), String.valueOf(id));
         if(categoryOffersFragment.selectedCategory != id)
             categoryOffersFragment.setCategory(id);
-    }
-
-    public void showOffer(int id) {
-        if (!(selectedFragment instanceof OfferInfo)) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            hideFragments();
-            if (null == offerInfoFragment) {
-                offerInfoFragment = new OfferInfo();
-                fragmentTransaction.add(R.id.mainPager, offerInfoFragment, OFFER_TAG);
-            }
-            fragmentTransaction.show(offerInfoFragment);
-            fragmentTransaction.commit();
-            getFragmentManager().executePendingTransactions();
-            selectedFragment = offerInfoFragment;
-        }
-        offerInfoFragment.setOffer(id);
     }
 
     private void showAbout() {
@@ -195,11 +175,6 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(howToRoadFragment);
         }
 
-        offerInfoFragment = (OfferInfo) getFragmentManager().findFragmentByTag(OFFER_TAG);
-        if (null != offerInfoFragment) {
-            fragmentTransaction.hide(offerInfoFragment);
-        }
-
         fragmentTransaction.commit();
         getFragmentManager().executePendingTransactions();
     }
@@ -254,8 +229,6 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(selectedFragment instanceof OfferInfo) {
-            showCategory(-1);
         } else {
             super.onBackPressed();
         }

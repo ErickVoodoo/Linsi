@@ -44,6 +44,7 @@
                     android:visibility="visible" />
 
                 <ImageView
+                    android:background="@android:color/white"
                     android:id="@+id/offerPicture"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
@@ -71,61 +72,262 @@
 
                     <TextView
                         android:id="@+id/offerVendor"
-                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp" />
 
                     <TextView
-                        android:id="@+id/offerPrice"
-                        style="@style/Base.TextAppearance.AppCompat.Medium"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
-
-                    <TextView
-                        style="@style/Base.TextAppearance.AppCompat.Title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:text="@string/offer_params" />
 
+                    <View
+                        android:id="@+id/viewLineEye"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@android:color/darker_gray"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"/>
 
                     <LinearLayout
+                        android:id="@+id/offerParamLayout"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutEye"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:orientation="horizontal"
                             android:gravity="center"
-                            android:text="@string/offer_eye" />
+                            android:weightSum="3">
 
-                        <CheckBox
-                            android:id="@+id/checkBoxLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/offer_leftPart" />
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_eye" />
 
-                        <CheckBox
-                            android:id="@+id/checkBoxRight"
-                            android:layout_width="0dp"
+                            <CheckBox
+                                android:id="@+id/checkBoxLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/offer_leftPart" />
+
+                            <CheckBox
+                                android:id="@+id/checkBoxRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/offer_rightPart" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/viewLineBC"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutBC"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/offer_rightPart" />
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3">
+
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_BC" />
+
+                            <Spinner
+                                android:id="@+id/offerBCLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <Spinner
+                                android:id="@+id/offerBCRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/viewLinePWR"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutPWR"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3">
+
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_PWR" />
+
+                            <Spinner
+                                android:id="@+id/offerPWRLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <Spinner
+                                android:id="@+id/offerPWRRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/viewLineCYL"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutCYL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3">
+
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_CYL" />
+
+                            <Spinner
+                                android:id="@+id/offerCYLLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <Spinner
+                                android:id="@+id/offerCYLRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/viewLineAX"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutAX"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3">
+
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_AX" />
+
+                            <Spinner
+                                android:id="@+id/offerAXLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <Spinner
+                                android:id="@+id/offerAXRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/viewLineCOLOR"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <LinearLayout
+                            android:id="@+id/mainOfferLayoutCOLOR"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:weightSum="3">
+
+                            <TextView
+                                style="@style/Base.TextAppearance.AppCompat.Body1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/offer_COLOR" />
+
+                            <Spinner
+                                android:id="@+id/offerCOLORLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <Spinner
+                                android:id="@+id/offerCOLORRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@android:color/darker_gray"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"/>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:orientation="horizontal"
+                        android:gravity="center"
                         android:weightSum="3">
 
                         <TextView
@@ -137,172 +339,34 @@
                             android:text="@string/offer_count" />
 
                         <Spinner
-                            android:id="@+id/offerCountLeft"
+                            android:id="@+id/offerCount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerCountRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
+                            android:layout_weight="2" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@android:color/darker_gray"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"/>
 
-                    <LinearLayout
-                        android:id="@+id/mainOfferLayoutBC"
+                    <TextView
+                        android:id="@+id/offerPrice"
+                        style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/offer_BC" />
-
-                        <Spinner
-                            android:id="@+id/offerBCLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerBCRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainOfferLayoutPWR"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/offer_PWR" />
-
-                        <Spinner
-                            android:id="@+id/offerPWRLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerPWRRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainOfferLayoutCYL"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/offer_CYL" />
-
-                        <Spinner
-                            android:id="@+id/offerCYLLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerCYLRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainOfferLayoutAX"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/offer_AX" />
-
-                        <Spinner
-                            android:id="@+id/offerAXLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerAXRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/mainOfferLayoutCOLOR"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            style="@style/Base.TextAppearance.AppCompat.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/offer_COLOR" />
-
-                        <Spinner
-                            android:id="@+id/offerCOLORLeft"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <Spinner
-                            android:id="@+id/offerCOLORRight"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp"/>
 
                     <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/colorPrimary"
-                        android:foreground="?attr/selectableItemBackground"
+                        android:layout_gravity="center"
+                        style="?attr/buttonBarButtonStyle"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:text="@string/buttonAddToBasket"
-                        android:textColor="@android:color/white" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

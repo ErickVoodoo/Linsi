@@ -1,6 +1,7 @@
 package com.linzon.ru.common;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Constants {
     public static final String STATIC_SERVER = "http://www.linzon.ru";
@@ -9,4 +10,16 @@ public class Constants {
     public static final String STATIC_UPDATE = "http://linzon.ru/market_json4.php";
 
     public static final String[] linsCount = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+    public static final Map<String , String> CATEGORIES = new HashMap<String , String>() {{
+        put("0", "Популярные");
+        put("1", "Однодневные линзы");
+        put("14", "Двухнедельные линзы");
+        put("2", "Дышащие линзы");
+        put("15", "Линзы на месяц");
+        put("7", "Цветные линзы");
+        put("16", "Квартальные линзы");
+        put("13", "Торические линзы");
+        put("10", "Раствор для линз");
+    }};
 }

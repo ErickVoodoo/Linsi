@@ -3,8 +3,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="startScreenTextView">Напиши свое имя</string>
-    <string name="startScreenTitleButton">ГОТОВО</string>
+    <string name="startScreenLoadInformation">Загружаем данные товаров...</string>
+    <string name="startScreenRetryLoad">Повторить попытку</string>
+    <string name="networkException">Проверьте интернет соединение и повторите попытку позже</string>
 
     <string name="drawer_popular">Популярные</string>
     <string name="drawer_nav_1">Однодневные линзы</string>

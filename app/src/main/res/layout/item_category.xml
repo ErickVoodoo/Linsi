@@ -10,7 +10,7 @@
     android:layout_marginLeft="8dp"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
-    android:background="?attr/selectableItemBackground">
+    android:background="@android:color/darker_gray">
 
     <LinearLayout
         android:id="@+id/itemMainContainer"
