@@ -22,4 +22,6 @@ public class Constants {
         put("13", "Торические линзы");
         put("10", "Раствор для линз");
     }};
+
+    public static final String[] NotALins = {"10", "6"};
 }

@@ -2,25 +2,26 @@ package com.linzon.ru.fragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
+import com.linzon.ru.App;
 import com.linzon.ru.MainActivity;
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.CategoryAdapter;
+import com.linzon.ru.adapters.PopularAdapter;
 import com.linzon.ru.common.RViewScroll;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.models.OOffer;
+import com.linzon.ru.models.POffer;
 
 import java.util.ArrayList;
 
-public class CategoryOffers extends Fragment {
+public class CategoryOffersF extends Fragment {
     RecyclerView recyclerView;
     View view;
     public int selectedCategory;
@@ -45,8 +46,8 @@ public class CategoryOffers extends Fragment {
     }
 
     public void setCategory(int categoryId) {
-        ((MainActivity) this.getActivity()).showProgressBar();
         if(-1 != categoryId) {
+            ((MainActivity) this.getActivity()).showProgressBar();
             this.selectedCategory = categoryId;
             recyclerView.setAdapter(null);
             loadCategoryItems();
@@ -54,18 +55,25 @@ public class CategoryOffers extends Fragment {
     }
 
     public void loadCategoryItems() {
-        DBAsync.asyncGetOfferList(this.selectedCategory, new DBAsync.CallbackGetCategory() {
-            @Override
-            public void onSuccess(ArrayList<OOffer> success) {
-                recyclerView.setAdapter(new CategoryAdapter(success, CategoryOffers.this.getActivity()));
-                ((MainActivity) CategoryOffers.this.getActivity()).hideProgressBar();
-            }
+        if(this.selectedCategory == 0) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            ArrayList<POffer> popularOffers = ((App) this.getActivity().getApplication()).getPriceOffers();
+            recyclerView.setAdapter(new PopularAdapter(popularOffers, this.getActivity()));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+            DBAsync.asyncGetOfferList(this.selectedCategory, new DBAsync.CallbackGetCategory() {
+                @Override
+                public void onSuccess(ArrayList<OOffer> success) {
+                    recyclerView.setAdapter(new CategoryAdapter(success, CategoryOffersF.this.getActivity()));
+                    ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+                }
 
-            @Override
-            public void onError(String error) {
-                ((MainActivity) CategoryOffers.this.getActivity()).hideProgressBar();
-            }
-        });
+                @Override
+                public void onError(String error) {
+                    ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+                }
+            });
+        }
     }
 
     private void setFab() {

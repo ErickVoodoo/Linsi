@@ -56,6 +56,17 @@ public class DBHelper extends SQLiteOpenHelper {
                         "param_CYL text," +
                         "param_COLOR text" +
                         ")");
+        db.execSQL(
+                "create table " + BASKET + " (" +
+                        "id int PRIMARY KEY, " +
+                        "name text," +
+                        "price text, " +
+                        "data text, " +
+                        "status text, " +
+                        "created_at text," +
+                        "categoryId text," +
+                        "ordered_at text" +
+                        ")");
     }
 
     @Override
@@ -64,11 +75,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + OFFERS);
+        db.execSQL("DROP TABLE IF EXISTS " + BASKET);
         onCreate(db);
     }
 
     public void dropDatabase() {
         this.getWritableDatabase().execSQL("delete from " + OFFERS);
+        this.getWritableDatabase().execSQL("delete from " + BASKET);
     }
 
     public long insertRows(String TABLE_NAME, ContentValues contentValues) {
@@ -132,6 +145,32 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("param_CYL", param_CYL);
         if(param_BC != null)
             cv.put("param_COLOR", param_COLOR);
+        return cv;
+    }
+
+    public static ContentValues setBasketContentValues(
+            String id,
+            String name,
+            String price,
+            String data,
+            String status,
+            String created_at,
+            String ordered_at) {
+        ContentValues cv = new ContentValues();
+        if(id != null)
+            cv.put("id", id);
+        if(name != null)
+            cv.put("name", name);
+        if(price != null)
+            cv.put("price", price);
+        if(data != null)
+            cv.put("data", data);
+        if(status != null)
+            cv.put("status", status);
+        if(created_at != null)
+            cv.put("created_at", created_at);
+        if(ordered_at != null)
+            cv.put("ordered_at", ordered_at);
         return cv;
     }
 

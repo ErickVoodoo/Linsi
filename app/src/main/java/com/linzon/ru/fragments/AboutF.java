@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.linzon.ru.R;
 
-public class HowToRoad extends Fragment {
+public class AboutF extends Fragment {
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_howtoroad, container, false);
+        view = inflater.inflate(R.layout.fragment_about, container, false);
         return view;
     }
 }

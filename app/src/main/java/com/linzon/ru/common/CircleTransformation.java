@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class CircleTransformation implements com.squareup.picasso.Transformation {
-
     @Override
     public Bitmap transform(Bitmap source) {
         int size = Math.min(source.getWidth(), source.getHeight());

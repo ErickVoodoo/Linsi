@@ -204,7 +204,9 @@ public class ApiConnector {
                         if(currentOffer.has("price")) {
                             offer.setPrice(currentOffer.getString("price"));
                         }
-
+                        if(currentOffer.has("rate")) {
+                            offer.setRate(currentOffer.getString("rate"));
+                        }
                         offerArrayList.add(offer);
                     }
                 } catch (IOException | JSONException e) {

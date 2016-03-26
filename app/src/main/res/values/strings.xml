@@ -14,15 +14,19 @@
     <string name="drawer_nav_15">Линзы на месяц</string>
     <string name="drawer_nav_7">Цветные линзы</string>
     <string name="drawer_nav_16">Квартальные линзы</string>
+    <string name="drawer_nav_3">Традиционные линзы</string>
     <string name="drawer_nav_13">Торические линзы</string>
+    <string name="drawer_nav_9">Карнавальные линзы</string>
+    <string name="drawer_nav_6">Капли для глаз</string>
     <string name="drawer_nav_10">Растворы для линз</string>
     <string name="drawer_nav_send">Доставка</string>
     <string name="drawer_nav_howtoroad">Как доехать</string>
     <string name="drawer_nav_about">О компании</string>
 
-    <string name="static_price">Цена:</string>
-    <string name="static_vendor">Производитель:</string>
+    <string name="static_price">Цена</string>
+    <string name="static_vendor">Производитель</string>
     <string name="static_exchange">руб.</string>
+    <string name="static_rate">Рейтинг</string>
 
     <string name="offer_params">Параметры</string>
     <string name="offer_leftPart">Левый</string>

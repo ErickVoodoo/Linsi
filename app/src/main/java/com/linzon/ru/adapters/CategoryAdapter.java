@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.linzon.ru.R;
 import com.linzon.ru.Offer;
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.Values;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     ArrayList<OOffer> arrayList;
     private Activity activity;
+    private double width;
 
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
@@ -54,9 +56,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 intent.putExtra("OFFER_ID", CategoryAdapter.this.arrayList.get(position).getId());
                 intent.putExtra("CATEGORY_ID", CategoryAdapter.this.arrayList.get(position).getCategoryId());
                 activity.startActivity(intent);
-
-//                ((MainActivity) CategoryAdapter.this.activity)
-//                        .showOffer(Integer.parseInt();
             }
         });
     }
@@ -87,7 +86,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public CategoryAdapter(ArrayList<OOffer> arrayList, Activity activity) {
-        //this.width =  Values.GET_SCREEN_WIDTH(activity.getApplicationContext()) - Values.dpToPx(activity.getApplicationContext(), 8);
+        this.width =  Values.GET_SCREEN_WIDTH(activity.getApplicationContext()) - Values.dpToPx(activity.getApplicationContext(), 8);
         this.arrayList = arrayList;
         this.activity = activity;
     }

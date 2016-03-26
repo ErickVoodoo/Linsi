@@ -2,6 +2,7 @@ package com.linzon.ru;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,11 +21,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.linzon.ru.fragments.About;
-import com.linzon.ru.fragments.CategoryOffers;
-import com.linzon.ru.fragments.HowToRoad;
-import com.linzon.ru.fragments.Popular;
-import com.linzon.ru.fragments.PostSend;
+import com.linzon.ru.fragments.AboutF;
+import com.linzon.ru.fragments.CategoryOffersF;
+import com.linzon.ru.fragments.HowToRoadF;
+import com.linzon.ru.fragments.PostSendF;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity
 
     private NavigationView navigationView;
 
-    private Popular popularFragment;
-    private CategoryOffers categoryOffersFragment;
-    private About aboutFragment;
-    private PostSend postSendFragment;
-    private HowToRoad howToRoadFragment;
+    //private PopularF popularFragment;
+    private CategoryOffersF categoryOffersFragment;
+    private AboutF aboutFFragment;
+    private PostSendF postSendFragment;
+    private HowToRoadF howToRoadFragment;
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         initDrawer();
         initFab();
         initTextViews();
-        showPopular();
+        showCategory(0);
         toolbar.setTitle(this.getResources().getString(R.string.drawer_popular));
     }
 
@@ -71,12 +71,12 @@ public class MainActivity extends AppCompatActivity
         progressBarMain = (ProgressBar) findViewById(R.id.progressBarMain);
     }
 
-    private void showPopular() {
-        if (!(selectedFragment instanceof Popular)) {
+    /*private void showPopular() {
+        if (!(selectedFragment instanceof PopularF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
             if (null == popularFragment) {
-                popularFragment = new Popular();
+                popularFragment = new PopularF();
                 fragmentTransaction.add(R.id.mainPager, popularFragment, POPULAR_TAG);
             }
             fragmentTransaction.show(popularFragment);
@@ -84,14 +84,16 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().executePendingTransactions();
             selectedFragment = popularFragment;
         }
-    }
+        if(categoryOffersFragment.selectedCategory != 0)
+            categoryOffersFragment.setCategory(0);
+    }*/
 
     private void showCategory(int id) {
-        if (!(selectedFragment instanceof CategoryOffers)) {
+        if (!(selectedFragment instanceof CategoryOffersF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
             if (null == categoryOffersFragment) {
-                categoryOffersFragment = new CategoryOffers();
+                categoryOffersFragment = new CategoryOffersF();
                 fragmentTransaction.add(R.id.mainPager, categoryOffersFragment, CATEGORY_TAG);
             }
             fragmentTransaction.show(categoryOffersFragment);
@@ -104,26 +106,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showAbout() {
-        if (!(selectedFragment instanceof About)) {
+        if (!(selectedFragment instanceof AboutF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
-            if (null == aboutFragment) {
-                aboutFragment = new About();
-                fragmentTransaction.add(R.id.mainPager, aboutFragment, ABOUT_TAG);
+            if (null == aboutFFragment) {
+                aboutFFragment = new AboutF();
+                fragmentTransaction.add(R.id.mainPager, aboutFFragment, ABOUT_TAG);
             }
-            fragmentTransaction.show(aboutFragment);
+            fragmentTransaction.show(aboutFFragment);
             fragmentTransaction.commit();
             getFragmentManager().executePendingTransactions();
-            selectedFragment = aboutFragment;
+            selectedFragment = aboutFFragment;
         }
     }
 
     private void showPostSend() {
-        if (!(selectedFragment instanceof PostSend)) {
+        if (!(selectedFragment instanceof PostSendF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
             if (null == postSendFragment) {
-                postSendFragment = new PostSend();
+                postSendFragment = new PostSendF();
                 fragmentTransaction.add(R.id.mainPager, postSendFragment, CONTACTS_TAG);
             }
             fragmentTransaction.show(postSendFragment);
@@ -134,11 +136,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showHowToRoad() {
-        if (!(selectedFragment instanceof HowToRoad)) {
+        if (!(selectedFragment instanceof HowToRoadF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
             if (null == howToRoadFragment) {
-                howToRoadFragment = new HowToRoad();
+                howToRoadFragment = new HowToRoadF();
                 fragmentTransaction.add(R.id.mainPager, howToRoadFragment, HOWTOROAD_TAG);
             }
             fragmentTransaction.show(howToRoadFragment);
@@ -150,27 +152,27 @@ public class MainActivity extends AppCompatActivity
 
     private void hideFragments() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        popularFragment = (Popular) getFragmentManager().findFragmentByTag(POPULAR_TAG);
+        /*popularFragment = (PopularF) getFragmentManager().findFragmentByTag(POPULAR_TAG);
         if (null != popularFragment) {
             fragmentTransaction.hide(popularFragment);
-        }
+        }*/
 
-        categoryOffersFragment = (CategoryOffers) getFragmentManager().findFragmentByTag(CATEGORY_TAG);
+        categoryOffersFragment = (CategoryOffersF) getFragmentManager().findFragmentByTag(CATEGORY_TAG);
         if (null != categoryOffersFragment) {
             fragmentTransaction.hide(categoryOffersFragment);
         }
 
-        aboutFragment = (About) getFragmentManager().findFragmentByTag(ABOUT_TAG);
-        if (null != aboutFragment) {
-            fragmentTransaction.hide(aboutFragment);
+        aboutFFragment = (AboutF) getFragmentManager().findFragmentByTag(ABOUT_TAG);
+        if (null != aboutFFragment) {
+            fragmentTransaction.hide(aboutFFragment);
         }
 
-        postSendFragment = (PostSend) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
+        postSendFragment = (PostSendF) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
         if (null != postSendFragment) {
             fragmentTransaction.hide(postSendFragment);
         }
 
-        howToRoadFragment = (HowToRoad) getFragmentManager().findFragmentByTag(HOWTOROAD_TAG);
+        howToRoadFragment = (HowToRoadF) getFragmentManager().findFragmentByTag(HOWTOROAD_TAG);
         if (null != howToRoadFragment) {
             fragmentTransaction.hide(howToRoadFragment);
         }
@@ -196,8 +198,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if(selectedFragment instanceof CategoryOffers) {
-                    ((CategoryOffers) selectedFragment).loadCategoryItems();
+                if(selectedFragment instanceof CategoryOffersF) {
+                    ((CategoryOffersF) selectedFragment).loadCategoryItems();
                 }
             }
 
@@ -214,7 +216,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(MainActivity.this, Basket.class);
+                startActivity(intent);
             }
         });
     }
@@ -254,51 +257,51 @@ public class MainActivity extends AppCompatActivity
         showFab();
         switch (item.getItemId()) {
             case R.id.nav_popular: {
-                showPopular();
+                showCategory(0);
                 break;
             }
             case R.id.nav_1: {
                 showCategory(1);
                 break;
             }
-            case R.id.nav_10: {
-                showCategory(10);
-                break;
-            }
-            case R.id.nav_13: {
-                showCategory(13);
-                break;
-            }
             case R.id.nav_14: {
                 showCategory(14);
-                break;
-            }
-            case R.id.nav_15: {
-                showCategory(15);
-                break;
-            }
-            case R.id.nav_16: {
-                showCategory(16);
                 break;
             }
             case R.id.nav_2: {
                 showCategory(2);
                 break;
             }
+            case R.id.nav_15: {
+                showCategory(15);
+                break;
+            }
             case R.id.nav_7: {
                 showCategory(7);
                 break;
             }
-            case R.id.nav_postsend: {
-                showPostSend();
+            case R.id.nav_16: {
+                showCategory(16);
                 break;
             }
-            case R.id.nav_howtoroad: {
-                showHowToRoad();
+            case R.id.nav_3: {
+                showCategory(3);
                 break;
             }
-            case R.id.nav_about: {
-                showAbout();
+            case R.id.nav_13: {
+                showCategory(13);
+                break;
+            }
+            case R.id.nav_9: {
+                showCategory(9);
+                break;
+            }
+            case R.id.nav_6: {
+                showCategory(6);
+                break;
+            }
+            case R.id.nav_10: {
+                showCategory(10);
                 break;
             }
         }
@@ -313,7 +316,7 @@ public class MainActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
                 || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            showPopular();
+            showCategory(0);
         }
     }
 

@@ -1,4 +1,5 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,7 +25,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
 
-
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/offerScrollView"
             android:layout_width="match_parent"
@@ -44,11 +44,11 @@
                     android:visibility="visible" />
 
                 <ImageView
-                    android:background="@android:color/white"
                     android:id="@+id/offerPicture"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,22 +89,22 @@
                         android:id="@+id/viewLineEye"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@android:color/darker_gray"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_marginTop="16dp"
+                        android:background="@android:color/darker_gray" />
 
                     <LinearLayout
                         android:id="@+id/offerParamLayout"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutEye"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -134,16 +134,16 @@
                             android:id="@+id/viewLineBC"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@android:color/darker_gray"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"/>
+                            android:layout_marginTop="16dp"
+                            android:background="@android:color/darker_gray" />
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutBC"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -171,16 +171,16 @@
                             android:id="@+id/viewLinePWR"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@android:color/darker_gray"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"/>
+                            android:layout_marginTop="16dp"
+                            android:background="@android:color/darker_gray" />
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutPWR"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -208,16 +208,16 @@
                             android:id="@+id/viewLineCYL"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@android:color/darker_gray"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"/>
+                            android:layout_marginTop="16dp"
+                            android:background="@android:color/darker_gray" />
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutCYL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -245,16 +245,16 @@
                             android:id="@+id/viewLineAX"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@android:color/darker_gray"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"/>
+                            android:layout_marginTop="16dp"
+                            android:background="@android:color/darker_gray" />
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutAX"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -282,16 +282,16 @@
                             android:id="@+id/viewLineCOLOR"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@android:color/darker_gray"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"/>
+                            android:layout_marginTop="16dp"
+                            android:background="@android:color/darker_gray" />
 
                         <LinearLayout
                             android:id="@+id/mainOfferLayoutCOLOR"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="center"
+                            android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
@@ -319,15 +319,15 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@android:color/darker_gray"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_marginTop="16dp"
+                        android:background="@android:color/darker_gray" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center"
+                        android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
@@ -348,25 +348,27 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@android:color/darker_gray"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_marginTop="16dp"
+                        android:background="@android:color/darker_gray" />
 
                     <TextView
                         android:id="@+id/offerPrice"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center" />
 
                     <Button
-                        android:layout_gravity="center"
                         style="?attr/buttonBarButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/blue_button"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:text="@string/buttonAddToBasket"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:textColor="@color/buttonColorText" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

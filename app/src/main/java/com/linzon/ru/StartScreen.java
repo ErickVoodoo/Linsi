@@ -13,6 +13,10 @@ import com.linzon.ru.api.ApiConnector;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.common.Values;
+import com.linzon.ru.database.DBHelper;
+import com.linzon.ru.models.POffer;
+
+import java.util.ArrayList;
 
 public class StartScreen extends AppCompatActivity implements View.OnClickListener {
     private Button button;
@@ -38,19 +42,49 @@ public class StartScreen extends AppCompatActivity implements View.OnClickListen
 
     private void uploadInformation() {
         progressBar.setVisibility(View.VISIBLE);
-        ApiConnector.asyncGetOfferList(Constants.STATIC_APP, new ApiConnector.CallbackGetOfferList() {
+        button.setVisibility(View.GONE);
+        Log.i("LOADING","PRICE");
+        ApiConnector.asyncGetPrice(Constants.STATIC_PRICE, new ApiConnector.CallbackGetPriceList() {
             @Override
-            public void onSuccess(String success) {
-                progressBar.setVisibility(View.GONE);
-                SharedProperty.getInstance().setValue(SharedProperty.APP_VERSION, "0");
+            public void onSuccess(ArrayList<POffer> success) {
+                ((App) StartScreen.this.getApplication()).setPriceOffers(success);
+                Log.i("LOADED", "PRICE");
+                if (DBHelper.getInstance().selectRows(DBHelper.OFFERS, null, null, null, null).getCount() != 0) {
+                    if (false) {
+                    /*TODO CHECK IF NEED UPDATE FROM SERVER*/
+                    } else {
+                        Intent intent = new Intent(StartScreen.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        StartScreen.this.finish();
+                    }
+                } else if (SharedProperty.getInstance().getValue(SharedProperty.APP_VERSION).equals("null")) {
+                    Log.i("LOADING","OFFERS");
+                    ApiConnector.asyncGetOfferList(Constants.STATIC_APP, new ApiConnector.CallbackGetOfferList() {
+                        @Override
+                        public void onSuccess(String success) {
+                            progressBar.setVisibility(View.GONE);
+                            SharedProperty.getInstance().setValue(SharedProperty.APP_VERSION, "0");
 
-                Intent intent = new Intent(StartScreen.this, MainActivity.class);
-                startActivity(intent);
-                StartScreen.this.finish();
+                            Intent intent = new Intent(StartScreen.this, MainActivity.class);
+                            startActivity(intent);
+                            StartScreen.this.finish();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            button.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            Log.e("NETWORK", "ERROR");
+                        }
+                    });
+                }
             }
 
             @Override
             public void onError(String error) {
+                button.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
                 Log.e("NETWORK", "ERROR");
             }
         });
@@ -59,16 +93,14 @@ public class StartScreen extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        if (SharedProperty.getInstance().getValue(SharedProperty.APP_VERSION).equals("null")) {
-            uploadInformation();
-        }
+        uploadInformation();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startScreenRetryDownload: {
-                if(Values.isOnline(getApplicationContext())) {
+                if (Values.isOnline(getApplicationContext())) {
                     uploadInformation();
                 } else {
                     Snackbar.make(findViewById(android.R.id.content), getApplicationContext().getResources().getString(R.string.networkException), Snackbar.LENGTH_LONG).show();

@@ -9,6 +9,16 @@ public class POffer {
 
     private String name;
 
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    private String rate;
+
     public String getPicture() {
         return picture;
     }

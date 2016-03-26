@@ -1,48 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:id="@+id/firstGroup"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_popular"
-            android:title="@string/drawer_popular" />
-        <item
-            android:id="@+id/nav_1"
-            android:title="@string/drawer_nav_1" />
-        <item
-            android:id="@+id/nav_14"
-            android:title="@string/drawer_nav_14" />
-        <item
-            android:id="@+id/nav_2"
-            android:title="@string/drawer_nav_2" />
-        <item
-            android:id="@+id/nav_15"
-            android:title="@string/drawer_nav_15" />
-        <item
-            android:id="@+id/nav_7"
-            android:title="@string/drawer_nav_7" />
-        <item
-            android:id="@+id/nav_16"
-            android:title="@string/drawer_nav_16" />
-        <item
-            android:id="@+id/nav_13"
-            android:title="@string/drawer_nav_13" />
-        <item
-            android:id="@+id/nav_10"
-            android:title="@string/drawer_nav_10" />
-    </group>
-
-    <group
-        android:id="@+id/secondGroup"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_postsend"
-            android:title="@string/drawer_nav_send" />
-        <item
-            android:id="@+id/nav_howtoroad"
-            android:title="@string/drawer_nav_howtoroad" />
-        <item
-            android:id="@+id/nav_about"
-            android:title="@string/drawer_nav_about" />
-    </group>
+    <item
+        android:id="@+id/nav_popular"
+        android:title="@string/drawer_popular" />
+    <item
+        android:id="@+id/nav_1"
+        android:title="@string/drawer_nav_1" />
+    <item
+        android:id="@+id/nav_14"
+        android:title="@string/drawer_nav_14" />
+    <item
+        android:id="@+id/nav_2"
+        android:title="@string/drawer_nav_2" />
+    <item
+        android:id="@+id/nav_15"
+        android:title="@string/drawer_nav_15" />
+    <item
+        android:id="@+id/nav_7"
+        android:title="@string/drawer_nav_7" />
+    <item
+        android:id="@+id/nav_16"
+        android:title="@string/drawer_nav_16" />
+    <item
+        android:id="@+id/nav_3"
+        android:title="@string/drawer_nav_3" />
+    <item
+        android:id="@+id/nav_13"
+        android:title="@string/drawer_nav_13" />
+    <item
+        android:id="@+id/nav_9"
+        android:title="@string/drawer_nav_9" />
+    <item
+        android:id="@+id/nav_6"
+        android:title="@string/drawer_nav_6" />
+    <item
+        android:id="@+id/nav_10"
+        android:title="@string/drawer_nav_10" />
 </menu>
