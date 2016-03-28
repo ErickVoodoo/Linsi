@@ -9,7 +9,10 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
-    <color name="buttonColor">#3F51B5</color>
-    <color name="buttonColorPressed">#465aca</color>
+    <color name="buttonBlueColor">#3F51B5</color>
+    <color name="buttonBlueColorPressed">#465aca</color>
     <color name="buttonColorText">#ffffff</color>
+
+    <color name="buttonOrangeColor">#FF9800</color>
+    <color name="buttonOrangeColorPressed">#cdff9800</color>
 </resources>

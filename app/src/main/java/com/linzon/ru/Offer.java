@@ -82,6 +82,11 @@ public class Offer extends AppCompatActivity {
                 Offer.this.finish();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         toolbar.setTitle(Constants.CATEGORIES.get(selectedCategory));
     }
 

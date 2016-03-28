@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class CategoryOffersF extends Fragment {
     RecyclerView recyclerView;
     View view;
-    public int selectedCategory;
+    public int selectedCategory = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,9 +57,11 @@ public class CategoryOffersF extends Fragment {
 
     public void loadCategoryItems() {
         if(this.selectedCategory == 0) {
+            Log.e("Loaded", String.valueOf(this.selectedCategory));
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
             ArrayList<POffer> popularOffers = ((App) this.getActivity().getApplication()).getPriceOffers();
             recyclerView.setAdapter(new PopularAdapter(popularOffers, this.getActivity()));
+            ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
             DBAsync.asyncGetOfferList(this.selectedCategory, new DBAsync.CallbackGetCategory() {

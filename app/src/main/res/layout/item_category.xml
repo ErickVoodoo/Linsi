@@ -14,7 +14,8 @@
         android:id="@+id/itemMainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +55,7 @@
 
                 <com.linzon.ru.common.CustomTextView
                     android:id="@+id/categoryPrice"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

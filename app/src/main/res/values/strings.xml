@@ -39,4 +39,6 @@
     <string name="offer_COLOR">Цвет</string>
     <string name="offer_eye">Глаза</string>
     <string name="buttonAddToBasket">ДОБАВИТЬ В КОРЗИНУ</string>
+    <string name="buttonBuy">ЗАКАЗАТЬ</string>
+    <string name="buttonClear">ОЧИСТИТЬ</string>
 </resources>
