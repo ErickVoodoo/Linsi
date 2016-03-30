@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
 
     <LinearLayout
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/basketRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="bottom">
+        android:id="@+id/linearLayout">
 
         <TextView
             style="@style/TextAppearance.AppCompat.Title"
@@ -40,4 +33,10 @@
             android:text="@string/buttonBuy"
             android:textColor="@color/buttonColorText" />
     </LinearLayout>
-</FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/basketRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout" />
+</RelativeLayout>

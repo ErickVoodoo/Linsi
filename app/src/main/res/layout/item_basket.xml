@@ -21,12 +21,21 @@
             android:padding="4dp"
             android:weightSum="3">
 
+            <CheckBox
+                android:id="@+id/basketCheckBox"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"/>
+
             <ImageView
                 android:id="@+id/basketPicture"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:adjustViewBounds="true"/>
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"/>
 
             <LinearLayout
                 android:paddingRight="4dp"
@@ -45,14 +54,14 @@
                     android:layout_height="wrap_content" />
 
                 <com.linzon.ru.common.CustomTextView
-                    android:id="@+id/basketPrice"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/basketCount"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <com.linzon.ru.common.CustomTextView
-                    android:id="@+id/basketCount"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:id="@+id/basketPrice"
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
