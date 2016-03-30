@@ -2,18 +2,17 @@ package com.linzon.ru.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.linzon.ru.R;
 import com.linzon.ru.Offer;
+import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
-import com.linzon.ru.common.Values;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +43,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Picasso.with(this.activity)
                 .load(Constants.STATIC_SERVER + arrayList.get(position).getPicture())
                 .into(holder.picture);
+
+        /*ViewGroup.LayoutParams params = holder.picture.getLayoutParams();
+        params.height = (int) this.width / 2;
+        holder.picture.setLayoutParams(params);*/
+
         holder.description.setText(arrayList.get(position).getDescription());
         holder.name.setText(arrayList.get(position).getName());
         holder.vendor.setText(this.activity.getResources().getString(R.string.static_vendor) + " " + arrayList.get(position).getVendor());
@@ -67,7 +71,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout itemMainContainer;
+        public CardView itemMainContainer;
         public ImageView picture;
         public TextView name;
         public TextView vendor;
@@ -76,7 +80,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemMainContainer = (LinearLayout) itemView.findViewById(R.id.itemMainContainer);
+            itemMainContainer = (CardView) itemView.findViewById(R.id.itemMainContainer);
             picture = (ImageView) itemView.findViewById(R.id.categoryPicture);
             name = (TextView) itemView.findViewById(R.id.categoryName);
             vendor = (TextView) itemView.findViewById(R.id.categoryVendor);
@@ -86,7 +90,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     public CategoryAdapter(ArrayList<OOffer> arrayList, Activity activity) {
-        this.width =  Values.GET_SCREEN_WIDTH(activity.getApplicationContext()) - Values.dpToPx(activity.getApplicationContext(), 8);
+        //this.width =  Values.GET_SCREEN_WIDTH(activity.getApplicationContext()) - Values.dpToPx(activity.getApplicationContext(), 8);
         this.arrayList = arrayList;
         this.activity = activity;
     }

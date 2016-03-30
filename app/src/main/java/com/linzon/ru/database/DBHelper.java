@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         ")");
         db.execSQL(
                 "create table " + BASKET + " (" +
-                        "id int PRIMARY KEY, " +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "offer_id text," +
                         "name text," +
                         "price text, " +
                         "data text, " +
@@ -149,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static ContentValues setBasketContentValues(
-            String id,
+            String offer_id,
             String name,
             String price,
             String data,
@@ -157,8 +159,10 @@ public class DBHelper extends SQLiteOpenHelper {
             String created_at,
             String ordered_at) {
         ContentValues cv = new ContentValues();
-        if(id != null)
-            cv.put("id", id);
+        if(offer_id != null)
+            cv.put("offer_id", offer_id);
+        if(price != null)
+            cv.put("price", price);
         if(name != null)
             cv.put("name", name);
         if(price != null)
@@ -208,6 +212,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 offer.setId(rows.getString(rows.getColumnIndex("id")));
                 offer.setPrice(rows.getString(rows.getColumnIndex("price")));
                 offer.setName(rows.getString(rows.getColumnIndex("name")));
+                offer.setCategoryId(rows.getString(rows.getColumnIndex("categoryId")));
                 offer.setDescription(rows.getString(rows.getColumnIndex("description")));
                 offer.setVendor(rows.getString(rows.getColumnIndex("vendor")));
                 offer.setPicture(rows.getString(rows.getColumnIndex("picture")));
@@ -220,6 +225,27 @@ public class DBHelper extends SQLiteOpenHelper {
             while (rows.moveToNext());
         }
         return offer;
+    }
+
+    public static ArrayList<BasketItem> getBasketOffers(String where) {
+        ArrayList<BasketItem> arrayList = new ArrayList<>();
+        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "id");
+        if (rows.moveToFirst()) {
+            do {
+                BasketItem offer = new BasketItem();
+                offer.setId(rows.getString(rows.getColumnIndex("id")));
+                offer.setPrice(rows.getString(rows.getColumnIndex("price")));
+                offer.setName(rows.getString(rows.getColumnIndex("name")));
+                offer.setOffer_id(rows.getString(rows.getColumnIndex("offer_id")));
+                offer.setCreated_at(rows.getString(rows.getColumnIndex("created_at")));
+                offer.setStatus(rows.getString(rows.getColumnIndex("status")));
+                offer.setOrdered_at(rows.getString(rows.getColumnIndex("ordered_at")));
+                offer.setData(rows.getString(rows.getColumnIndex("data")));
+                arrayList.add(offer);
+            }
+            while (rows.moveToNext());
+        }
+        return arrayList;
     }
 
     /*public static MainOffer getUserFromDatabase(String uid) {

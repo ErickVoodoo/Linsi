@@ -7,7 +7,8 @@ public class Constants {
     public static final String STATIC_SERVER = "http://www.linzon.ru";
     public static final String STATIC_APP = "http://www.linzon.ru/json_app.txt";
     public static final String STATIC_PRICE = "http://www.linzon.ru/json_price164.txt";
-    public static final String STATIC_UPDATE = "http://linzon.ru/market_json4.php";
+    public static final String STATIC_PRICE_UPDATE = "http://linzon.ru/market_json3.php";
+    public static final String STATIC_OFFERS_UPDATE = "http://linzon.ru/market_json4.php";
 
     public static final String[] linsCount = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
@@ -24,4 +25,7 @@ public class Constants {
     }};
 
     public static final String[] NotALins = {"10", "6"};
+
+    public static final String STATUS_OPEN = "open";
+    public static final String STATUS_ARCHIVED = "archived";
 }

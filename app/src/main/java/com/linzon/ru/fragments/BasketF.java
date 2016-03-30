@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.linzon.ru.R;
+import com.linzon.ru.adapters.BasketAdapter;
+import com.linzon.ru.common.Constants;
+import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.models.BasketItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by Admin on 26.03.2016.
@@ -37,6 +43,18 @@ public class BasketF extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+
+        DBAsync.asyncGetBasketList(Constants.STATUS_OPEN, new DBAsync.CallbackGetBasket() {
+            @Override
+            public void onSuccess(ArrayList<BasketItem> success) {
+                recyclerView.setAdapter(new BasketAdapter(BasketF.this.getActivity(), success));
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     private void initButtons() {

@@ -2,6 +2,7 @@ package com.linzon.ru.database;
 
 import android.os.AsyncTask;
 
+import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 
 import java.util.ArrayList;
@@ -15,6 +16,12 @@ public class DBAsync {
 
     public static abstract class CallbackGetOffer {
         public abstract void onSuccess(OOffer success);
+
+        public abstract void onError(String error);
+    }
+
+    public static abstract class CallbackGetBasket {
+        public abstract void onSuccess(ArrayList<BasketItem>  success);
 
         public abstract void onError(String error);
     }
@@ -42,6 +49,20 @@ public class DBAsync {
 
             @Override
             protected void onPostExecute(OOffer result) {
+                callback.onSuccess(result);
+            }
+        }.execute(query);
+    }
+
+    public static void asyncGetBasketList(final String query, final CallbackGetBasket callback) {
+        new AsyncTask<String, Void, ArrayList<BasketItem>>() {
+            @Override
+            protected ArrayList<BasketItem> doInBackground(String... params) {
+                return DBHelper.getInstance().getBasketOffers(query);
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<BasketItem> result) {
                 callback.onSuccess(result);
             }
         }.execute(query);
