@@ -33,6 +33,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + arrayList.get(position).getPrice() + " " + this.activity.getResources().getString(R.string.static_exchange));
         DBAsync.asyncGetOfferInfo(Integer.parseInt(arrayList.get(position).getOffer_id()), new DBAsync.CallbackGetOffer() {
             @Override
             public void onSuccess(OOffer success) {
@@ -57,7 +58,6 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView basketName;
         public ImageView picture;
-        public CheckBox checkBox;
         public TextView price;
         public TextView count;
 
@@ -65,7 +65,6 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
             super(itemView);
             basketName = (TextView) itemView.findViewById(R.id.basketName);
             picture = (ImageView) itemView.findViewById(R.id.basketPicture);
-            checkBox = (CheckBox) itemView.findViewById(R.id.basketCheckBox);
             price = (TextView) itemView.findViewById(R.id.basketPrice);
             count = (TextView) itemView.findViewById(R.id.basketCount);
         }

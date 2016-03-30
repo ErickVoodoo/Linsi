@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initTextViews() {
-        navHeaderUsername = (TextView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.navHeaderUsername);
-        navHeaderUsername.setText("Привет, ");
+        /*navHeaderUsername = (TextView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.navHeaderUsername);
+        navHeaderUsername.setText("Привет, ");*/
     }
 
 

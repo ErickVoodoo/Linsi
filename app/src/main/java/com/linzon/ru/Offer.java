@@ -6,10 +6,17 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -24,7 +31,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.Date;
 
-public class Offer extends AppCompatActivity {
+public class Offer extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,AdapterView.OnItemSelectedListener {
     int selectedOffer;
     String selectedCategory;
 
@@ -34,7 +41,8 @@ public class Offer extends AppCompatActivity {
     TextView offerDescription;
     TextView offerPrice;
 
-    Spinner offerCount;
+    Spinner offerCountLeft;
+    Spinner offerCountRight;
     Spinner offerPWRLeft;
     Spinner offerPWRRight;
     Spinner offerBCLeft;
@@ -53,6 +61,9 @@ public class Offer extends AppCompatActivity {
     Toolbar toolbar;
     Button addToBasket;
 
+    CheckBox checkBoxLeftEye;
+    CheckBox checkBoxRightEye;
+
     private OOffer selectedOfferObject;
     private int price;
 
@@ -66,6 +77,7 @@ public class Offer extends AppCompatActivity {
         selectedCategory = intent.getStringExtra("CATEGORY_ID");
 
         initToolbar();
+        setCheckBox();
         setTextView();
         setProgressBar();
         setImageView();
@@ -92,6 +104,14 @@ public class Offer extends AppCompatActivity {
                 Offer.this.finish();
             }
         });
+    }
+
+    private void setCheckBox() {
+        checkBoxLeftEye = (CheckBox) findViewById(R.id.checkBoxLeft);
+        checkBoxRightEye = (CheckBox) findViewById(R.id.checkBoxRight);
+
+        checkBoxLeftEye.setOnCheckedChangeListener(this);
+        checkBoxRightEye.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -137,7 +157,8 @@ public class Offer extends AppCompatActivity {
     }
 
     public void setSpinners() {
-        offerCount = (Spinner) findViewById(R.id.offerCount);
+        offerCountRight = (Spinner) findViewById(R.id.offerCountRight);
+        offerCountLeft = (Spinner) findViewById(R.id.offerCountLeft);
         offerPWRLeft = (Spinner) findViewById(R.id.offerPWRLeft);
         offerPWRRight = (Spinner) findViewById(R.id.offerPWRRight);
         offerBCLeft = (Spinner) findViewById(R.id.offerBCLeft);
@@ -149,10 +170,16 @@ public class Offer extends AppCompatActivity {
         offerCOLORLeft = (Spinner) findViewById(R.id.offerCOLORLeft);
         offerCOLORRight = (Spinner) findViewById(R.id.offerCOLORRight);
 
+        offerCountRight.setOnItemSelectedListener(this);
+        offerCountLeft.setOnItemSelectedListener(this);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        offerCount.setAdapter(adapter);
-        offerCount.setSelection(1);
+        offerCountLeft.setAdapter(adapter);
+        offerCountLeft.setSelection(1);
+
+        offerCountRight.setAdapter(adapter);
+        offerCountRight.setSelection(0);
     }
 
     public void setScrollView() {
@@ -173,7 +200,7 @@ public class Offer extends AppCompatActivity {
                 if (success.getPrice() == null)
                     offerPrice.setVisibility(View.GONE);
                 else
-                    offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + success.getPrice() + " " + Offer.this.getResources().getString(R.string.static_exchange));
+                   recalculatePrice();
 
                 offerName.setText(success.getName());
                 offerDescription.setText(success.getDescription());
@@ -183,17 +210,13 @@ public class Offer extends AppCompatActivity {
                         .into(offerPicture);
 
                 if(Arrays.asList(Constants.NotALins).contains(selectedCategory)) {
-                    findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
-                    findViewById(R.id.viewLineEye).setVisibility(View.GONE);
-                    findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
+                    hideNotNecessaryView();
                 } else {
                     DBAsync.asyncGetOfferInfo(Offer.this.selectedOffer, new DBAsync.CallbackGetOffer() {
                         @Override
                         public void onSuccess(OOffer success) {
                             if(Arrays.asList(Constants.NotALins).contains(success.getCategoryId())) {
-                                findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
-                                findViewById(R.id.viewLineEye).setVisibility(View.GONE);
-                                findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
+                                hideNotNecessaryView();
                             }
                         }
 
@@ -204,7 +227,10 @@ public class Offer extends AppCompatActivity {
                     });
 
                     if(success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
-                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_PWR());
+                        Double[] ss = stringToDouble(success.getParam_PWR());
+                        Arrays.sort(ss);
+
+                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, doubleToString(ss));
                         adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerPWRLeft.setAdapter(adapterPWR);
                         offerPWRLeft.setSelection(success.getParam_PWR().length / 2);
@@ -275,11 +301,78 @@ public class Offer extends AppCompatActivity {
         });
     }
 
+    private void recalculatePrice() {
+        price = Integer.parseInt(selectedOfferObject.getPrice()) * (
+                (checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
+                        (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0));
+        offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + price + " " + Offer.this.getResources().getString(R.string.static_exchange));
+    }
+
+    public void hideNotNecessaryView() {
+        findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
+        findViewById(R.id.viewLineEye).setVisibility(View.GONE);
+        findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
+        offerCountRight.setVisibility(View.GONE);
+        offerCountLeft.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 2f));
+    }
+
+    public Double[] stringToDouble(String[] array) {
+        Double[] result = new Double[array.length];
+        for(int i = 0; i < array.length; i++) {
+            result[i] = Double.parseDouble(array[i].substring(1, array[i].length()));;
+        }
+
+        return result;
+    }
+
+    public String[] doubleToString(Double[] array) {
+        String[] s = new String[array.length];
+
+        for (int i = 0; i < s.length; i++)
+            s[i] = String.valueOf(array[i]);
+
+        return s;
+    }
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.offer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_basket: {
+                Intent intent = new Intent(Offer.this, Basket.class);
+                Offer.this.startActivity(intent);
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        recalculatePrice();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        recalculatePrice();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

@@ -120,6 +120,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:checked="true"
                                 android:text="@string/offer_leftPart" />
 
                             <CheckBox
@@ -339,10 +340,16 @@
                             android:text="@string/offer_count" />
 
                         <Spinner
-                            android:id="@+id/offerCount"
+                            android:id="@+id/offerCountLeft"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2" />
+                            android:layout_weight="1" />
+
+                        <Spinner
+                            android:id="@+id/offerCountRight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
                     </LinearLayout>
 
                     <View

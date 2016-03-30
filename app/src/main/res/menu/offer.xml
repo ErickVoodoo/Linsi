@@ -4,17 +4,11 @@
     tools:context=".Basket">
 
     <item
-        android:id="@+id/action_archive"
-        android:orderInCategory="100"
-        android:title="Archive"
-        android:icon="@drawable/ic_business_center_white_24dp"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/action_basket"
         android:orderInCategory="100"
-        android:title="Basket"
+        android:title="Корзина"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
         app:showAsAction="always"/>
+
 </menu>
     <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
