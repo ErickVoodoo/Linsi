@@ -2,25 +2,16 @@ package com.linzon.ru.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.linzon.ru.App;
 import com.linzon.ru.MainActivity;
-import com.linzon.ru.adapters.PopularAdapter;
-import com.linzon.ru.api.ApiConnector;
-import com.linzon.ru.common.Constants;
-import com.linzon.ru.common.RViewScroll;
-import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.R;
-import com.linzon.ru.models.POffer;
-
-import java.util.ArrayList;
+import com.linzon.ru.common.CustomGridLayoutManager;
+import com.linzon.ru.common.RViewScroll;
 
 public class PopularF extends Fragment {
     private RecyclerView recyclerView;
@@ -45,7 +36,7 @@ public class PopularF extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mLinearLayoutManager);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setLayoutManager(new CustomGridLayoutManager(getActivity(), 2));
     }
 
     private void showPopular() {

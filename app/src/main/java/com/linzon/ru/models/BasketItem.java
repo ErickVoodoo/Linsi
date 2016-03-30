@@ -6,6 +6,8 @@ package com.linzon.ru.models;
 public class BasketItem {
     public String id;
 
+    public String offer_id;
+
     public String name;
 
     public String price;
@@ -17,6 +19,14 @@ public class BasketItem {
     public String created_at;
 
     public String ordered_at;
+
+    public String getOffer_id() {
+        return offer_id;
+    }
+
+    public void setOffer_id(String offer_id) {
+        this.offer_id = offer_id;
+    }
 
     public String getId() {
         return id;

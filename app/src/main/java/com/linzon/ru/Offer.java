@@ -1,11 +1,14 @@
 package com.linzon.ru;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -14,10 +17,12 @@ import android.widget.TextView;
 
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
+import java.util.Date;
 
 public class Offer extends AppCompatActivity {
     int selectedOffer;
@@ -46,6 +51,10 @@ public class Offer extends AppCompatActivity {
     ProgressBar progressBar;
 
     Toolbar toolbar;
+    Button addToBasket;
+
+    private OOffer selectedOfferObject;
+    private int price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,7 @@ public class Offer extends AppCompatActivity {
         setSpinners();
         setScrollView();
         setOffer();
+        setButton();
     }
 
     public void setOffer() {
@@ -82,6 +92,11 @@ public class Offer extends AppCompatActivity {
                 Offer.this.finish();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         toolbar.setTitle(Constants.CATEGORIES.get(selectedCategory));
     }
 
@@ -91,6 +106,27 @@ public class Offer extends AppCompatActivity {
 
     public void setImageView() {
         offerPicture = (ImageView) findViewById(R.id.offerPicture);
+    }
+
+    public void setButton() {
+        addToBasket = (Button) findViewById(R.id.offerAddToChart);
+        addToBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null != selectedOfferObject) {
+                    ContentValues order = DBHelper.setBasketContentValues(
+                            selectedOfferObject.getId(),
+                            selectedOfferObject.getName(),
+                            String.valueOf(price),
+                            "",
+                            Constants.STATUS_OPEN,
+                            new Date().toString(),
+                            "");
+                    DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
+                    Snackbar.make(findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void setTextView() {
@@ -128,6 +164,7 @@ public class Offer extends AppCompatActivity {
         DBAsync.asyncGetOfferInfo(this.selectedOffer, new DBAsync.CallbackGetOffer() {
             @Override
             public void onSuccess(OOffer success) {
+                selectedOfferObject = success;
                 if (success.getVendor() == null)
                     offerVendor.setVisibility(View.GONE);
                 else
@@ -150,6 +187,22 @@ public class Offer extends AppCompatActivity {
                     findViewById(R.id.viewLineEye).setVisibility(View.GONE);
                     findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
                 } else {
+                    DBAsync.asyncGetOfferInfo(Offer.this.selectedOffer, new DBAsync.CallbackGetOffer() {
+                        @Override
+                        public void onSuccess(OOffer success) {
+                            if(Arrays.asList(Constants.NotALins).contains(success.getCategoryId())) {
+                                findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
+                                findViewById(R.id.viewLineEye).setVisibility(View.GONE);
+                                findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+
                     if(success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
                         ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_PWR());
                         adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

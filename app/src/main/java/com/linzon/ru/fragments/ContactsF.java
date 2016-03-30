@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 
 import com.linzon.ru.R;
 
-public class PostSendF extends Fragment {
+/**
+ * Created by Admin on 28.03.2016.
+ */
+public class ContactsF extends Fragment {
     View view;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_post, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
+        view = inflater.inflate(R.layout.fragment_contacts, container, false);
         return view;
     }
 }

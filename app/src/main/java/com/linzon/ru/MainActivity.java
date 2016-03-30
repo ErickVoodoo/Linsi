@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.linzon.ru.fragments.AboutF;
 import com.linzon.ru.fragments.CategoryOffersF;
-import com.linzon.ru.fragments.HowToRoadF;
+import com.linzon.ru.fragments.ContactsF;
 import com.linzon.ru.fragments.PostSendF;
 
 public class MainActivity extends AppCompatActivity
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
     private final static String OFFER_TAG = "OFFER_FRAGMENT";
     private final static String ABOUT_TAG = "ABOUT_FRAGMENT";
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
-    private final static String HOWTOROAD_TAG = "HOWTOROAD_FRAGMENT";
+    private final static String POST_TAG = "POST_FRAGMENT";
 
     private NavigationView navigationView;
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private CategoryOffersF categoryOffersFragment;
     private AboutF aboutFFragment;
     private PostSendF postSendFragment;
-    private HowToRoadF howToRoadFragment;
+    private ContactsF contactsFragment;
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
@@ -63,8 +63,15 @@ public class MainActivity extends AppCompatActivity
         initDrawer();
         initFab();
         initTextViews();
-        showCategory(0);
-        toolbar.setTitle(this.getResources().getString(R.string.drawer_popular));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(null == categoryOffersFragment) {
+            showCategory(0);
+            toolbar.setTitle(this.getResources().getString(R.string.drawer_popular));
+        }
     }
 
     private void setProgressRing() {
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity
             hideFragments();
             if (null == postSendFragment) {
                 postSendFragment = new PostSendF();
-                fragmentTransaction.add(R.id.mainPager, postSendFragment, CONTACTS_TAG);
+                fragmentTransaction.add(R.id.mainPager, postSendFragment, POST_TAG);
             }
             fragmentTransaction.show(postSendFragment);
             fragmentTransaction.commit();
@@ -135,18 +142,18 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showHowToRoad() {
-        if (!(selectedFragment instanceof HowToRoadF)) {
+    private void showContacts() {
+        if (!(selectedFragment instanceof ContactsF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
-            if (null == howToRoadFragment) {
-                howToRoadFragment = new HowToRoadF();
-                fragmentTransaction.add(R.id.mainPager, howToRoadFragment, HOWTOROAD_TAG);
+            if (null == contactsFragment) {
+                contactsFragment = new ContactsF();
+                fragmentTransaction.add(R.id.mainPager, contactsFragment, CONTACTS_TAG);
             }
-            fragmentTransaction.show(howToRoadFragment);
+            fragmentTransaction.show(contactsFragment);
             fragmentTransaction.commit();
             getFragmentManager().executePendingTransactions();
-            selectedFragment = howToRoadFragment;
+            selectedFragment = contactsFragment;
         }
     }
 
@@ -167,14 +174,14 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(aboutFFragment);
         }
 
-        postSendFragment = (PostSendF) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
+        postSendFragment = (PostSendF) getFragmentManager().findFragmentByTag(POST_TAG);
         if (null != postSendFragment) {
             fragmentTransaction.hide(postSendFragment);
         }
 
-        howToRoadFragment = (HowToRoadF) getFragmentManager().findFragmentByTag(HOWTOROAD_TAG);
-        if (null != howToRoadFragment) {
-            fragmentTransaction.hide(howToRoadFragment);
+        contactsFragment = (ContactsF) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
+        if (null != contactsFragment) {
+            fragmentTransaction.hide(contactsFragment);
         }
 
         fragmentTransaction.commit();
@@ -195,18 +202,7 @@ public class MainActivity extends AppCompatActivity
     private void initDrawer() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                if(selectedFragment instanceof CategoryOffersF) {
-                    ((CategoryOffersF) selectedFragment).loadCategoryItems();
-                }
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
@@ -246,12 +242,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_post: {
+                showPostSend();
+                break;
+            }
+            case R.id.action_about: {
+                showAbout();
+                break;
+            }
+            case R.id.action_contacts: {
+                showContacts();
+                break;
+            }
+            default: {
+
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         toolbar.setTitle(item.getTitle());
+        uncheckItems();
         item.setChecked(true);
         invalidateOptionsMenu();
         showFab();
@@ -311,6 +325,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void uncheckItems() {
+        Menu items = navigationView.getMenu();
+
+        for (int i = 0; i < items.size(); i++) {
+            MenuItem item = items.getItem(i);
+            item.setChecked(false);
+        }
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -318,11 +341,6 @@ public class MainActivity extends AppCompatActivity
                 || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             showCategory(0);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     public void showFab() {

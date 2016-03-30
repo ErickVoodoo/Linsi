@@ -30,7 +30,20 @@ public class App extends Application {
         Collections.sort(currentOffer, new Comparator<POffer>() {
             @Override
             public int compare(POffer lhs, POffer rhs) {
-                return rhs.getRate().compareTo(lhs.getRate());
+                try {
+                    if(Integer.parseInt(lhs.getRate()) > Integer.parseInt(rhs.getRate())){
+                        return -1;
+                    }else if(Integer.parseInt(lhs.getRate()) < Integer.parseInt(rhs.getRate())){
+                        return  1;
+                    }else if(Integer.parseInt(lhs.getRate()) == Integer.parseInt(rhs.getRate())){
+                        return 0;
+                    }
+//                return rhs.getRate().compareTo(lhs.getRate());
+                    return 0;
+                }catch (NumberFormatException e) {
+                    System.err.println("Неверный формат строки!");
+                }
+                return 0;
             }
         });
         return currentOffer;

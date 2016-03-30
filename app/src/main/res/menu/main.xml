@@ -4,10 +4,24 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_post"
         android:orderInCategory="200"
-        android:title="Search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:title="Доставка"
+        android:icon="@drawable/ic_local_shipping_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_contacts"
+        android:orderInCategory="200"
+        android:title="Контакты"
+        android:icon="@drawable/ic_local_phone_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="200"
+        android:title="О приложении"
+        android:icon="@drawable/ic_info_outline_white_24dp"
         app:showAsAction="always"/>
 </menu>
     <!--app:actionViewClass="android.support.v7.widget.SearchView"-->

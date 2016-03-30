@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.linzon.ru.Offer;
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
-import com.linzon.ru.models.OOffer;
+import com.linzon.ru.common.Values;
 import com.linzon.ru.models.POffer;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +33,10 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
         Picasso.with(this.activity)
                 .load(Constants.STATIC_SERVER + arrayList.get(position).getPicture())
                 .into(holder.picture);
+
+        ViewGroup.LayoutParams layoutParams = holder.picture.getLayoutParams();
+        layoutParams.height = Values.GET_SCREEN_WIDTH(activity.getApplicationContext())/2;
+        holder.picture.setLayoutParams(layoutParams);
 
         holder.name.setText(arrayList.get(position).getName());
         holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + arrayList.get(position).getPrice() + " " + this.activity.getResources().getString(R.string.static_exchange));
