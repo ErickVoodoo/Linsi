@@ -1,13 +1,20 @@
 package com.linzon.ru.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.BasketAdapter;
@@ -24,12 +31,14 @@ public class BasketF extends Fragment {
     View view;
     RecyclerView recyclerView;
     Button buyButton;
+    TextView basketTotalCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_basket, container, false);
 
         initRecyclerView();
+        initTextView();
         initButtons();
         return view;
     }
@@ -59,5 +68,37 @@ public class BasketF extends Fragment {
 
     private void initButtons() {
         buyButton = (Button) view.findViewById(R.id.buyButton);
+    }
+
+    private void initTextView() {
+        basketTotalCount = (TextView) view.findViewById(R.id.basketTotalCount);
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("BASKETF", "GETTED!");
+            switch (intent.getAction()){
+                case Constants.BROADCAST_UPDATE_PRICE: {
+                    basketTotalCount.setText("12312321321");
+                    break;
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("BASKETF", "onResume!");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.BROADCAST_UPDATE_PRICE);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
     }
 }

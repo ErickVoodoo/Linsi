@@ -26,6 +26,12 @@ public class DBAsync {
         public abstract void onError(String error);
     }
 
+    public static abstract class CallbackGetBasketOffer {
+        public abstract void onSuccess(BasketItem  success);
+
+        public abstract void onError(String error);
+    }
+
     public static void asyncGetOfferList(final Integer query, final CallbackGetCategory callback) {
         new AsyncTask<Integer, Void, ArrayList<OOffer>>() {
             @Override
@@ -63,6 +69,20 @@ public class DBAsync {
 
             @Override
             protected void onPostExecute(ArrayList<BasketItem> result) {
+                callback.onSuccess(result);
+            }
+        }.execute(query);
+    }
+
+    public static void asyncGetBasketOffer(final String query, final CallbackGetBasketOffer callback) {
+        new AsyncTask<String, Void, BasketItem>() {
+            @Override
+            protected BasketItem doInBackground(String... params) {
+                return DBHelper.getInstance().getBasketOffer(query);
+            }
+
+            @Override
+            protected void onPostExecute(BasketItem result) {
                 callback.onSuccess(result);
             }
         }.execute(query);

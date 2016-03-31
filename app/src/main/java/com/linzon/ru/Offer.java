@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -137,6 +136,8 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     ContentValues order = DBHelper.setBasketContentValues(
                             selectedOfferObject.getId(),
                             selectedOfferObject.getName(),
+                            String.valueOf((checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
+                                    (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0)),
                             String.valueOf(price),
                             "",
                             Constants.STATUS_OPEN,

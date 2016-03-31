@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.POffer;
+import com.linzon.ru.service.BasketService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +21,13 @@ public class App extends Application {
         super.onCreate();
         DBHelper.init(getApplicationContext());
         SharedProperty.init(getApplicationContext());
+
+        Intent service = new Intent(this, BasketService.class);
+        service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startService(service);
+
         //DBHelper.getInstance().dropDatabase();
-        /*Intent service = new Intent(this, NotificationService.class);
+        /*Intent service = new Intent(this, BasketService.class);
         service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startService(service);*/
     }

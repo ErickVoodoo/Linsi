@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
-        <service android:name=".service.NotificationService"/>
+        <service android:name=".service.BasketService"/>
 
         <receiver android:name=".reciever.Boot">
             <intent-filter>

@@ -62,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "offer_id text," +
                         "name text," +
+                        "count text, " +
                         "price text, " +
                         "data text, " +
                         "status text, " +
@@ -153,6 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static ContentValues setBasketContentValues(
             String offer_id,
             String name,
+            String count,
             String price,
             String data,
             String status,
@@ -165,6 +167,8 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("price", price);
         if(name != null)
             cv.put("name", name);
+        if(count != null)
+            cv.put("count", count);
         if(price != null)
             cv.put("price", price);
         if(data != null)
@@ -236,6 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 offer.setId(rows.getString(rows.getColumnIndex("id")));
                 offer.setPrice(rows.getString(rows.getColumnIndex("price")));
                 offer.setName(rows.getString(rows.getColumnIndex("name")));
+                offer.setCount(rows.getString(rows.getColumnIndex("count")));
                 offer.setOffer_id(rows.getString(rows.getColumnIndex("offer_id")));
                 offer.setCreated_at(rows.getString(rows.getColumnIndex("created_at")));
                 offer.setStatus(rows.getString(rows.getColumnIndex("status")));
@@ -248,6 +253,40 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    public static BasketItem getBasketOffer(String where) {
+        BasketItem basketItem = new BasketItem();
+        Cursor rows = getInstance().selectRows(BASKET, null, "id = '" + where + "' AND status='open'", null, "id");
+        if (rows.moveToFirst()) {
+            do {
+                basketItem.setId(rows.getString(rows.getColumnIndex("id")));
+                basketItem.setPrice(rows.getString(rows.getColumnIndex("price")));
+                basketItem.setName(rows.getString(rows.getColumnIndex("name")));
+                basketItem.setCount(rows.getString(rows.getColumnIndex("count")));
+                basketItem.setOffer_id(rows.getString(rows.getColumnIndex("offer_id")));
+                basketItem.setCreated_at(rows.getString(rows.getColumnIndex("created_at")));
+                basketItem.setStatus(rows.getString(rows.getColumnIndex("status")));
+                basketItem.setOrdered_at(rows.getString(rows.getColumnIndex("ordered_at")));
+                basketItem.setData(rows.getString(rows.getColumnIndex("data")));
+            }
+            while (rows.moveToNext());
+        }
+        return basketItem;
+    }
+
+    public static void updateBasketCount(final String id, final String count) {
+        DBAsync.asyncGetBasketOffer(id, new DBAsync.CallbackGetBasketOffer() {
+            @Override
+            public void onSuccess(BasketItem success) {
+                ContentValues basketValues = DBHelper.setBasketContentValues(null, null, String.valueOf(Integer.parseInt(success.getCount()) + Integer.valueOf(count)), null, null, null, null, null);
+                DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
     /*public static MainOffer getUserFromDatabase(String uid) {
         MainOffer model = new MainOffer();
         Cursor values = getInstance().selectRows(USERS, null, "uid='" + uid + "'", null, null);

@@ -12,6 +12,8 @@ public class BasketItem {
 
     public String price;
 
+    public String count;
+
     public String data;
 
     public String status;
@@ -19,6 +21,14 @@ public class BasketItem {
     public String created_at;
 
     public String ordered_at;
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
 
     public String getOffer_id() {
         return offer_id;
