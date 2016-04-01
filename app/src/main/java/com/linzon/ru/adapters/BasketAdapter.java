@@ -34,29 +34,37 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + arrayList.get(position).getPrice() + " " + this.activity.getResources().getString(R.string.static_exchange));
+        holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + String.valueOf(Math.abs(Integer.valueOf(arrayList.get(position).getPrice()) * Integer.valueOf(arrayList.get(position).getCount()))) + " " + this.activity.getResources().getString(R.string.static_exchange));
         holder.count.setText(arrayList.get(position).getCount());
         holder.plusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int countInt = Integer.parseInt(holder.count.getText().toString()) + 1;
                 Intent intent = new Intent();
                 intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
                 intent.putExtra("ID", arrayList.get(position).getId());
-                intent.putExtra("COUNT", "+1");
+                intent.putExtra("COUNT", String.valueOf(countInt));
                 BasketAdapter.this.activity.sendBroadcast(intent);
-                holder.count.setText(String.valueOf(Integer.parseInt(holder.count.getText().toString()) + 1));
+                holder.count.setText(String.valueOf(countInt));
+                holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
+                        + (countInt != 0 ?String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
             }
         });
 
         holder.minusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
-                intent.putExtra("ID", arrayList.get(position).getId());
-                intent.putExtra("COUNT", "-1");
-                BasketAdapter.this.activity.sendBroadcast(intent);
-                holder.count.setText(String.valueOf(Integer.parseInt(holder.count.getText().toString()) - 1));
+                if(Integer.parseInt(holder.count.getText().toString()) - 1 >= 0) {
+                    int countInt = Integer.parseInt(holder.count.getText().toString()) - 1;
+                    Intent intent = new Intent();
+                    intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
+                    intent.putExtra("ID", arrayList.get(position).getId());
+                    intent.putExtra("COUNT", String.valueOf(countInt));
+                    BasketAdapter.this.activity.sendBroadcast(intent);
+                    holder.count.setText(String.valueOf(countInt));
+                    holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
+                            + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * Integer.parseInt(holder.count.getText().toString()) - 1)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
+                }
             }
         });
         DBAsync.asyncGetOfferInfo(Integer.parseInt(arrayList.get(position).getOffer_id()), new DBAsync.CallbackGetOffer() {

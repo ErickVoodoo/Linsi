@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBHelper;
@@ -32,11 +31,9 @@ public class BasketService extends Service {
                     String id = intent.getStringExtra("ID");
                     String count = intent.getStringExtra("COUNT");
                     DBHelper.updateBasketCount(id, count);
-
                     Intent updatePrice = new Intent();
                     updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
                     LocalBroadcastManager.getInstance(BasketService.this).sendBroadcast(updatePrice);
-                    break;
                 }
             }
         }
@@ -45,7 +42,6 @@ public class BasketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("BASKET----", "CREATED");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_REMOVE_OFFER);
         intentFilter.addAction(Constants.BROADCAST_UPDATE_COUNT);

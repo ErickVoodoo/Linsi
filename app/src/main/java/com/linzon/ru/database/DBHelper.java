@@ -273,19 +273,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return basketItem;
     }
 
+    public static int getTotalPrice(String where) {
+        int totalPrice = 0;
+        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "id");
+        if (rows.moveToFirst()) {
+            do {
+                totalPrice += Integer.parseInt(rows.getString(rows.getColumnIndex("price"))) * Integer.parseInt(rows.getString(rows.getColumnIndex("count")));
+            }
+            while (rows.moveToNext());
+        }
+        return totalPrice;
+    }
+
     public static void updateBasketCount(final String id, final String count) {
-        DBAsync.asyncGetBasketOffer(id, new DBAsync.CallbackGetBasketOffer() {
-            @Override
-            public void onSuccess(BasketItem success) {
-                ContentValues basketValues = DBHelper.setBasketContentValues(null, null, String.valueOf(Integer.parseInt(success.getCount()) + Integer.valueOf(count)), null, null, null, null, null);
-                DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, count, null, null, null, null, null);
+        DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");
     }
     /*public static MainOffer getUserFromDatabase(String uid) {
         MainOffer model = new MainOffer();

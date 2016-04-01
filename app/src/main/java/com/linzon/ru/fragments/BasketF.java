@@ -20,6 +20,7 @@ import com.linzon.ru.R;
 import com.linzon.ru.adapters.BasketAdapter;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
 
 import java.util.ArrayList;
@@ -72,15 +73,20 @@ public class BasketF extends Fragment {
 
     private void initTextView() {
         basketTotalCount = (TextView) view.findViewById(R.id.basketTotalCount);
+        updateTotalPrice();
+    }
+
+    private void updateTotalPrice() {
+        Log.e("updateTotalPrice", "UPDATED");
+        basketTotalCount.setText(BasketF.this.getActivity().getResources().getString(R.string.static_total) + " " + DBHelper.getInstance().getTotalPrice(Constants.STATUS_OPEN) + " " + BasketF.this.getActivity().getResources().getString(R.string.static_exchange));
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("BASKETF", "GETTED!");
             switch (intent.getAction()){
                 case Constants.BROADCAST_UPDATE_PRICE: {
-                    basketTotalCount.setText("12312321321");
+                    updateTotalPrice();
                     break;
                 }
             }
@@ -90,7 +96,6 @@ public class BasketF extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("BASKETF", "onResume!");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_UPDATE_PRICE);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, intentFilter);

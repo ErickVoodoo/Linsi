@@ -133,18 +133,22 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
             @Override
             public void onClick(View v) {
                 if(null != selectedOfferObject) {
-                    ContentValues order = DBHelper.setBasketContentValues(
-                            selectedOfferObject.getId(),
-                            selectedOfferObject.getName(),
-                            String.valueOf((checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
-                                    (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0)),
-                            String.valueOf(price),
-                            "",
-                            Constants.STATUS_OPEN,
-                            new Date().toString(),
-                            "");
-                    DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
-                    Snackbar.make(findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_SHORT).show();
+                    if(price != 0) {
+                        ContentValues order = DBHelper.setBasketContentValues(
+                                selectedOfferObject.getId(),
+                                selectedOfferObject.getName(),
+                                String.valueOf((checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
+                                        (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0)),
+                                String.valueOf(price),
+                                "",
+                                Constants.STATUS_OPEN,
+                                new Date().toString(),
+                                "");
+                        DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
+                        Snackbar.make(findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content), "Нельзя добавить пустой заказ", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

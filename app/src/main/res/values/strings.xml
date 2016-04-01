@@ -27,6 +27,7 @@
     <string name="static_vendor">Производитель</string>
     <string name="static_exchange">руб.</string>
     <string name="static_rate">Рейтинг</string>
+    <string name="static_total">Итого</string>
 
     <string name="offer_params">Параметры</string>
     <string name="offer_leftPart">Левый</string>
