@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.linzon.ru.common.Constants;
 import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 
@@ -288,6 +289,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public static void updateBasketCount(final String id, final String count) {
         ContentValues basketValues = DBHelper.setBasketContentValues(null, null, count, null, null, null, null, null);
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");
+    }
+
+    public static void deleteFromBasket(final String id) {
+        DBHelper.getInstance().deleteRows(DBHelper.BASKET, "id = '" + id + "'");
+    }
+
+    public static void sendToArchive() {
+        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, null, null, Constants.STATUS_ARCHIVED, null, null);
+        DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "status = 'open'");
     }
     /*public static MainOffer getUserFromDatabase(String uid) {
         MainOffer model = new MainOffer();

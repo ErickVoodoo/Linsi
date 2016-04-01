@@ -16,7 +16,7 @@
 
         <com.linzon.ru.common.CustomTextView
             android:id="@+id/basketName"
-            style="@style/Base.TextAppearance.AppCompat.Body2"
+            style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

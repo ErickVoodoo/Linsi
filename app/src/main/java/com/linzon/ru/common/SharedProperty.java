@@ -20,7 +20,7 @@ public class SharedProperty {
 
     public String getValue(String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        return sharedPreferences.getString(key, "null");
+        return sharedPreferences.getString(key, null);
     }
 
     public void setValue(String key, String value) {
@@ -31,4 +31,7 @@ public class SharedProperty {
     }
 
     public static final String APP_VERSION = "app_version";
+    public static final String USER_NAME = "username";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_PHONE = "phone";
 }

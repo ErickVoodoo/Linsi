@@ -23,21 +23,21 @@ public class BasketService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case Constants.BROADCAST_REMOVE_OFFER: {
-
-                    break;
-                }
                 case Constants.BROADCAST_UPDATE_COUNT: {
                     String id = intent.getStringExtra("ID");
                     String count = intent.getStringExtra("COUNT");
                     DBHelper.updateBasketCount(id, count);
-                    Intent updatePrice = new Intent();
-                    updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
-                    LocalBroadcastManager.getInstance(BasketService.this).sendBroadcast(updatePrice);
+                    loadIntent();
                 }
             }
         }
     };
+
+    private void loadIntent() {
+        Intent updatePrice = new Intent();
+        updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
+        LocalBroadcastManager.getInstance(BasketService.this).sendBroadcast(updatePrice);
+    }
 
     @Override
     public void onCreate() {

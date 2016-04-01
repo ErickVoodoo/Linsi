@@ -86,7 +86,7 @@ public class DBAsync {
         }.execute(query);
     }
 
-    public static void asyncGetBasketOffer(final String query, final CallbackGetBasketOffer callback) {
+    /*public static void asyncGetBasketOffer(final String query, final CallbackGetBasketOffer callback) {
         new AsyncTask<String, Void, BasketItem>() {
             @Override
             protected BasketItem doInBackground(String... params) {
@@ -98,7 +98,7 @@ public class DBAsync {
                 callback.onSuccess(result);
             }
         }.execute(query);
-    }
+    }*/
 
 //    public static void asyncGetBasketTotalPrice(final String query, final CallbackGetBasketTotal callback) {
 //        new AsyncTask<String, Void, Integer>() {

@@ -1,7 +1,9 @@
 package com.linzon.ru.fragments;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -16,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.linzon.ru.Basket;
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.BasketAdapter;
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
@@ -69,6 +73,60 @@ public class BasketF extends Fragment {
 
     private void initButtons() {
         buyButton = (Button) view.findViewById(R.id.buyButton);
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) != null &&
+                        SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE) != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BasketF.this.getActivity());
+                    builder.setMessage("Отправить заявку в магазин?")
+                            .setPositiveButton("Заказать", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DBHelper.sendToArchive();
+                                    /*
+                                    arrayList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, getItemCount());
+
+                                    Intent updatePrice = new Intent();
+                                    updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
+                                    LocalBroadcastManager.getInstance(activity).sendBroadcast(updatePrice);*/
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BasketF.this.getActivity());
+                    builder.setMessage("Вы не ввели данные для связи")
+                            .setPositiveButton("Заказать", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    /*DBHelper.deleteFromBasket(arrayList.get(position).getId());
+                                    arrayList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, getItemCount());
+
+                                    Intent updatePrice = new Intent();
+                                    updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
+                                    LocalBroadcastManager.getInstance(activity).sendBroadcast(updatePrice);*/
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
+            }
+        });
     }
 
     private void initTextView() {

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
+import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +65,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     CheckBox checkBoxRightEye;
 
     private OOffer selectedOfferObject;
-    private int price;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,14 +134,14 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
             @Override
             public void onClick(View v) {
                 if(null != selectedOfferObject) {
-                    if(price != 0) {
+                    if(count != 0) {
                         ContentValues order = DBHelper.setBasketContentValues(
                                 selectedOfferObject.getId(),
                                 selectedOfferObject.getName(),
                                 String.valueOf((checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
                                         (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0)),
-                                String.valueOf(price),
-                                "",
+                                selectedOfferObject.getPrice(),
+                                createCustomJsonData(),
                                 Constants.STATUS_OPEN,
                                 new Date().toString(),
                                 "");
@@ -307,10 +308,9 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     }
 
     private void recalculatePrice() {
-        price = Integer.parseInt(selectedOfferObject.getPrice()) * (
-                (checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
-                        (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0));
-        offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + price + " " + Offer.this.getResources().getString(R.string.static_exchange));
+        count = (checkBoxLeftEye.isChecked() ? Integer.parseInt(offerCountLeft.getSelectedItem().toString()) : 0) +
+                        (checkBoxRightEye.isChecked() ? Integer.parseInt(offerCountRight.getSelectedItem().toString()): 0);
+        offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + Integer.parseInt(selectedOfferObject.getPrice()) * count + " " + Offer.this.getResources().getString(R.string.static_exchange));
     }
 
     public void hideNotNecessaryView() {
@@ -379,5 +379,21 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private String createCustomJsonData() {
+        CustomOfferData data = new CustomOfferData(
+                offerBCRight.getSelectedItem() != null ? offerBCRight.getSelectedItem().toString() : null,
+                offerBCLeft.getSelectedItem() != null ? offerBCLeft.getSelectedItem().toString() : null,
+                offerPWRRight.getSelectedItem() != null ? offerPWRRight.getSelectedItem().toString() : null,
+                offerPWRLeft.getSelectedItem() != null ? offerPWRLeft.getSelectedItem().toString() : null,
+                offerAXRight.getSelectedItem() != null ? offerAXRight.getSelectedItem().toString() : null,
+                offerAXLeft.getSelectedItem() != null ? offerAXLeft.getSelectedItem().toString() : null,
+                offerCYLRight.getSelectedItem() != null ? offerCYLRight.getSelectedItem().toString() : null,
+                offerCYLLeft.getSelectedItem() != null ? offerCYLLeft.getSelectedItem().toString() : null,
+                offerCOLORRight.getSelectedItem() != null ? offerCOLORRight.getSelectedItem().toString() : null,
+                offerCOLORLeft.getSelectedItem() != null ? offerCOLORLeft.getSelectedItem().toString() : null
+                );
+        return data.toString();
     }
 }

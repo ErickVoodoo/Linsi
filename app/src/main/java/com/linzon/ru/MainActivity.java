@@ -21,7 +21,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.linzon.ru.fragments.AboutF;
+import com.linzon.ru.fragments.UserF;
 import com.linzon.ru.fragments.CategoryOffersF;
 import com.linzon.ru.fragments.ContactsF;
 import com.linzon.ru.fragments.PostSendF;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     private final static String CATEGORY_TAG = "CATEGORY_FRAGMENT";
     private final static String POPULAR_TAG = "POPULAR_FRAGMENT";
     private final static String OFFER_TAG = "OFFER_FRAGMENT";
-    private final static String ABOUT_TAG = "ABOUT_FRAGMENT";
+    private final static String USER_TAG = "ABOUT_FRAGMENT";
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
     private final static String POST_TAG = "POST_FRAGMENT";
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     //private PopularF popularFragment;
     private CategoryOffersF categoryOffersFragment;
-    private AboutF aboutFFragment;
+    private UserF userFFragment;
     private PostSendF postSendFragment;
     private ContactsF contactsFragment;
     private Fragment selectedFragment = null;
@@ -112,18 +112,18 @@ public class MainActivity extends AppCompatActivity
             categoryOffersFragment.setCategory(id);
     }
 
-    private void showAbout() {
-        if (!(selectedFragment instanceof AboutF)) {
+    private void showUser() {
+        if (!(selectedFragment instanceof UserF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
-            if (null == aboutFFragment) {
-                aboutFFragment = new AboutF();
-                fragmentTransaction.add(R.id.mainPager, aboutFFragment, ABOUT_TAG);
+            if (null == userFFragment) {
+                userFFragment = new UserF();
+                fragmentTransaction.add(R.id.mainPager, userFFragment, USER_TAG);
             }
-            fragmentTransaction.show(aboutFFragment);
+            fragmentTransaction.show(userFFragment);
             fragmentTransaction.commit();
             getFragmentManager().executePendingTransactions();
-            selectedFragment = aboutFFragment;
+            selectedFragment = userFFragment;
         }
     }
 
@@ -169,9 +169,9 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.hide(categoryOffersFragment);
         }
 
-        aboutFFragment = (AboutF) getFragmentManager().findFragmentByTag(ABOUT_TAG);
-        if (null != aboutFFragment) {
-            fragmentTransaction.hide(aboutFFragment);
+        userFFragment = (UserF) getFragmentManager().findFragmentByTag(USER_TAG);
+        if (null != userFFragment) {
+            fragmentTransaction.hide(userFFragment);
         }
 
         postSendFragment = (PostSendF) getFragmentManager().findFragmentByTag(POST_TAG);
@@ -245,14 +245,17 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_post: {
                 showPostSend();
+                toolbar.setTitle(MainActivity.this.getResources().getString(R.string.toolbarPost));
                 break;
             }
-            case R.id.action_about: {
-                showAbout();
+            case R.id.action_user: {
+                showUser();
+                toolbar.setTitle(MainActivity.this.getResources().getString(R.string.toolbarUser));
                 break;
             }
             case R.id.action_contacts: {
                 showContacts();
+                toolbar.setTitle(MainActivity.this.getResources().getString(R.string.toolbarContacts));
                 break;
             }
             default: {

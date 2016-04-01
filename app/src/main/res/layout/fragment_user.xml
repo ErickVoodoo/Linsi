@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/userName"
+        android:hint="@string/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/userEmail"
+        android:inputType="textEmailAddress"
+        android:hint="@string/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/userPhone"
+        android:inputType="phone"
+        android:hint="@string/userPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/userSaveButton"
+        style="?attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/blue_button"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/userSaveButton"
+        android:textColor="@color/buttonColorText"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:text="@string/userFAQ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

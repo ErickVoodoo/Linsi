@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
@@ -41,6 +44,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         holder.plusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("DATA", arrayList.get(position).getData());
                 int countInt = Integer.parseInt(holder.count.getText().toString()) + 1;
                 Intent intent = new Intent();
                 intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
@@ -65,7 +69,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
                     BasketAdapter.this.activity.sendBroadcast(intent);
                     holder.count.setText(String.valueOf(countInt));
                     holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
-                            + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * Integer.parseInt(holder.count.getText().toString()) - 1)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
+                            + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
                 }
             }
         });
@@ -93,9 +97,14 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
                         .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                DBHelper.deleteFromBasket(arrayList.get(position).getId());
                                 arrayList.remove(position);
                                 notifyItemRemoved(position);
                                 notifyItemRangeChanged(position, getItemCount());
+
+                                Intent updatePrice = new Intent();
+                                updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
+                                LocalBroadcastManager.getInstance(activity).sendBroadcast(updatePrice);
                             }
                         })
                         .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
