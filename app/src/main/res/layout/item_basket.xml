@@ -60,6 +60,7 @@
             android:weightSum="2">
 
             <Button
+                android:id="@+id/basketItemRemoveItem"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:text="УДАЛИТЬ"

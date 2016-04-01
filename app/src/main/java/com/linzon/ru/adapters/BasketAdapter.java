@@ -1,6 +1,8 @@
 package com.linzon.ru.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,7 +49,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
                 BasketAdapter.this.activity.sendBroadcast(intent);
                 holder.count.setText(String.valueOf(countInt));
                 holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
-                        + (countInt != 0 ?String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
+                        + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
             }
         });
 
@@ -81,6 +83,30 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
             }
         });
+
+        holder.removeItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage(arrayList.get(position).getName())
+                        .setTitle("Удалить этот продукт?")
+                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                arrayList.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, getItemCount());
+                            }
+                        })
+                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+            }
+        });
     }
 
     @Override
@@ -96,6 +122,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
         public Button plusCount;
         public Button minusCount;
+        public Button removeItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -106,6 +133,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
             plusCount = (Button) itemView.findViewById(R.id.basketItemPlusCount);
             minusCount = (Button) itemView.findViewById(R.id.basketItemMinusCount);
+            removeItem = (Button) itemView.findViewById(R.id.basketItemRemoveItem);
         }
     }
 
