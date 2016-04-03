@@ -19,10 +19,15 @@ import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
+import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by erick on 29.3.16.
@@ -44,13 +49,12 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         holder.plusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("DATA", arrayList.get(position).getData());
                 int countInt = Integer.parseInt(holder.count.getText().toString()) + 1;
                 Intent intent = new Intent();
                 intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
                 intent.putExtra("ID", arrayList.get(position).getId());
                 intent.putExtra("COUNT", String.valueOf(countInt));
-                BasketAdapter.this.activity.sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(BasketAdapter.this.activity).sendBroadcast(intent);
                 holder.count.setText(String.valueOf(countInt));
                 holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
                         + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
@@ -60,13 +64,13 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         holder.minusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Integer.parseInt(holder.count.getText().toString()) - 1 >= 0) {
+                if (Integer.parseInt(holder.count.getText().toString()) - 1 >= 0) {
                     int countInt = Integer.parseInt(holder.count.getText().toString()) - 1;
                     Intent intent = new Intent();
                     intent.setAction(Constants.BROADCAST_UPDATE_COUNT);
                     intent.putExtra("ID", arrayList.get(position).getId());
                     intent.putExtra("COUNT", String.valueOf(countInt));
-                    BasketAdapter.this.activity.sendBroadcast(intent);
+                    LocalBroadcastManager.getInstance(BasketAdapter.this.activity).sendBroadcast(intent);
                     holder.count.setText(String.valueOf(countInt));
                     holder.price.setText(BasketAdapter.this.activity.getResources().getString(R.string.static_price) + " "
                             + (countInt != 0 ? String.valueOf(Math.abs(Integer.parseInt(arrayList.get(position).getPrice()) * countInt)) : "0") + " " + BasketAdapter.this.activity.getResources().getString(R.string.static_exchange));
@@ -116,6 +120,10 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
                 builder.create().show();
             }
         });
+        if (arrayList.get(position).getData() != null)
+            holder.basketParams.setText(CustomOfferData.toCompactString(arrayList.get(position).getData()));
+        else
+            holder.basketParams.setText("");
     }
 
     @Override
@@ -128,6 +136,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         public ImageView picture;
         public TextView price;
         public TextView count;
+        public TextView basketParams;
 
         public Button plusCount;
         public Button minusCount;
@@ -139,6 +148,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
             picture = (ImageView) itemView.findViewById(R.id.basketPicture);
             price = (TextView) itemView.findViewById(R.id.basketPrice);
             count = (TextView) itemView.findViewById(R.id.basketCount);
+            basketParams = (TextView) itemView.findViewById(R.id.basketParams);
 
             plusCount = (Button) itemView.findViewById(R.id.basketItemPlusCount);
             minusCount = (Button) itemView.findViewById(R.id.basketItemMinusCount);

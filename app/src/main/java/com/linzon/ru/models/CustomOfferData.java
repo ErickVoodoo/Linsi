@@ -7,146 +7,72 @@ import org.json.JSONObject;
  * Created by Admin on 01.04.2016.
  */
 public class CustomOfferData {
-    public String R_BC;
-    public String L_BC;
-    public String R_PWR;
-    public String L_PWR;
-    public String R_AX;
-    public String L_AX;
-    public String R_CYL;
-    public String L_CYL;
-    public String R_COLOR;
-    public String L_COLOR;
+    public String TYPE;
+    public String BC;
+    public String PWR;
+    public String AX;
+    public String CYL;
+    public String COLOR;
 
-    public CustomOfferData(String R_BC, String L_BC, String R_PWR, String L_PWR, String R_AX, String L_AX, String R_CYL, String L_CYL, String R_COLOR, String L_COLOR) {
-        this.R_BC = R_BC;
-        this.L_BC = L_BC;
-        this.R_PWR = R_PWR;
-        this.L_PWR = L_PWR;
-        this.R_AX = R_AX;
-        this.L_AX = L_AX;
-        this.R_CYL = R_CYL;
-        this.L_CYL = L_CYL;
-        this.R_COLOR = R_COLOR;
-        this.L_COLOR = L_COLOR;
-    }
-
-    public String getR_BC() {
-        return R_BC;
-    }
-
-    public void setR_BC(String r_BC) {
-        R_BC = r_BC;
-    }
-
-    public String getL_BC() {
-        return L_BC;
-    }
-
-    public void setL_BC(String l_BC) {
-        L_BC = l_BC;
-    }
-
-    public String getR_PWR() {
-        return R_PWR;
-    }
-
-    public void setR_PWR(String r_PWR) {
-        R_PWR = r_PWR;
-    }
-
-    public String getL_PWR() {
-        return L_PWR;
-    }
-
-    public void setL_PWR(String l_PWR) {
-        L_PWR = l_PWR;
-    }
-
-    public String getR_AX() {
-        return R_AX;
-    }
-
-    public void setR_AX(String r_AX) {
-        R_AX = r_AX;
-    }
-
-    public String getL_AX() {
-        return L_AX;
-    }
-
-    public void setL_AX(String l_AX) {
-        L_AX = l_AX;
-    }
-
-    public String getR_CYL() {
-        return R_CYL;
-    }
-
-    public void setR_CYL(String r_CYL) {
-        R_CYL = r_CYL;
-    }
-
-    public String getL_CYL() {
-        return L_CYL;
-    }
-
-    public void setL_CYL(String l_CYL) {
-        L_CYL = l_CYL;
-    }
-
-    public String getR_COLOR() {
-        return R_COLOR;
-    }
-
-    public void setR_COLOR(String r_COLOR) {
-        R_COLOR = r_COLOR;
-    }
-
-    public String getL_COLOR() {
-        return L_COLOR;
-    }
-
-    public void setL_COLOR(String l_COLOR) {
-        L_COLOR = l_COLOR;
+    public CustomOfferData(String TYPE, String BC, String PWR, String AX, String CYL, String COLOR) {
+        this.TYPE = TYPE;
+        this.BC = BC;
+        this.PWR = PWR;
+        this.AX = AX;
+        this.CYL = CYL;
+        this.COLOR = COLOR;
     }
 
     public String toString() {
         JSONObject object = new JSONObject();
         try {
-            if(this.L_AX != null) {
-                object.put("L_AX", this.L_AX);
+            if(this.TYPE != null) {
+                object.put("TYPE", this.TYPE);
             }
-            if(this.L_BC != null) {
-                object.put("L_BC", this.L_BC);
+            if(this.BC != null) {
+                object.put("BC", this.BC);
             }
-            if(this.L_COLOR != null) {
-                object.put("L_COLOR", this.L_COLOR);
+            if(this.PWR != null) {
+                object.put("PWR", this.PWR);
             }
-            if(this.L_CYL != null) {
-                object.put("L_CYL", this.L_CYL);
+            if(this.AX != null) {
+                object.put("AX", this.AX);
             }
-            if(this.L_PWR != null) {
-                object.put("L_PWR", this.L_PWR);
+            if(this.CYL != null) {
+                object.put("CYL", this.CYL);
             }
-            if(this.R_AX != null) {
-                object.put("R_AX", this.R_AX);
-            }
-            if(this.R_BC != null) {
-                object.put("R_BC", this.R_BC);
-            }
-            if(this.R_COLOR != null) {
-                object.put("R_COLOR", this.R_COLOR);
-            }
-            if(this.R_CYL != null) {
-                object.put("R_CYL", this.R_CYL);
-            }
-            if(this.R_PWR != null) {
-                object.put("R_PWR", this.R_PWR);
+            if(this.COLOR != null) {
+                object.put("COLOR", this.COLOR);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return object.toString();
+    }
+
+    public static String toCompactString(String data) {
+        JSONObject dataObj = null;
+        String dataString = "";
+        try {
+            dataObj = new JSONObject(data);
+            if(dataObj.has("TYPE")) {
+                dataString += dataObj.getString("TYPE") + ",";
+            }
+            if(dataObj.has("BC")) {
+                dataString += dataObj.getString("BC") + ",";
+            }
+            if(dataObj.has("PWR")) {
+                dataString += dataObj.getString("PWR") + ",";
+            }
+            if(dataObj.has("AX")) {
+                dataString += dataObj.getString("AX") + ",";
+            }
+            if(dataObj.has("COLOR")) {
+                dataString += dataObj.getString("COLOR") + ",";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return dataString.substring(0, dataString.length() - 1);
     }
 }

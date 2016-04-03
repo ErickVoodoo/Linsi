@@ -26,7 +26,7 @@ public class DBAsync {
         public abstract void onError(String error);
     }
 
-    public static abstract class CallbackGetBasketOffer {
+    /*public static abstract class CallbackGetBasketOffer {
         public abstract void onSuccess(BasketItem  success);
 
         public abstract void onError(String error);
@@ -42,7 +42,7 @@ public class DBAsync {
         public abstract void onSuccess(Boolean success);
 
         public abstract void onError(String error);
-    }
+    }*/
 
     public static void asyncGetOfferList(final Integer query, final CallbackGetCategory callback) {
         new AsyncTask<Integer, Void, ArrayList<OOffer>>() {

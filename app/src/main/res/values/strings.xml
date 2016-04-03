@@ -6,6 +6,9 @@
     <string name="startScreenLoadInformation">Загружаем данные товаров...</string>
     <string name="startScreenRetryLoad">Повторить попытку</string>
     <string name="networkException">Проверьте интернет соединение и повторите попытку позже</string>
+    <string name="networkExceptionSmall">Ошибка интернет соединения</string>
+    <string name="errorNotValidEmail">Не валидная почта, проверьте данные</string>
+
 
     <string name="drawer_popular">Популярные</string>
     <string name="drawer_nav_1">Однодневные линзы</string>
@@ -24,6 +27,8 @@
     <string name="drawer_nav_about">О компании</string>
 
     <string name="static_price">Цена</string>
+    <string name="static_count">Количество</string>
+    <string name="static_ordered">Заказано</string>
     <string name="static_vendor">Производитель</string>
     <string name="static_exchange">руб.</string>
     <string name="static_rate">Рейтинг</string>

@@ -25,6 +25,7 @@ public class Constants {
     }};
 
     public static final String[] NotALins = {"10", "6"};
+    public static final String[] SortArray = {"По цене", "По позиции"};
 
     public static final String STATUS_OPEN = "open";
     public static final String STATUS_ARCHIVED = "archived";
@@ -32,4 +33,5 @@ public class Constants {
     public static final String BROADCAST_UPDATE_COUNT = "linzon.update_count";
     public static final String BROADCAST_UPDATE_PRICE = "linzon.update_price";
     public static final String BROADCAST_REMOVE_OFFER = "linzon.remove_offer";
+    public static final String BROADCAST_ADD_TO_ARCHIVE = "linzon.add_to_archive";
 }

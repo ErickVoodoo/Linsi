@@ -3,6 +3,7 @@ package com.linzon.ru.api;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
 import com.linzon.ru.models.POffer;
@@ -173,7 +174,6 @@ public class ApiConnector {
                 String result = "";
                 String responseLine = "";
                 ArrayList<POffer> offerArrayList = new ArrayList<>();
-
                 try {
                     HttpURLConnection connection = (HttpURLConnection) new URL(query).openConnection();
                     connection.setRequestMethod("GET");

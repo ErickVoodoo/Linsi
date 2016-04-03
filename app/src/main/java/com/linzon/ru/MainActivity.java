@@ -159,10 +159,6 @@ public class MainActivity extends AppCompatActivity
 
     private void hideFragments() {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        /*popularFragment = (PopularF) getFragmentManager().findFragmentByTag(POPULAR_TAG);
-        if (null != popularFragment) {
-            fragmentTransaction.hide(popularFragment);
-        }*/
 
         categoryOffersFragment = (CategoryOffersF) getFragmentManager().findFragmentByTag(CATEGORY_TAG);
         if (null != categoryOffersFragment) {

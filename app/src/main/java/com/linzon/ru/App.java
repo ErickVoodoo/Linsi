@@ -44,7 +44,6 @@ public class App extends Application {
                     }else if(Integer.parseInt(lhs.getRate()) == Integer.parseInt(rhs.getRate())){
                         return 0;
                     }
-//                return rhs.getRate().compareTo(lhs.getRate());
                     return 0;
                 }catch (NumberFormatException e) {
                     System.err.println("Неверный формат строки!");
@@ -54,10 +53,6 @@ public class App extends Application {
         });
         return currentOffer;
     }
-
-    /*public POffer getPriceOfferById(int id) {
-        return currentOffer.fil;
-    }*/
 
     public void setPriceOffers(ArrayList<POffer> currentOffer) {
         this.currentOffer = currentOffer;

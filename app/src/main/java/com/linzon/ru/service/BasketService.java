@@ -45,12 +45,12 @@ public class BasketService extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_REMOVE_OFFER);
         intentFilter.addAction(Constants.BROADCAST_UPDATE_COUNT);
-        this.registerReceiver(broadcastReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(BasketService.this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
     public void onDestroy() {
-        this.unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(BasketService.this).unregisterReceiver(broadcastReceiver);
         super.onDestroy();
     }
 

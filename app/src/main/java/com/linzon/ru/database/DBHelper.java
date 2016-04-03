@@ -8,10 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static Context context;
@@ -234,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static ArrayList<BasketItem> getBasketOffers(String where) {
         ArrayList<BasketItem> arrayList = new ArrayList<>();
-        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "id");
+        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "ordered_at DESC");
         if (rows.moveToFirst()) {
             do {
                 BasketItem offer = new BasketItem();
@@ -296,46 +302,43 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static void sendToArchive() {
-        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, null, null, Constants.STATUS_ARCHIVED, null, null);
+        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, null, null, Constants.STATUS_ARCHIVED, null, new Date().toString());
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "status = 'open'");
     }
-    /*public static MainOffer getUserFromDatabase(String uid) {
-        MainOffer model = new MainOffer();
-        Cursor values = getInstance().selectRows(USERS, null, "uid='" + uid + "'", null, null);
 
-        if(values.getCount() == 0) {
-            return null;
-        }
-        if(values.moveToFirst()) {
-            do {
-                model.setId(values.getInt(values.getColumnIndex("id")));
-                model.setUid(String.valueOf(values.getInt(values.getColumnIndex("uid"))));
-                model.setNotification(values.getInt(values.getColumnIndex("notification")));
-                model.setOnline(values.getInt(values.getColumnIndex("online")));
-                model.setTime(values.getInt(values.getColumnIndex("time")));
+    public static void createFinalJsonData() {
+        JSONObject root = new JSONObject();
+        JSONObject client = new JSONObject();
+        JSONObject info = new JSONObject();
+        JSONArray offers = new JSONArray();
+        try {
+            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
+            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
+            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
+            client.put("city", "");
+            client.put("address", "");
+            root.put("client", client);
+
+            ArrayList<BasketItem> offersList = getBasketOffers(Constants.STATUS_OPEN);
+            for(int i = 0; i < offersList.size(); i++) {
+                JSONObject offer = new JSONObject();
+                if(offersList.get(i).getData() != null) {
+                    JSONObject params = new JSONObject(offersList.get(i).getData());
+                    offer.put("params", params);
+                }
+                offer.put("id", offersList.get(i).getOffer_id());
+                offer.put("price", offersList.get(i).getPrice());
+                offer.put("count", offersList.get(i).getCount());
+                offers.put(offer);
             }
-            while (values.moveToNext());
+            root.put("offers", offers);
+            info.put("total", getTotalPrice(Constants.STATUS_OPEN));
+            info.put("shop", "LP");
+            info.put("timestamp", new Date());
+            root.put("info", info);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return model;
+        Log.e("HELPER", root.toString());
     }
-
-    public static ArrayList<ChangesModel> getUserFriendsFromDatabase(String uid) {
-        ArrayList<ChangesModel> model = new ArrayList<>();
-        Cursor values = getInstance().selectRows(HISTORY_FRIENDS, null, "user_id='" + uid + "'", null, null);
-
-        if(values.getCount() == 0) {
-            return null;
-        }
-        if(values.moveToFirst()) {
-            do {
-                ChangesModel tempModel = new ChangesModel();
-                tempModel.setId(values.getInt(values.getColumnIndex("id")));
-                tempModel.setUser_id(values.getInt(values.getColumnIndex("user_id")));
-                tempModel.setFriend_uid(values.getInt(values.getColumnIndex("friend_uid")));
-                model.add(tempModel);
-            }
-            while (values.moveToNext());
-        }
-        return model;
-    }*/
 }

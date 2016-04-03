@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="8dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/wallError"
+    <Spinner
+        android:layout_marginBottom="8dp"
+        android:id="@+id/categorySortSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/categoryRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:scrollbars="vertical" />
-</RelativeLayout>
+        android:layout_below="@+id/linearLayout"/>
+</LinearLayout>

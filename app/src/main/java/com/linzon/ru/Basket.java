@@ -21,9 +21,6 @@ public class Basket extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager mainPage;
 
-    private final String BASKET_TAG = "BASKET_TAG";
-    private final String ARCHIVE_TAG = "ARCHIVE_TAG";
-
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -75,56 +72,4 @@ public class Basket extends AppCompatActivity {
         super.onResume();
         basketToolbar.setTitle("Покупки");
     }
-
-    /*private void showBasket() {
-        if(!(selectedragment instanceof BasketF)) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            hideFragments();
-            if(null != basketFragment) {
-                basketFragment = new BasketF();
-                fragmentTransaction.add(R.id.basketPager, basketFragment, BASKET_TAG);
-            }
-            fragmentTransaction.show(basketFragment);
-            fragmentTransaction.commit();
-            getFragmentManager().executePendingTransactions();
-            selectedragment = basketFragment;
-        }
-    }
-
-    private void showArchive() {
-        if(!(selectedragment instanceof ArchiveF)) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            hideFragments();
-            if(null != archiveFragment) {
-                archiveFragment = new ArchiveF();
-                fragmentTransaction.add(R.id.basketPager, archiveFragment, ARCHIVE_TAG);
-            }
-            fragmentTransaction.show(archiveFragment);
-            fragmentTransaction.commit();
-            getFragmentManager().executePendingTransactions();
-            selectedragment = archiveFragment;
-        }
-    }
-
-    private void hideFragments() {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        basketFragment = (BasketF) getFragmentManager().findFragmentByTag(BASKET_TAG);
-        if(null != basketFragment) {
-            fragmentTransaction.hide(basketFragment);
-        }
-
-        archiveFragment = (ArchiveF) getFragmentManager().findFragmentByTag(ARCHIVE_TAG);
-        if(null != archiveFragment) {
-            fragmentTransaction.hide(archiveFragment);
-        }
-
-        fragmentTransaction.commit();
-        getFragmentManager().executePendingTransactions();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.basket, menu);
-        return true;
-    }*/
 }
