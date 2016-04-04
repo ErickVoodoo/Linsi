@@ -44,15 +44,6 @@ public class Values {
         return (int)(unix - (int)(System.currentTimeMillis() / 1000 - Values.getHourNumber()*3600 - Values.getMinuteNumber()*60 - Values.getSecondNumber()))/3600;
     }
 
-    public static final String SERVICE_START_MUSIC = "service.start_music";
-    public static final String SERVICE_STOP_MUSIC = "service.stop_music";
-    public static final String SERVICE_PAUSE_MUSIC = "service.pause_music";
-
-    public static final String USER_GET_URL = "userprofile.get_url";
-    public static final String USER_GET_ISPLAYING = "userprofile.isplaying";
-    public static final String SERVICE_GET_URL = "service.get_url";
-    public static final String SERVICE_GET_ISPLAYING = "service.isplaying";
-
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

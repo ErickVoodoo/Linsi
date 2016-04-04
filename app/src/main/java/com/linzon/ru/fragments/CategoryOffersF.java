@@ -50,36 +50,20 @@ public class CategoryOffersF extends Fragment {
         categorySortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(offers != null) {
-                    if(position == 0) {
-                        Collections.sort(offers, new Comparator<OOffer>() {
-                            @Override
-                            public int compare(OOffer lhs, OOffer rhs) {
-                                try {
-                                    if (Integer.parseInt(lhs.getPrice()) > Integer.parseInt(rhs.getPrice())) {
-                                        return -1;
-                                    } else if (Integer.parseInt(lhs.getPrice()) < Integer.parseInt(rhs.getPrice())) {
-                                        return 1;
-                                    } else if (Integer.parseInt(lhs.getPrice()) == Integer.parseInt(rhs.getPrice())) {
-                                        return 0;
-                                    }
-                                    return 0;
-                                } catch (NumberFormatException e) {
-                                    System.err.println("Неверный формат строки!");
-                                }
-                                return 0;
-                            }
-                        });
-                        recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
-                        ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
-                    } else if(position == 1) {
-                        Collections.sort(offers, new Comparator<OOffer>() {
-                            @Override
-                            public int compare(OOffer lhs, OOffer rhs) {
-                                return lhs.getName().compareTo(rhs.getName());
-                            }
-                        });
-                        recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
+                if (offers != null) {
+                    switch (position) {
+                        case 0: {
+                            sortByName();
+                            break;
+                        }
+                        case 1: {
+                            sortByPriceUp();
+                            break;
+                        }
+                        case 2: {
+                            sortByPriceDown();
+                            break;
+                        }
                     }
                 }
             }
@@ -125,8 +109,24 @@ public class CategoryOffersF extends Fragment {
                 @Override
                 public void onSuccess(ArrayList<OOffer> success) {
                     offers = success;
-                    recyclerView.setAdapter(new CategoryAdapter(success, CategoryOffersF.this.getActivity()));
+
+                    switch (categorySortSpinner.getSelectedItemPosition()) {
+                        case 0: {
+                            sortByName();
+                            break;
+                        }
+                        case 1: {
+                            sortByPriceUp();
+                            break;
+                        }
+                        case 2: {
+                            sortByPriceDown();
+                            break;
+                        }
+                    }
                     ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+                    /*recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
+                    ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();*/
                 }
 
                 @Override
@@ -139,5 +139,61 @@ public class CategoryOffersF extends Fragment {
 
     private void setFab() {
         recyclerView.addOnScrollListener(new RViewScroll(this.getActivity()));
+    }
+
+    private void sortByPriceUp() {
+        Collections.sort(offers, new Comparator<OOffer>() {
+            @Override
+            public int compare(OOffer lhs, OOffer rhs) {
+                try {
+                    if (Integer.parseInt(lhs.getPrice()) > Integer.parseInt(rhs.getPrice())) {
+                        return -1;
+                    } else if (Integer.parseInt(lhs.getPrice()) < Integer.parseInt(rhs.getPrice())) {
+                        return 1;
+                    } else if (Integer.parseInt(lhs.getPrice()) == Integer.parseInt(rhs.getPrice())) {
+                        return 0;
+                    }
+                    return 0;
+                } catch (NumberFormatException e) {
+                    System.err.println("Неверный формат строки!");
+                }
+                return 0;
+            }
+        });
+        recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
+        ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+    }
+
+    private void sortByPriceDown() {
+        Collections.sort(offers, new Comparator<OOffer>() {
+            @Override
+            public int compare(OOffer lhs, OOffer rhs) {
+                try {
+                    if (Integer.parseInt(lhs.getPrice()) > Integer.parseInt(rhs.getPrice())) {
+                        return 1;
+                    } else if (Integer.parseInt(lhs.getPrice()) < Integer.parseInt(rhs.getPrice())) {
+                        return -1;
+                    } else if (Integer.parseInt(lhs.getPrice()) == Integer.parseInt(rhs.getPrice())) {
+                        return 0;
+                    }
+                    return 0;
+                } catch (NumberFormatException e) {
+                    System.err.println("Неверный формат строки!");
+                }
+                return 0;
+            }
+        });
+        recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
+        ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+    }
+
+    private void sortByName() {
+        Collections.sort(offers, new Comparator<OOffer>() {
+            @Override
+            public int compare(OOffer lhs, OOffer rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+        recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
     }
 }

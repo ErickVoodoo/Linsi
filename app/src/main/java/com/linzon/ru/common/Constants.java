@@ -25,7 +25,7 @@ public class Constants {
     }};
 
     public static final String[] NotALins = {"10", "6"};
-    public static final String[] SortArray = {"По цене", "По позиции"};
+    public static final String[] SortArray = { "По названию", "По цене(по возрастанию)", "По цене(по убыванию)" };
 
     public static final String STATUS_OPEN = "open";
     public static final String STATUS_ARCHIVED = "archived";

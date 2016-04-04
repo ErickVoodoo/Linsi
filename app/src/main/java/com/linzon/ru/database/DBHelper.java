@@ -191,7 +191,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static ArrayList<OOffer> getCategoryOffers(String where) {
         ArrayList<OOffer> arrayList = new ArrayList<>();
-        Cursor rows = getInstance().selectRows(OFFERS, null, "categoryId = '" + where + "'", null, "id");
+        Cursor rows = getInstance().selectRows(OFFERS, null, "categoryId = '" + where + "'", null, "name");
         if (rows.moveToFirst()) {
             do {
                 OOffer offer = new OOffer();
