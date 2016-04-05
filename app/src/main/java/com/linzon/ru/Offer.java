@@ -155,7 +155,8 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                     Constants.STATUS_OPEN,
                                     new Date().toString(),
                                     "");
-                            DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
+                            DBHelper.getInstance().insertToBasket(order, offerCountLeft.getSelectedItem().toString());
+                            //DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
                         }
                         if (checkBoxRightEye.isChecked()) {
                             ContentValues order = DBHelper.setBasketContentValues(
@@ -174,7 +175,8 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                     Constants.STATUS_OPEN,
                                     new Date().toString(),
                                     "");
-                            DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
+                            DBHelper.getInstance().insertToBasket(order, offerCountRight.getSelectedItem().toString());
+                            //DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
                         }
 
                         Snackbar snack = Snackbar.make(findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_LONG).setAction("В корзину", new View.OnClickListener() {
@@ -187,7 +189,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
 
                         View view = snack.getView();
                         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                        params.gravity = Gravity.TOP;
+                        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
                         view.setLayoutParams(params);
                         snack.show();
                     } else {

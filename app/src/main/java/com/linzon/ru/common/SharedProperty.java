@@ -34,4 +34,7 @@ public class SharedProperty {
     public static final String USER_NAME = "username";
     public static final String USER_EMAIL = "email";
     public static final String USER_PHONE = "phone";
+    public static final String USER_CITY = "city";
+    public static final String USER_STREET = "street";
+    public static final String USER_COMMENT = "comment";
 }

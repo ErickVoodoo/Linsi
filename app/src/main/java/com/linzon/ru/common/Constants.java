@@ -7,6 +7,7 @@ public class Constants {
     public static final String STATIC_SERVER = "http://www.linzon.ru";
     public static final String STATIC_APP = "http://www.linzon.ru/json_app.txt";
     public static final String STATIC_PRICE = "http://www.linzon.ru/json_price164.txt";
+    public static final String STATIC_SEND_BASKET = "http://www.linzon.ru/apijsn2016/postjson.php";
     public static final String STATIC_PRICE_UPDATE = "http://linzon.ru/market_json3.php";
     public static final String STATIC_OFFERS_UPDATE = "http://linzon.ru/market_json4.php";
 

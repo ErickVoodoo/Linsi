@@ -18,6 +18,8 @@ public class UserF extends Fragment {
     EditText userName;
     EditText userPhone;
     EditText userEmail;
+    EditText userCity;
+    EditText userStreet;
 
     Button userSaveButton;
 
@@ -34,6 +36,8 @@ public class UserF extends Fragment {
         userEmail = (EditText) view.findViewById(R.id.userEmail);
         userName = (EditText) view.findViewById(R.id.userName);
         userPhone = (EditText) view.findViewById(R.id.userPhone);
+        userCity = (EditText) view.findViewById(R.id.userCity);
+        userStreet = (EditText) view.findViewById(R.id.userStreet);
     }
 
     private void initButton() {
@@ -45,9 +49,19 @@ public class UserF extends Fragment {
                     Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
+                if(userName.getText().toString().length() == 0 ||
+                        userEmail.getText().toString().length() == 0 ||
+                        userPhone.getText().toString().length() == 0 ||
+                        userCity.getText().toString().length() == 0 ||
+                        userStreet.getText().toString().length() == 0) {
+                    Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, userName.getText().toString());
                 SharedProperty.getInstance().setValue(SharedProperty.USER_EMAIL, userEmail.getText().toString());
                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, userPhone.getText().toString());
+                SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, userCity.getText().toString());
+                SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, userStreet.getText().toString());
                 Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), "Данные сохранены", Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -59,5 +73,7 @@ public class UserF extends Fragment {
         userName.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
         userPhone.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
         userEmail.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
+        userCity.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
+        userStreet.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
     }
 }

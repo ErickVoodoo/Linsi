@@ -3,6 +3,7 @@ package com.linzon.ru.api;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
@@ -13,10 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,6 +32,12 @@ public class ApiConnector {
 
     public static abstract class CallbackGetPriceList {
         public abstract void onSuccess(ArrayList<POffer> success);
+
+        public abstract void onError(String error);
+    }
+
+    public static abstract class CallbackSendBasket {
+        public abstract void onSuccess(String success);
 
         public abstract void onError(String error);
     }
@@ -221,5 +230,47 @@ public class ApiConnector {
                 callback.onSuccess(result);
             }
         }.execute(query);
+    }
+
+    public static void asyncSendToServer(final CallbackSendBasket callback) {
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected String doInBackground(Void... params) {
+                String result = "";
+                String responseString = "";
+
+                try {
+                    String bodyString = "data=" + URLEncoder.encode(DBHelper.createFinalJsonData());
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(Constants.STATIC_SEND_BASKET).openConnection();
+                    httpURLConnection.setConnectTimeout(10000);
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setRequestProperty("Content-Length", String.valueOf(bodyString.length()));
+                    httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpURLConnection.setDoOutput(true);
+                    Log.e("DBHELPER", bodyString);
+                    DataOutputStream outputStream = new DataOutputStream(httpURLConnection.getOutputStream());
+                    outputStream.writeBytes(bodyString);
+                    outputStream.flush();
+                    outputStream.close();
+
+                    int response = httpURLConnection.getResponseCode();
+
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((responseString = bufferedReader.readLine()) != null) {
+                        result += responseString;
+                    }
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callback.onError(e.getMessage());
+                }
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                callback.onSuccess(result);
+            }
+        }.execute();
     }
 }

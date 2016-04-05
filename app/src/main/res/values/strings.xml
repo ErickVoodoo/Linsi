@@ -8,7 +8,7 @@
     <string name="networkException">Проверьте интернет соединение и повторите попытку позже</string>
     <string name="networkExceptionSmall">Ошибка интернет соединения</string>
     <string name="errorNotValidEmail">Не валидная почта, проверьте данные</string>
-
+    <string name="errorNotFilled">Заполните все поля перед сохранением</string>
 
     <string name="drawer_popular">Популярные</string>
     <string name="drawer_nav_1">Однодневные линзы</string>
@@ -33,6 +33,10 @@
     <string name="static_exchange">руб.</string>
     <string name="static_rate">Рейтинг</string>
     <string name="static_total">Итого</string>
+    <string name="static_send_title">Отправить заявку в магазин?</string>
+    <string name="static_send_edittext_comment">Ваш комментарий к заказу</string>
+    <string name="static_send_button_send">Отправить</string>
+    <string name="static_send_button_cancel">Отмена</string>
 
     <string name="offer_params">Параметры</string>
     <string name="offer_leftPart">Левый</string>
@@ -62,6 +66,8 @@
     <string name="userName">Имя/Фамилия/Отчество</string>
     <string name="userEmail">Почта</string>
     <string name="userPhone">Телефон</string>
+    <string name="userCity">Город</string>
+    <string name="userStreet">Улица/Дом</string>
     <string name="userFAQ">Данная информация будет использована для связи оператора с Вами. Перед отправкой заказа необходимо заполнить данные поля.</string>
     <string name="userSaveButton">СОХРАНИТЬ</string>
 </resources>

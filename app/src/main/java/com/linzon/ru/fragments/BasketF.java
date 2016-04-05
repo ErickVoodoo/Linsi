@@ -13,6 +13,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import com.linzon.ru.Basket;
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.BasketAdapter;
+import com.linzon.ru.api.ApiConnector;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.common.Values;
@@ -86,18 +89,90 @@ public class BasketF extends Fragment {
                 } else {
                     if(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) != null &&
                             SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE) != null) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(BasketF.this.getActivity());
+                        final Dialog send = new Dialog(BasketF.this.getActivity());
+                        send.setCancelable(true);
+                        send.setContentView(R.layout.send_basket);
+                        send.setTitle(R.string.static_send_title);
+
+                        final EditText comment = (EditText) send.findViewById(R.id.sendComment);
+                        comment.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT));
+                        final Button cancel = (Button) send.findViewById(R.id.sendCansel);
+                        final Button approve = (Button) send.findViewById(R.id.sendApprove);
+
+                        comment.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                SharedProperty.getInstance().setValue(SharedProperty.USER_COMMENT, s.toString());
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                send.dismiss();
+                            }
+                        });
+
+                        approve.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(Values.isOnline(BasketF.this.getActivity())) {
+                                    ApiConnector.asyncSendToServer(new ApiConnector.CallbackSendBasket() {
+                                        @Override
+                                        public void onSuccess(String success) {
+                                            Log.e("SUCCESS", success);
+                                            SharedProperty.getInstance().setValue(SharedProperty.USER_COMMENT, "");
+                                            DBHelper.sendToArchive();
+                                            Intent intent = new Intent();
+                                            intent.setAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
+                                            LocalBroadcastManager.getInstance(BasketF.this.getActivity()).sendBroadcast(intent);
+                                            send.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onError(String error) {
+                                            Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), error, Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.networkException), Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        send.show();
+                        /*AlertDialog.Builder builder = new AlertDialog.Builder(BasketF.this.getActivity());
                         builder.setMessage("Отправить заявку в магазин?")
                                 .setPositiveButton("Заказать", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(Values.isOnline(BasketF.this.getActivity())) {
-                                            DBHelper.createFinalJsonData();
-                                            /*DBHelper.sendToArchive();
-                                            Intent intent = new Intent();
-                                            intent.setAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
-                                            LocalBroadcastManager.getInstance(BasketF.this.getActivity()).sendBroadcast(intent);
-                                        */} else {
+                                            ApiConnector.asyncSendToServer(new ApiConnector.CallbackSendBasket() {
+                                                @Override
+                                                public void onSuccess(String success) {
+                                                    Log.e("SUCCESS", success);
+                                                    DBHelper.sendToArchive();
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
+                                                    LocalBroadcastManager.getInstance(BasketF.this.getActivity()).sendBroadcast(intent);
+                                                }
+
+                                                @Override
+                                                public void onError(String error) {
+                                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), error, Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        } else {
                                             Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.networkException), Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
@@ -108,7 +183,7 @@ public class BasketF extends Fragment {
                                         dialog.dismiss();
                                     }
                                 });
-                        builder.create().show();
+                        builder.create().show();*/
                     } else {
                         final Dialog dialog = new Dialog(BasketF.this.getActivity());
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -119,21 +194,27 @@ public class BasketF extends Fragment {
                         final EditText username = (EditText) dialog.findViewById(R.id.userName);
                         final EditText email = (EditText) dialog.findViewById(R.id.userEmail);
                         final EditText phone = (EditText) dialog.findViewById(R.id.userPhone);
+                        final EditText city = (EditText) dialog.findViewById(R.id.userCity);
+                        final EditText street = (EditText) dialog.findViewById(R.id.userStreet);
 
                         username.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
                         phone.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
                         email.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
+                        city.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
+                        street.setText(SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
 
                         dialogButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(username.getText().toString().length() == 0 || email.getText().toString().length() == 0 || phone.getText().toString().length() == 0) {
-                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), "Заполните все поля", Snackbar.LENGTH_SHORT).show();
+                                if(username.getText().toString().length() == 0 || email.getText().toString().length() == 0 || phone.getText().toString().length() == 0 || city.getText().toString().length() == 0 || street.getText().toString().length() == 0) {
+                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
                                     return;
                                 }
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, username.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_EMAIL, email.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, phone.getText().toString());
+                                SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, city.getText().toString());
+                                SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, street.getText().toString());
                                 Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), "Данные сохранены", Snackbar.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }

@@ -306,7 +306,22 @@ public class DBHelper extends SQLiteOpenHelper {
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "status = 'open'");
     }
 
-    public static void createFinalJsonData() {
+    public static void insertToBasket(ContentValues values, String count){
+        Cursor row = getInstance().selectRows(BASKET, null,
+                "offer_id = '" + values.get("offer_id") + "' AND data='" + values.get("data") + "' AND status='open'", null, "id");
+        if (row.moveToFirst()) {
+            do {
+                ContentValues newValues = new ContentValues();
+                newValues.put("count", String.valueOf(Integer.parseInt(count) + Integer.parseInt(row.getString(row.getColumnIndex("count")))));
+                DBHelper.getInstance().updateRows(DBHelper.BASKET, newValues, "id='" + row.getString(row.getColumnIndex("id")) + "'");
+            }
+            while (row.moveToNext());
+        } else {
+            DBHelper.getInstance().insertRows(DBHelper.BASKET, values);
+        }
+    }
+
+    public static String createFinalJsonData() {
         JSONObject root = new JSONObject();
         JSONObject client = new JSONObject();
         JSONObject info = new JSONObject();
@@ -315,8 +330,8 @@ public class DBHelper extends SQLiteOpenHelper {
             client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
             client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
             client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
-            client.put("city", "");
-            client.put("address", "");
+            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
+            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
             root.put("client", client);
 
             ArrayList<BasketItem> offersList = getBasketOffers(Constants.STATUS_OPEN);
@@ -324,10 +339,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 JSONObject offer = new JSONObject();
                 if(offersList.get(i).getData() != null) {
                     JSONObject params = new JSONObject(offersList.get(i).getData());
+                    params.remove("TYPE");
                     offer.put("params", params);
                 }
                 offer.put("id", offersList.get(i).getOffer_id());
-                offer.put("price", offersList.get(i).getPrice());
+                offer.put("price", Integer.parseInt(offersList.get(i).getPrice()) * Integer.parseInt(offersList.get(i).getCount()) );
                 offer.put("count", offersList.get(i).getCount());
                 offers.put(offer);
             }
@@ -335,10 +351,11 @@ public class DBHelper extends SQLiteOpenHelper {
             info.put("total", getTotalPrice(Constants.STATUS_OPEN));
             info.put("shop", "LP");
             info.put("timestamp", new Date());
+            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT));
             root.put("info", info);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("HELPER", root.toString());
+        return root.toString();
     }
 }

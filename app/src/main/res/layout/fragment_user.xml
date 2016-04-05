@@ -30,6 +30,20 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"/>
 
+    <EditText
+        android:id="@+id/userCity"
+        android:hint="@string/userCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/userStreet"
+        android:hint="@string/userStreet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
     <Button
         android:id="@+id/userSaveButton"
         style="?attr/buttonBarButtonStyle"
