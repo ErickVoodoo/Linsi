@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +22,7 @@ import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by erick on 29.3.16.
@@ -64,7 +59,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         holder.minusCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(holder.count.getText().toString()) - 1 >= 0) {
+                if (Integer.parseInt(holder.count.getText().toString()) - 1 > 0) {
                     int countInt = Integer.parseInt(holder.count.getText().toString()) - 1;
                     Intent intent = new Intent();
                     intent.setAction(Constants.BROADCAST_UPDATE_COUNT);

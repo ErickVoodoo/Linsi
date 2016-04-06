@@ -45,16 +45,16 @@ public class UserF extends Fragment {
         userSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail.getText().toString()).matches()) {
-                    Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
                 if(userName.getText().toString().length() == 0 ||
                         userEmail.getText().toString().length() == 0 ||
                         userPhone.getText().toString().length() == 0 ||
                         userCity.getText().toString().length() == 0 ||
                         userStreet.getText().toString().length() == 0) {
                     Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if(! android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail.getText().toString()).matches()) {
+                    Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, userName.getText().toString());

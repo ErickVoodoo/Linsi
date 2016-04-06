@@ -1,10 +1,8 @@
 package com.linzon.ru.fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -24,7 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.linzon.ru.Basket;
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.BasketAdapter;
 import com.linzon.ru.api.ApiConnector;
@@ -65,7 +62,10 @@ public class BasketF extends Fragment {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+        updateBasketList();
+    }
 
+    private void updateBasketList() {
         DBAsync.asyncGetBasketList(Constants.STATUS_OPEN, new DBAsync.CallbackGetBasket() {
             @Override
             public void onSuccess(ArrayList<BasketItem> success) {
@@ -206,8 +206,16 @@ public class BasketF extends Fragment {
                         dialogButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(username.getText().toString().length() == 0 || email.getText().toString().length() == 0 || phone.getText().toString().length() == 0 || city.getText().toString().length() == 0 || street.getText().toString().length() == 0) {
+                                if(username.getText().toString().length() == 0 ||
+                                        email.getText().toString().length() == 0 ||
+                                        phone.getText().toString().length() == 0 ||
+                                        city.getText().toString().length() == 0 ||
+                                        street.getText().toString().length() == 0) {
                                     Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if(! android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
+                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
                                     return;
                                 }
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, username.getText().toString());
@@ -232,7 +240,10 @@ public class BasketF extends Fragment {
     }
 
     private void updateTotalPrice() {
-        basketTotalCount.setText(BasketF.this.getActivity().getResources().getString(R.string.static_total) + " " + DBHelper.getInstance().getTotalPrice(Constants.STATUS_OPEN) + " " + BasketF.this.getActivity().getResources().getString(R.string.static_exchange));
+        basketTotalCount.setText(
+                BasketF.this.getActivity().getResources().getString(R.string.static_total) + " " +
+                        DBHelper.getInstance().getTotalPrice(Constants.STATUS_OPEN) + " " +
+                        BasketF.this.getActivity().getResources().getString(R.string.static_exchange) + "(доставка +" + Constants.DELIVER_PRICE + "р.)");
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -248,6 +259,11 @@ public class BasketF extends Fragment {
                     basketTotalCount.setText(BasketF.this.getActivity().getResources().getString(R.string.static_total) + " 0 " + BasketF.this.getActivity().getResources().getString(R.string.static_exchange));
                     break;
                 }
+                case Constants.BROADCAST_ADD_TO_BASKET_FROM_ARCHIVE: {
+                    updateBasketList();
+                    updateTotalPrice();
+                    break;
+                }
             }
         }
     };
@@ -258,6 +274,7 @@ public class BasketF extends Fragment {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_UPDATE_PRICE);
         intentFilter.addAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
+        intentFilter.addAction(Constants.BROADCAST_ADD_TO_BASKET_FROM_ARCHIVE);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, intentFilter);
     }
 

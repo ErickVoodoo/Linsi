@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <Spinner
+        android:background="@drawable/blue_button"
         android:layout_marginBottom="8dp"
         android:id="@+id/categorySortSpinner"
         android:layout_width="match_parent"

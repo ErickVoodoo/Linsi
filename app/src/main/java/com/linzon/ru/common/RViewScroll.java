@@ -7,7 +7,7 @@ import com.linzon.ru.MainActivity;
 
 public class RViewScroll extends RecyclerView.OnScrollListener {
     private Activity activity;
-    private static final int HIDE_THRESHOLD = 20;
+    private static final int HIDE_THRESHOLD = 200;
     private int scrolledDistance = 0;
     private boolean controlsVisible = true;
 

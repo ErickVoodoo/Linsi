@@ -308,7 +308,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static void insertToBasket(ContentValues values, String count){
         Cursor row = getInstance().selectRows(BASKET, null,
-                "offer_id = '" + values.get("offer_id") + "' AND data='" + values.get("data") + "' AND status='open'", null, "id");
+                "offer_id = '" + values.get("offer_id") + (values.get("data") != null ? "' AND data='" + values.get("data") : "") + "'" +" AND status='open'", null, "id");
         if (row.moveToFirst()) {
             do {
                 ContentValues newValues = new ContentValues();
@@ -327,11 +327,11 @@ public class DBHelper extends SQLiteOpenHelper {
         JSONObject info = new JSONObject();
         JSONArray offers = new JSONArray();
         try {
-            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
-            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
-            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
-            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
-            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
+            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME).replaceAll("[-+.^:,&%!]", ""));
+            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL).replaceAll("[-+.^:,&%!]", ""));
+            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE).replaceAll("[-+.^:,&%!]", ""));
+            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY).replaceAll("[-+.^:,&%!]", ""));
+            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET).replaceAll("[-+.^:,&%!]", ""));
             root.put("client", client);
 
             ArrayList<BasketItem> offersList = getBasketOffers(Constants.STATUS_OPEN);
@@ -348,10 +348,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 offers.put(offer);
             }
             root.put("offers", offers);
-            info.put("total", getTotalPrice(Constants.STATUS_OPEN));
+            info.put("total", getTotalPrice(Constants.STATUS_OPEN) + Constants.DELIVER_PRICE);
             info.put("shop", "LP");
             info.put("timestamp", new Date());
-            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT));
+            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT).replaceAll("[-+.^:,&%!]", ""));
             root.put("info", info);
         } catch (JSONException e) {
             e.printStackTrace();

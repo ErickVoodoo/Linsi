@@ -11,7 +11,7 @@ public class Constants {
     public static final String STATIC_PRICE_UPDATE = "http://linzon.ru/market_json3.php";
     public static final String STATIC_OFFERS_UPDATE = "http://linzon.ru/market_json4.php";
 
-    public static final String[] linsCount = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    public static final String[] linsCount = { "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     public static final Map<String , String> CATEGORIES = new HashMap<String , String>() {{
         put("0", "Популярные");
@@ -35,4 +35,7 @@ public class Constants {
     public static final String BROADCAST_UPDATE_PRICE = "linzon.update_price";
     public static final String BROADCAST_REMOVE_OFFER = "linzon.remove_offer";
     public static final String BROADCAST_ADD_TO_ARCHIVE = "linzon.add_to_archive";
+    public static final String BROADCAST_ADD_TO_BASKET_FROM_ARCHIVE = "linzon.add_to_basket_from_archive";
+
+    public static final int DELIVER_PRICE = 150;
 }

@@ -3,10 +3,11 @@ package com.linzon.ru;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +64,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
 
     Toolbar toolbar;
     Button addToBasket;
+    Button offerButtonShowDescription;
 
     CheckBox checkBoxLeftEye;
     CheckBox checkBoxRightEye;
@@ -132,6 +134,14 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     }
 
     public void setButton() {
+        offerButtonShowDescription = (Button) findViewById(R.id.offerButtonShowDescription);
+        offerButtonShowDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                offerButtonShowDescription.setVisibility(View.GONE);
+                offerDescription.setMaxLines(100);
+            }
+        });
         addToBasket = (Button) findViewById(R.id.offerAddToChart);
         addToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +213,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     public void setTextView() {
         offerName = (TextView) findViewById(R.id.offerName);
         offerVendor = (TextView) findViewById(R.id.offerVendor);
-        offerDescription = (TextView) findViewById(R.id.offerDesciption);
+        offerDescription = (TextView) findViewById(R.id.offerDescription);
         offerPrice = (TextView) findViewById(R.id.offerPrice);
     }
 
@@ -227,7 +237,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         offerCountLeft.setAdapter(adapter);
-        offerCountLeft.setSelection(1);
+        offerCountLeft.setSelection(0);
 
         offerCountRight.setAdapter(adapter);
         offerCountRight.setSelection(0);
@@ -255,6 +265,20 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
 
                 offerName.setText(success.getName());
                 offerDescription.setText(success.getDescription());
+
+                Log.e("COUNT", String.valueOf(offerDescription.getLineCount()));
+
+                offerDescription.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(offerDescription.getLineCount() < 3) {
+                            offerButtonShowDescription.setVisibility(View.GONE);
+                        } else {
+                            offerDescription.setMaxLines(3);
+                            offerDescription.setEllipsize(TextUtils.TruncateAt.END);
+                        }
+                    }
+                });
 
                 Picasso.with(Offer.this)
                         .load(Constants.STATIC_SERVER + success.getPicture())

@@ -49,6 +49,12 @@
                 android:layout_marginStart="8dp">
 
                 <com.linzon.ru.common.CustomTextView
+                    android:id="@+id/archiveParams"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.linzon.ru.common.CustomTextView
                     android:id="@+id/archiveOrderedAt"
                     style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
@@ -67,5 +73,13 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/archiveAddToBasket"
+            android:background="@drawable/orange_button"
+            android:textColor="@android:color/white"
+            android:text="ДОБАВИТЬ В КОРЗИНУ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

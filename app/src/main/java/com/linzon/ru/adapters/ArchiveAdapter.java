@@ -1,19 +1,25 @@
 package com.linzon.ru.adapters;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
+import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
@@ -68,6 +74,26 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
             }
         });
+        holder.archiveParams.setText(CustomOfferData.toCompactString(arrayList.get(position).getData()));
+        holder.archiveAddToBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues order = DBHelper.setBasketContentValues(
+                        arrayList.get(position).getOffer_id(),
+                        arrayList.get(position).getName(),
+                        arrayList.get(position).getCount(),
+                        arrayList.get(position).getPrice(),
+                        arrayList.get(position).getData(),
+                        Constants.STATUS_OPEN,
+                        new Date().toString(),
+                        "");
+                DBHelper.getInstance().insertToBasket(order, arrayList.get(position).getCount());
+                Intent addToBasket = new Intent();
+                addToBasket.setAction(Constants.BROADCAST_ADD_TO_BASKET_FROM_ARCHIVE);
+                LocalBroadcastManager.getInstance(activity).sendBroadcast(addToBasket);
+                Snackbar.make(ArchiveAdapter.this.activity.findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -81,6 +107,8 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
         public TextView price;
         public TextView count;
         public TextView orderedAt;
+        public TextView archiveParams;
+        public Button archiveAddToBasket;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -89,6 +117,8 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
             price = (TextView) itemView.findViewById(R.id.archivePrice);
             count = (TextView) itemView.findViewById(R.id.archiveCount);
             orderedAt = (TextView) itemView.findViewById(R.id.archiveOrderedAt);
+            archiveParams = (TextView) itemView.findViewById(R.id.archiveParams);
+            archiveAddToBasket = (Button) itemView.findViewById(R.id.archiveAddToBasket);
         }
     }
 

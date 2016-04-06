@@ -44,7 +44,7 @@ public class CategoryOffersF extends Fragment {
 
     private void setSpinner() {
         categorySortSpinner = (Spinner) view.findViewById(R.id.categorySortSpinner);
-        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(CategoryOffersF.this.getActivity(), android.R.layout.simple_spinner_item, Constants.SortArray);
+        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(CategoryOffersF.this.getActivity(), R.layout.spinner_item, Constants.SortArray);
         adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySortSpinner.setAdapter(adapterBC);
         categorySortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
