@@ -211,7 +211,7 @@ public class BasketF extends Fragment {
                                         phone.getText().toString().length() == 0 ||
                                         city.getText().toString().length() == 0 ||
                                         street.getText().toString().length() == 0) {
-                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(dialog.findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
                                     return;
                                 }
                                 if(! android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {

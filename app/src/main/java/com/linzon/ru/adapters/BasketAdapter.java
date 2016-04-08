@@ -91,28 +91,30 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setMessage(arrayList.get(position).getName())
-                        .setTitle("Удалить этот продукт?")
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DBHelper.deleteFromBasket(arrayList.get(position).getId());
-                                arrayList.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, getItemCount());
+                if(position != arrayList.size()) {
+                    builder.setMessage(arrayList.get(position).getName())
+                            .setTitle("Удалить этот продукт?")
+                            .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DBHelper.deleteFromBasket(arrayList.get(position).getId());
+                                    arrayList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, getItemCount());
 
-                                Intent updatePrice = new Intent();
-                                updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
-                                LocalBroadcastManager.getInstance(activity).sendBroadcast(updatePrice);
-                            }
-                        })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.create().show();
+                                    Intent updatePrice = new Intent();
+                                    updatePrice.setAction(Constants.BROADCAST_UPDATE_PRICE);
+                                    LocalBroadcastManager.getInstance(activity).sendBroadcast(updatePrice);
+                                }
+                            })
+                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.create().show();
+                }
             }
         });
         if (arrayList.get(position).getData() != null)

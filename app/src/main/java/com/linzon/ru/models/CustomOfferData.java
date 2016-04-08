@@ -70,6 +70,9 @@ public class CustomOfferData {
             if(dataObj.has("AX")) {
                 dataString += dataObj.getString("AX") + ", ";
             }
+            if(dataObj.has("CYL")) {
+                dataString += dataObj.getString("CYL") + ", ";
+            }
             if(dataObj.has("COLOR")) {
                 dataString += dataObj.getString("COLOR") + ", ";
             }

@@ -76,7 +76,8 @@
                         android:drawableLeft="@drawable/ic_expand_more_black_24dp"
                         android:drawableStart="@drawable/ic_expand_more_black_24dp"
                         android:text="ПОДРОБНОСТИ"
-                        android:layout_width="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView

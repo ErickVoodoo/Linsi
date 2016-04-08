@@ -71,6 +71,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
 
     private OOffer selectedOfferObject;
     private int count;
+    private boolean isDescriptionOpened = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +139,15 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerButtonShowDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                offerButtonShowDescription.setVisibility(View.GONE);
-                offerDescription.setMaxLines(100);
+                if(!isDescriptionOpened) {
+                    isDescriptionOpened = true;
+                    offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_less_black_24dp, 0, 0, 0);
+                    offerDescription.setMaxLines(100);
+                } else if(isDescriptionOpened){
+                    isDescriptionOpened = false;
+                    offerDescription.setMaxLines(3);
+                    offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_black_24dp, 0, 0, 0 );
+                }
             }
         });
         addToBasket = (Button) findViewById(R.id.offerAddToChart);

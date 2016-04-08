@@ -1,6 +1,8 @@
 package com.linzon.ru.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.linzon.ru.App;
 import com.linzon.ru.MainActivity;
@@ -42,11 +46,46 @@ public class CategoryOffersF extends Fragment {
         return view;
     }
 
+    public class SpinnerAdapter extends ArrayAdapter<String> {
+        public SpinnerAdapter(Context ctx, int txtViewResourceId, String[] objects) {
+            super(ctx, txtViewResourceId, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
+            return getCustomView(position, cnvtView, prnt, Color.BLACK);
+        }
+
+        @Override
+        public View getView(int pos, View cnvtView, ViewGroup prnt) {
+            return getCustomView(pos, cnvtView, prnt, Color.WHITE);
+        }
+
+        public View getCustomView(int position, View convertView, ViewGroup parent, int color) {
+            LayoutInflater inflater = CategoryOffersF.this.getActivity().getLayoutInflater();
+            View mySpinner = inflater.inflate(R.layout.spinner_item, parent, false);
+            TextView textView = (TextView) mySpinner.findViewById(R.id.spinnerText);
+            textView.setText(Constants.SortArray[position]);
+            textView.setTextColor(color);
+
+            ImageView spinnerImage = (ImageView) mySpinner.findViewById(R.id.spinnerImage);
+            if(color == Color.BLACK) {
+                spinnerImage.setVisibility(View.GONE);
+            } else {
+                spinnerImage.setVisibility(View.VISIBLE);
+            }
+            return mySpinner;
+        }
+    }
+
+
     private void setSpinner() {
         categorySortSpinner = (Spinner) view.findViewById(R.id.categorySortSpinner);
-        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(CategoryOffersF.this.getActivity(), R.layout.spinner_item, Constants.SortArray);
-        adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySortSpinner.setAdapter(adapterBC);
+        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(CategoryOffersF.this.getActivity(), android.R.layout.simple_spinner_dropdown_item, Constants.SortArray);
+        SpinnerAdapter adapter = new SpinnerAdapter(this.getActivity().getApplicationContext(), R.layout.spinner_item, Constants.SortArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        categorySortSpinner.setAdapter(adapter);
         categorySortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -57,11 +96,11 @@ public class CategoryOffersF extends Fragment {
                             break;
                         }
                         case 1: {
-                            sortByPriceUp();
+                            sortByPriceDown();
                             break;
                         }
                         case 2: {
-                            sortByPriceDown();
+                            sortByPriceUp();
                             break;
                         }
                     }
