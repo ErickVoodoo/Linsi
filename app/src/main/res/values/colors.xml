@@ -15,4 +15,6 @@
 
     <color name="buttonOrangeColor">#FF9800</color>
     <color name="buttonOrangeColorPressed">#cdff9800</color>
+
+    <color name="greenColor">#43A047</color>
 </resources>

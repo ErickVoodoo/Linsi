@@ -52,41 +52,61 @@ public class StartScreen extends AppCompatActivity implements View.OnClickListen
     private void uploadInformation() {
         progressBar.setVisibility(View.VISIBLE);
         button.setVisibility(View.GONE);
-        Log.i("LOADING", "PRICE");
-        if(Values.isOnline(this)) {
-            ApiConnector.asyncGetPrice(Constants.STATIC_PRICE, new ApiConnector.CallbackGetPriceList() {
+        if (Values.isOnline(this)) {
+            ApiConnector.asyncSimpleGetRequest(Constants.STATIC_VERSION, new ApiConnector.CallbackString() {
                 @Override
-                public void onSuccess(ArrayList<POffer> success) {
-                    ((App) StartScreen.this.getApplication()).setPriceOffers(success);
-                    if (DBHelper.getInstance().selectRows(DBHelper.OFFERS, null, null, null, null).getCount() != 0) {
-                        if (false) {
-                    /*TODO CHECK IF NEED UPDATE FROM SERVER*/
-                        } else {
-                            Intent intent = new Intent(StartScreen.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            StartScreen.this.finish();
-                        }
-                    } else if (SharedProperty.getInstance().getValue(SharedProperty.APP_VERSION) == null) {
-                        ApiConnector.asyncGetOfferList(Constants.STATIC_APP, new ApiConnector.CallbackGetOfferList() {
-                            @Override
-                            public void onSuccess(String success) {
-                                progressBar.setVisibility(View.GONE);
-                                SharedProperty.getInstance().setValue(SharedProperty.APP_VERSION, "0");
+                public void onSuccess(final String successVersion) {
+                    ApiConnector.asyncGetPrice(Constants.STATIC_PRICE, new ApiConnector.CallbackGetPriceList() {
+                        @Override
+                        public void onSuccess(ArrayList<POffer> successPrice) {
+                            ((App) StartScreen.this.getApplication()).setPriceOffers(successPrice);
 
+                            if(SharedProperty.getInstance().getValue(SharedProperty.APP_VERSION) == null ||
+                                    !SharedProperty.getInstance().getValue(SharedProperty.APP_VERSION).equals(successVersion)) {
+                                startScreenStatus.setText(StartScreen.this.getResources().getString(R.string.notificationNewData));
+                                ApiConnector.asyncGetOfferList(Constants.STATIC_APP, new ApiConnector.CallbackGetOfferList() {
+                                    @Override
+                                    public void onSuccess(String successOffers) {
+                                        progressBar.setVisibility(View.GONE);
+                                        SharedProperty.getInstance().setValue(SharedProperty.APP_VERSION, successVersion);
+
+                                        Intent intent = new Intent(StartScreen.this, MainActivity.class);
+                                        startActivity(intent);
+                                        StartScreen.this.finish();
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                button.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.GONE);
+                                                startScreenStatus.setText(StartScreen.this.getResources().getString(R.string.networkExceptionSmall));
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
                                 Intent intent = new Intent(StartScreen.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 StartScreen.this.finish();
                             }
+                        }
 
-                            @Override
-                            public void onError(String error) {
-                                button.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.GONE);
-                                startScreenStatus.setText(StartScreen.this.getResources().getString(R.string.networkExceptionSmall));
-                            }
-                        });
-                    }
+                        @Override
+                        public void onError(String error) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    button.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.GONE);
+                                    startScreenStatus.setText(StartScreen.this.getResources().getString(R.string.networkExceptionSmall));
+                                }
+                            });
+                        }
+                    });
                 }
 
                 @Override
@@ -122,7 +142,7 @@ public class StartScreen extends AppCompatActivity implements View.OnClickListen
                     uploadInformation();
                     startScreenStatus.setText(StartScreen.this.getResources().getString(R.string.startScreenLoadInformation));
                 } else {
-                    Snackbar.make(findViewById(android.R.id.content), getApplicationContext().getResources().getString(R.string.networkException), Snackbar.LENGTH_LONG).show();
+                    Values.showTopSnackBar(StartScreen.this, getApplicationContext().getResources().getString(R.string.networkException), null, null, Snackbar.LENGTH_SHORT);
                 }
                 break;
             }

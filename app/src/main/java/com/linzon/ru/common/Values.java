@@ -1,9 +1,17 @@
 package com.linzon.ru.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
+
+import com.linzon.ru.Basket;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -48,5 +56,17 @@ public class Values {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static void showTopSnackBar(Activity activity, String text, String buttonText, View.OnClickListener onClickListener, int howLong) {
+        Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), text, howLong);
+        if(onClickListener != null) {
+            snack.setAction(buttonText, onClickListener);
+        }
+        View view = snack.getView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        view.setLayoutParams(params);
+        snack.show();
     }
 }

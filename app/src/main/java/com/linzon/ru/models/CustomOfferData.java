@@ -58,27 +58,27 @@ public class CustomOfferData {
         }
         try {
             dataObj = new JSONObject(data);
-            if(dataObj.has("TYPE")) {
+            /*if(dataObj.has("TYPE")) {
                 dataString += dataObj.getString("TYPE") + ", ";
-            }
+            }*/
             if(dataObj.has("BC")) {
-                dataString += dataObj.getString("BC") + ", ";
+                dataString += dataObj.getString("BC") + " | ";
             }
             if(dataObj.has("PWR")) {
-                dataString += dataObj.getString("PWR") + ", ";
+                dataString += dataObj.getString("PWR") + " | ";
             }
             if(dataObj.has("AX")) {
-                dataString += dataObj.getString("AX") + ", ";
+                dataString += dataObj.getString("AX") + " | ";
             }
             if(dataObj.has("CYL")) {
-                dataString += dataObj.getString("CYL") + ", ";
+                dataString += dataObj.getString("CYL") + " | ";
             }
             if(dataObj.has("COLOR")) {
-                dataString += dataObj.getString("COLOR") + ", ";
+                dataString += dataObj.getString("COLOR") + " | ";
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return dataString.substring(0, dataString.length() - 2);
+        return dataString.substring(0, dataString.length() - 3);
     }
 }

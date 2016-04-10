@@ -5,8 +5,10 @@ import java.util.Map;
 
 public class Constants {
     public static final String STATIC_SERVER = "http://www.linzon.ru";
-    public static final String STATIC_APP = "http://www.linzon.ru/json_app.txt";
+    public static final String STATIC_APP = "http://www.linzon.ru/json_app2.txt";
     public static final String STATIC_PRICE = "http://www.linzon.ru/json_price164.txt";
+    public static final String STATIC_VERSION = "http://www.linzon.ru/version.txt";
+    public static final String STATIC_ORDER_STATE = "http://www.linzon.ru/apijsn2016/jsonout.php?state=";
     public static final String STATIC_SEND_BASKET = "http://www.linzon.ru/apijsn2016/postjson.php";
     public static final String STATIC_PRICE_UPDATE = "http://linzon.ru/market_json3.php";
     public static final String STATIC_OFFERS_UPDATE = "http://linzon.ru/market_json4.php";
@@ -21,11 +23,16 @@ public class Constants {
         put("15", "Линзы на месяц");
         put("7", "Цветные линзы");
         put("16", "Квартальные линзы");
+        put("3", "Традиционные линзы");
         put("13", "Торические линзы");
+        put("9", "Карнавальные линзы");
+        put("6", "Капли для глаз");
         put("10", "Раствор для линз");
     }};
 
     public static final String[] NotALins = {"10", "6"};
+    public static final String[] OrderStatuses = {"Заказано", "Выполняется", "Доставлено"};
+    public static final String[] Month = {"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
     public static final String[] SortArray = { "По названию", "По цене(по возрастанию)", "По цене(по убыванию)" };
 
     public static final String STATUS_OPEN = "open";

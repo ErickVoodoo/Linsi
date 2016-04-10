@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.BasketItem;
@@ -46,17 +47,12 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.e("TIME", arrayList.get(position).getOrdered_at());
         DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
         Calendar cal = Calendar.getInstance();
-        Date date = null;
-        try {
-            date = df.parse(arrayList.get(position).getOrdered_at());
-            cal.setTime(date);
-            holder.orderedAt.setText(this.activity.getResources().getString(R.string.static_ordered) + " " +  cal.get(Calendar.DAY_OF_MONTH) + "." + cal.get(Calendar.MONTH) + "." + cal.get(Calendar.YEAR));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        cal.setTimeInMillis(Long.parseLong(arrayList.get(position).getOrdered_at())*10003);
+
+        holder.orderedAt.setText(this.activity.getResources().getString(R.string.static_ordered) + " " +  cal.get(Calendar.DAY_OF_MONTH) + " " + Constants.Month[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR));
+
         holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + String.valueOf(Math.abs(Integer.valueOf(arrayList.get(position).getPrice()) * Integer.valueOf(arrayList.get(position).getCount()))) + " " + this.activity.getResources().getString(R.string.static_exchange));
         holder.count.setText(this.activity.getResources().getString(R.string.static_count) + " " + arrayList.get(position).getCount());
 
@@ -74,12 +70,18 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
             }
         });
-        holder.archiveParams.setText(CustomOfferData.toCompactString(arrayList.get(position).getData()));
+        if(arrayList.get(position).getData() != null) {
+            holder.archiveParams.setVisibility(View.VISIBLE);
+            holder.archiveParams.setText(CustomOfferData.toCompactString(arrayList.get(position).getData()));
+        } else {
+            holder.archiveParams.setVisibility(View.GONE);
+        }
         holder.archiveAddToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ContentValues order = DBHelper.setBasketContentValues(
                         arrayList.get(position).getOffer_id(),
+                        null,
                         arrayList.get(position).getName(),
                         arrayList.get(position).getCount(),
                         arrayList.get(position).getPrice(),
@@ -91,7 +93,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
                 Intent addToBasket = new Intent();
                 addToBasket.setAction(Constants.BROADCAST_ADD_TO_BASKET_FROM_ARCHIVE);
                 LocalBroadcastManager.getInstance(activity).sendBroadcast(addToBasket);
-                Snackbar.make(ArchiveAdapter.this.activity.findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_SHORT).show();
+                Values.showTopSnackBar(activity, "Товар добавлен в корзину", null, null, Snackbar.LENGTH_SHORT);
             }
         });
     }

@@ -1,7 +1,11 @@
 package com.linzon.ru;
 
+import android.animation.ObjectAnimator;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.TimeCommon;
+import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.CustomOfferData;
@@ -142,10 +149,21 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                 if(!isDescriptionOpened) {
                     isDescriptionOpened = true;
                     offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_less_black_24dp, 0, 0, 0);
-                    offerDescription.setMaxLines(100);
+                   // offerDescription.setMaxLines(100);
+                    ObjectAnimator animation = ObjectAnimator.ofInt(
+                            offerDescription,
+                            "maxLines",
+                            25);
+                    animation.setDuration(350);
+                    animation.start();
                 } else if(isDescriptionOpened){
                     isDescriptionOpened = false;
-                    offerDescription.setMaxLines(3);
+                    ObjectAnimator animation = ObjectAnimator.ofInt(
+                            offerDescription,
+                            "maxLines",
+                            3);
+                    animation.setDuration(350);
+                    animation.start();
                     offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_black_24dp, 0, 0, 0 );
                 }
             }
@@ -159,6 +177,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         if (checkBoxLeftEye.isChecked()) {
                             ContentValues order = DBHelper.setBasketContentValues(
                                     selectedOfferObject.getId(),
+                                    null,
                                     selectedOfferObject.getName(),
                                     offerCountLeft.getSelectedItem().toString(),
                                     selectedOfferObject.getPrice(),
@@ -171,14 +190,14 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                             offerCOLORLeft.getSelectedItem()
                                     ) : null,
                                     Constants.STATUS_OPEN,
-                                    new Date().toString(),
+                                    String.valueOf(TimeCommon.getUnixTime()),
                                     "");
                             DBHelper.getInstance().insertToBasket(order, offerCountLeft.getSelectedItem().toString());
-                            //DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
                         }
                         if (checkBoxRightEye.isChecked()) {
                             ContentValues order = DBHelper.setBasketContentValues(
                                     selectedOfferObject.getId(),
+                                    null,
                                     selectedOfferObject.getName(),
                                     offerCountRight.getSelectedItem().toString(),
                                     selectedOfferObject.getPrice(),
@@ -191,27 +210,20 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                             offerCOLORRight.getSelectedItem()
                                     ) : null,
                                     Constants.STATUS_OPEN,
-                                    new Date().toString(),
+                                    String.valueOf(TimeCommon.getUnixTime()),
                                     "");
                             DBHelper.getInstance().insertToBasket(order, offerCountRight.getSelectedItem().toString());
-                            //DBHelper.getInstance().insertRows(DBHelper.BASKET, order);
                         }
 
-                        Snackbar snack = Snackbar.make(findViewById(android.R.id.content), "Добавлено в корзину", Snackbar.LENGTH_LONG).setAction("В корзину", new View.OnClickListener() {
+                        Values.showTopSnackBar(Offer.this, "Добавлено в корзину", "В корзину", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(Offer.this, Basket.class);
                                 Offer.this.startActivity(intent);
                             }
-                        });
-
-                        View view = snack.getView();
-                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-                        view.setLayoutParams(params);
-                        snack.show();
+                        }, Snackbar.LENGTH_LONG);
                     } else {
-                        Snackbar.make(findViewById(android.R.id.content), "Нельзя добавить пустой заказ", Snackbar.LENGTH_SHORT).show();
+                        Values.showTopSnackBar(Offer.this, "Нельзя добавить пустой заказ в корзину", null, null, Snackbar.LENGTH_SHORT);
                     }
                 }
             }
@@ -239,8 +251,18 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerCOLORLeft = (Spinner) findViewById(R.id.offerCOLORLeft);
         offerCOLORRight = (Spinner) findViewById(R.id.offerCOLORRight);
 
-        offerCountRight.setOnItemSelectedListener(this);
-        offerCountLeft.setOnItemSelectedListener(this);
+        offerCountRight.setOnItemSelectedListener(Offer.this);
+        offerCountLeft.setOnItemSelectedListener(Offer.this);
+        offerPWRLeft.setOnItemSelectedListener(Offer.this);
+        offerPWRRight.setOnItemSelectedListener(Offer.this);
+        offerBCLeft.setOnItemSelectedListener(Offer.this);
+        offerBCRight.setOnItemSelectedListener(Offer.this);
+        offerAXLeft.setOnItemSelectedListener(Offer.this);
+        offerAXRight.setOnItemSelectedListener(Offer.this);
+        offerCYLLeft.setOnItemSelectedListener(Offer.this);
+        offerCYLRight.setOnItemSelectedListener(Offer.this);
+        offerCOLORLeft.setOnItemSelectedListener(Offer.this);
+        offerCOLORRight.setOnItemSelectedListener(Offer.this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -274,12 +296,10 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                 offerName.setText(success.getName());
                 offerDescription.setText(success.getDescription());
 
-                Log.e("COUNT", String.valueOf(offerDescription.getLineCount()));
-
                 offerDescription.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(offerDescription.getLineCount() < 3) {
+                        if (offerDescription.getLineCount() < 3) {
                             offerButtonShowDescription.setVisibility(View.GONE);
                         } else {
                             offerDescription.setMaxLines(3);
@@ -316,9 +336,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, doubleToString(ss));
                         adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerPWRLeft.setAdapter(adapterPWR);
-                        offerPWRLeft.setSelection(success.getParam_PWR().length / 2);
                         offerPWRRight.setAdapter(adapterPWR);
-                        offerPWRRight.setSelection(success.getParam_PWR().length / 2);
                     } else {
                         findViewById(R.id.mainOfferLayoutPWR).setVisibility(View.GONE);
                         findViewById(R.id.viewLinePWR).setVisibility(View.GONE);
@@ -328,9 +346,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_BC());
                         adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerBCLeft.setAdapter(adapterBC);
-                        offerBCLeft.setSelection(success.getParam_BC().length / 2);
                         offerBCRight.setAdapter(adapterBC);
-                        offerBCRight.setSelection(success.getParam_BC().length / 2);
                     } else {
                         findViewById(R.id.mainOfferLayoutBC).setVisibility(View.GONE);
                         findViewById(R.id.viewLineBC).setVisibility(View.GONE);
@@ -340,9 +356,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_AX());
                         adapterAX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerAXLeft.setAdapter(adapterAX);
-                        offerAXLeft.setSelection(success.getParam_AX().length / 2);
                         offerAXRight.setAdapter(adapterAX);
-                        offerAXRight.setSelection(success.getParam_AX().length / 2);
                     } else {
                         findViewById(R.id.mainOfferLayoutAX).setVisibility(View.GONE);
                         findViewById(R.id.viewLineAX).setVisibility(View.GONE);
@@ -352,9 +366,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_CYL());
                         adapterCYL.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerCYLLeft.setAdapter(adapterCYL);
-                        offerCYLLeft.setSelection(success.getParam_CYL().length / 2);
                         offerCYLRight.setAdapter(adapterCYL);
-                        offerCYLRight.setSelection(success.getParam_CYL().length / 2);
                     } else {
                         findViewById(R.id.mainOfferLayoutCYL).setVisibility(View.GONE);
                         findViewById(R.id.viewLineCYL).setVisibility(View.GONE);
@@ -364,9 +376,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                         ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_COLOR());
                         adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerCOLORLeft.setAdapter(adapterCOLOR);
-                        offerCOLORLeft.setSelection(0);
                         offerCOLORRight.setAdapter(adapterCOLOR);
-                        offerCOLORRight.setSelection(0);
                     } else {
                         findViewById(R.id.mainOfferLayoutCOLOR).setVisibility(View.GONE);
                         findViewById(R.id.viewLineCOLOR).setVisibility(View.GONE);
@@ -452,6 +462,26 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         recalculatePrice();
+        switch (parent.getId()) {
+            case R.id.offerAXLeft :
+            case R.id.offerBCLeft :
+            case R.id.offerCOLORLeft:
+            case R.id.offerCYLLeft:
+            case R.id.offerCountLeft:
+            case R.id.offerPWRLeft: {
+                checkBoxLeftEye.setChecked(true);
+                break;
+            }
+            case R.id.offerAXRight :
+            case R.id.offerBCRight :
+            case R.id.offerCOLORRight:
+            case R.id.offerCYLRight:
+            case R.id.offerCountRight:
+            case R.id.offerPWRRight: {
+                checkBoxRightEye.setChecked(true);
+                break;
+            }
+        }
     }
 
     @Override

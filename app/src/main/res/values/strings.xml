@@ -9,6 +9,8 @@
     <string name="networkExceptionSmall">Ошибка интернет соединения</string>
     <string name="errorNotValidEmail">Не валидная почта, проверьте данные</string>
     <string name="errorNotFilled">Заполните все поля перед сохранением</string>
+    <string name="notificationNewData">Появилось обновление товаров в магазине! Загружаем...</string>
+
 
     <string name="drawer_popular">Популярные</string>
     <string name="drawer_nav_1">Однодневные линзы</string>
@@ -54,10 +56,10 @@
     
     <string name="postTitle">Доставка по Москве и Санкт-Петербургу - 150 рублей.</string>
     <string name="postText">Заказы суммарным весом менее 3 кг оплачиваются по стандартному тарифу. Заказы весом более 3 кг оплачиваются из расчета 100 р за каждый кг. Минимальная сумма заказа - 1000 руб. Стоимость самовывоза - от 150 рублей (смотрите таблицу пунктов). Доставка по Москве: В пределах Москвы и ближнего подмосковья ежедневно с 10-00 до 19-00, кроме воскресенья. На следующий день после оформления заказа. Доставка по Санкт-Петербургу: В пределах Санкт-Петербурга ежедневно с 10-00 до 19-00, кроме воскресенья. Доставка в область осуществляется с 10-00 до 18-00 без выбора интервала доставки. Доставка за МКАД и КАД обговаривается отдельно.</string>
-    <string name="contactPhoneMoscow">+7[495] 223-35-74(Москва)</string>
-    <string name="contactPhoneSP">+7[812] 748-28-78(С-Петербург)</string>
-    <string name="contactPhoneMoscowText">ежедневно с 10:00 до 19:00.</string>
-    <string name="contactPhoneSPText">ежедневно с 10:00 до 18:00.</string>
+    <string name="contactPhoneMoscow">+7[495] 223-35-74</string>
+    <string name="contactPhoneSP">+7[812] 748-28-78</string>
+    <string name="contactPhoneMoscowText">Ежедневно с 10:00 до 19:00.</string>
+    <string name="contactPhoneSPText">Ежедневно с 10:00 до 18:00.</string>
 
     <string name="toolbarPost">Доставка</string>
     <string name="toolbarContacts">Контакты</string>

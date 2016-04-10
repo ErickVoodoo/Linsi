@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.SharedProperty;
+import com.linzon.ru.common.TimeCommon;
 import com.linzon.ru.models.BasketItem;
 import com.linzon.ru.models.OOffer;
 
@@ -68,6 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "create table " + BASKET + " (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "offer_id text," +
+                        "order_id text," +
                         "name text," +
                         "count text, " +
                         "price text, " +
@@ -91,7 +93,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void dropDatabase() {
         this.getWritableDatabase().execSQL("delete from " + OFFERS);
-        this.getWritableDatabase().execSQL("delete from " + BASKET);
     }
 
     public long insertRows(String TABLE_NAME, ContentValues contentValues) {
@@ -160,6 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static ContentValues setBasketContentValues(
             String offer_id,
+            String order_id,
             String name,
             String count,
             String price,
@@ -170,6 +172,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         if(offer_id != null)
             cv.put("offer_id", offer_id);
+        if(order_id != null)
+            cv.put("order_id", order_id);
         if(price != null)
             cv.put("price", price);
         if(name != null)
@@ -240,7 +244,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static ArrayList<BasketItem> getBasketOffers(String where) {
         ArrayList<BasketItem> arrayList = new ArrayList<>();
-        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "ordered_at DESC");
+        Cursor rows = getInstance().selectRows(BASKET, null, "status = '" + where + "'", null, "id DESC");
         if (rows.moveToFirst()) {
             do {
                 BasketItem offer = new BasketItem();
@@ -293,7 +297,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static void updateBasketCount(final String id, final String count) {
-        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, count, null, null, null, null, null);
+        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, count, null, null, null, null, null);
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");
     }
 
@@ -301,8 +305,10 @@ public class DBHelper extends SQLiteOpenHelper {
         DBHelper.getInstance().deleteRows(DBHelper.BASKET, "id = '" + id + "'");
     }
 
-    public static void sendToArchive() {
-        ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, null, null, Constants.STATUS_ARCHIVED, null, new Date().toString());
+    public static void sendToArchive(String orderId) {
+        String orderIdString = String.valueOf(Integer.parseInt(orderId.split(" ")[1].substring(0, orderId.split(" ")[1].length() - 1)) - 1);
+        SharedProperty.getInstance().setValue(SharedProperty.LAST_ORDER, orderIdString);
+        ContentValues basketValues = DBHelper.setBasketContentValues(null, orderIdString, null, null, null, null, Constants.STATUS_ARCHIVED, null, String.valueOf(TimeCommon.getUnixTime()));
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "status = 'open'");
     }
 
@@ -351,7 +357,7 @@ public class DBHelper extends SQLiteOpenHelper {
             info.put("total", getTotalPrice(Constants.STATUS_OPEN) + Constants.DELIVER_PRICE);
             info.put("shop", "LP");
             info.put("timestamp", new Date());
-            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT).replaceAll("[-+.^:,&%!]", ""));
+            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT) != null ? SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT).replaceAll("[-+.^:,&%!]", "") : "");
             root.put("info", info);
         } catch (JSONException e) {
             e.printStackTrace();

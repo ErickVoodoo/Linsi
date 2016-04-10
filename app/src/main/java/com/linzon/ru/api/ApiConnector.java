@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.linzon.ru.common.Constants;
-import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
 import com.linzon.ru.models.POffer;
@@ -36,7 +35,7 @@ public class ApiConnector {
         public abstract void onError(String error);
     }
 
-    public static abstract class CallbackSendBasket {
+    public static abstract class CallbackString {
         public abstract void onSuccess(String success);
 
         public abstract void onError(String error);
@@ -77,7 +76,7 @@ public class ApiConnector {
                             category.setName(currentCategory.getString("name"));
                         categoryArrayList.add(category);
                     }*/
-
+                    DBHelper.getInstance().dropDatabase();
                     for(int j = 0; j < offersArray.length(); j++) {
                         JSONObject currentOffer = offersArray.getJSONObject(j);
                         OOffer offer = new OOffer();
@@ -232,7 +231,7 @@ public class ApiConnector {
         }.execute(query);
     }
 
-    public static void asyncSendToServer(final CallbackSendBasket callback) {
+    public static void asyncSendToServer(final CallbackString callback) {
         new AsyncTask<Void, Void, String>(){
             @Override
             protected String doInBackground(Void... params) {
@@ -272,5 +271,36 @@ public class ApiConnector {
                 callback.onSuccess(result);
             }
         }.execute();
+    }
+
+    public static void asyncSimpleGetRequest(String url, final CallbackString callback) {
+        new AsyncTask<String, Void, String>(){
+            @Override
+            protected String doInBackground(String... params) {
+                String result = "";
+                String responseString = "";
+
+                try {
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(params[0]).openConnection();
+                    httpURLConnection.setConnectTimeout(10000);
+                    httpURLConnection.setRequestMethod("GET");
+                    httpURLConnection.setDoOutput(true);
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((responseString = bufferedReader.readLine()) != null) {
+                        result += responseString;
+                    }
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callback.onError(e.getMessage());
+                }
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                callback.onSuccess(result);
+            }
+        }.execute(url);
     }
 }

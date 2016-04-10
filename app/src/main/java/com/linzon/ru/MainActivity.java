@@ -336,10 +336,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
+        /*if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
                 || newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             showCategory(0);
-        }
+        }*/
     }
 
     public void showFab() {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -85,7 +86,7 @@ public class BasketF extends Fragment {
             @Override
             public void onClick(View v) {
                 if(DBHelper.getInstance().getTotalPrice(Constants.STATUS_OPEN) < 1000) {
-                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), "Нельзя заказать товаров на сумму меньше 1000", Snackbar.LENGTH_SHORT).show();
+                    Values.showTopSnackBar(BasketF.this.getActivity(), "Нельзя заказать товаров на сумму меньше 1000", null, null, Snackbar.LENGTH_SHORT);
                 } else {
                     if(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) != null &&
                             SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE) != null) {
@@ -127,16 +128,31 @@ public class BasketF extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 if(Values.isOnline(BasketF.this.getActivity())) {
-                                    ApiConnector.asyncSendToServer(new ApiConnector.CallbackSendBasket() {
+                                    ApiConnector.asyncSendToServer(new ApiConnector.CallbackString() {
                                         @Override
                                         public void onSuccess(String success) {
                                             Log.e("SUCCESS", success);
                                             SharedProperty.getInstance().setValue(SharedProperty.USER_COMMENT, "");
-                                            DBHelper.sendToArchive();
+                                            DBHelper.sendToArchive(success);
                                             Intent intent = new Intent();
                                             intent.setAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
                                             LocalBroadcastManager.getInstance(BasketF.this.getActivity()).sendBroadcast(intent);
+
                                             send.dismiss();
+
+                                            final Dialog dialog = new Dialog(BasketF.this.getActivity());
+                                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                            dialog.setCancelable(false);
+                                            dialog.setContentView(R.layout.seccessful_send);
+                                            dialog.show();
+
+                                            final Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    dialog.dismiss();
+                                                }
+                                            }, 3000);
                                         }
 
                                         @Override
@@ -145,7 +161,7 @@ public class BasketF extends Fragment {
                                         }
                                     });
                                 } else {
-                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.networkException), Snackbar.LENGTH_SHORT).show();
+                                    Values.showTopSnackBar(BasketF.this.getActivity(), BasketF.this.getActivity().getResources().getString(R.string.networkException), null, null, Snackbar.LENGTH_SHORT);
                                 }
                             }
                         });
@@ -157,7 +173,7 @@ public class BasketF extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(Values.isOnline(BasketF.this.getActivity())) {
-                                            ApiConnector.asyncSendToServer(new ApiConnector.CallbackSendBasket() {
+                                            ApiConnector.asyncSendToServer(new ApiConnector.CallbackString() {
                                                 @Override
                                                 public void onSuccess(String success) {
                                                     Log.e("SUCCESS", success);
@@ -186,7 +202,6 @@ public class BasketF extends Fragment {
                         builder.create().show();*/
                     } else {
                         final Dialog dialog = new Dialog(BasketF.this.getActivity());
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setTitle("Заполните контактные данные");
                         dialog.setCancelable(true);
                         dialog.setContentView(R.layout.fragment_user);
@@ -207,15 +222,8 @@ public class BasketF extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 if(username.getText().toString().length() == 0 ||
-                                        email.getText().toString().length() == 0 ||
-                                        phone.getText().toString().length() == 0 ||
-                                        city.getText().toString().length() == 0 ||
-                                        street.getText().toString().length() == 0) {
-                                    Snackbar.make(dialog.findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                if(! android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
-                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
+                                        phone.getText().toString().length() == 0 ) {
+                                    Values.showTopSnackBar(BasketF.this.getActivity(), "Пожалуйста, заполните имя и телефон", null, null, Snackbar.LENGTH_SHORT);
                                     return;
                                 }
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, username.getText().toString());
@@ -223,7 +231,7 @@ public class BasketF extends Fragment {
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, phone.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, city.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, street.getText().toString());
-                                Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), "Данные сохранены", Snackbar.LENGTH_SHORT).show();
+                                Values.showTopSnackBar(BasketF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);
                                 dialog.dismiss();
                             }
                         });
@@ -243,7 +251,7 @@ public class BasketF extends Fragment {
         basketTotalCount.setText(
                 BasketF.this.getActivity().getResources().getString(R.string.static_total) + " " +
                         DBHelper.getInstance().getTotalPrice(Constants.STATUS_OPEN) + " " +
-                        BasketF.this.getActivity().getResources().getString(R.string.static_exchange) + "(доставка +" + Constants.DELIVER_PRICE + "р.)");
+                        BasketF.this.getActivity().getResources().getString(R.string.static_exchange) + " (доставка +" + Constants.DELIVER_PRICE + "р.)");
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

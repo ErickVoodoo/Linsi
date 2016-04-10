@@ -31,6 +31,7 @@ public class SharedProperty {
     }
 
     public static final String APP_VERSION = "app_version";
+    public static final String LAST_ORDER = "last_order";
     public static final String USER_NAME = "username";
     public static final String USER_EMAIL = "email";
     public static final String USER_PHONE = "phone";

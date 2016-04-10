@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.linzon.ru.R;
 import com.linzon.ru.common.SharedProperty;
+import com.linzon.ru.common.Values;
 
 public class UserF extends Fragment {
     View view;
@@ -46,15 +47,8 @@ public class UserF extends Fragment {
             @Override
             public void onClick(View v) {
                 if(userName.getText().toString().length() == 0 ||
-                        userEmail.getText().toString().length() == 0 ||
-                        userPhone.getText().toString().length() == 0 ||
-                        userCity.getText().toString().length() == 0 ||
-                        userStreet.getText().toString().length() == 0) {
-                    Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotFilled), Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
-                if(! android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail.getText().toString()).matches()) {
-                    Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), UserF.this.getActivity().getResources().getString(R.string.errorNotValidEmail), Snackbar.LENGTH_SHORT).show();
+                        userPhone.getText().toString().length() == 0) {
+                    Values.showTopSnackBar(UserF.this.getActivity(), UserF.this.getActivity().getResources().getString(R.string.errorNotFilled), null, null, Snackbar.LENGTH_SHORT);
                     return;
                 }
                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, userName.getText().toString());
@@ -62,7 +56,7 @@ public class UserF extends Fragment {
                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, userPhone.getText().toString());
                 SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, userCity.getText().toString());
                 SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, userStreet.getText().toString());
-                Snackbar.make(UserF.this.getActivity().findViewById(android.R.id.content), "Данные сохранены", Snackbar.LENGTH_SHORT).show();
+                Values.showTopSnackBar(UserF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);
             }
         });
     }

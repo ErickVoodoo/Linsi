@@ -29,6 +29,10 @@ public class TimeCommon {
         return Calendar.getInstance(TimeZone.getDefault()).get(Calendar.SECOND);
     }
 
+    public static int getUnixTime() {
+        return (int) (System.currentTimeMillis() / 1000L);
+    }
+
     public static int getHourFromUnix(int unix){
         return (int)(unix - (int)(Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis()/1000 - getHourNumber()*3600 - getMinuteNumber()*60 - getSecondNumber()))/3600;
     }
