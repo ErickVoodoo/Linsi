@@ -5,8 +5,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.linzon.ru.R;
+import com.linzon.ru.api.ApiConnector;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBAsync;
@@ -24,13 +26,9 @@ import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by erick on 29.3.16.
@@ -47,11 +45,10 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(Long.parseLong(arrayList.get(position).getOrdered_at())*10003);
+        cal.setTimeInMillis(Long.parseLong(arrayList.get(position).getOrdered_at()) * 1000);
 
-        holder.orderedAt.setText(this.activity.getResources().getString(R.string.static_ordered) + " " +  cal.get(Calendar.DAY_OF_MONTH) + " " + Constants.Month[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR));
+        holder.orderedAt.setText(this.activity.getResources().getString(R.string.static_ordered) + " " + cal.get(Calendar.DAY_OF_MONTH) + " " + Constants.Month[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR));
 
         holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + String.valueOf(Math.abs(Integer.valueOf(arrayList.get(position).getPrice()) * Integer.valueOf(arrayList.get(position).getCount()))) + " " + this.activity.getResources().getString(R.string.static_exchange));
         holder.count.setText(this.activity.getResources().getString(R.string.static_count) + " " + arrayList.get(position).getCount());
@@ -96,6 +93,32 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
                 Values.showTopSnackBar(activity, "Товар добавлен в корзину", null, null, Snackbar.LENGTH_SHORT);
             }
         });
+
+        if(isShowNew(arrayList.get(position))) {
+            holder.orderId.setVisibility(View.VISIBLE);
+            ApiConnector.asyncSimpleGetRequest(Constants.STATIC_ORDER_STATE + arrayList.get(position).getOrder_id(), new ApiConnector.CallbackString() {
+                @Override
+                public void onSuccess(String success) {
+                    RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
+                            RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+
+                    params.setMargins(0, (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            8,
+                            ArchiveAdapter.this.activity.getResources().getDisplayMetrics()
+                    ), 0, 0);
+                    holder.itemMainContainer.setLayoutParams(params);
+                    holder.orderId.setText(success + "|" + arrayList.get(position).getOrder_id());
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        } else {
+            holder.orderId.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -104,16 +127,19 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView itemMainContainer;
         public TextView name;
         public ImageView picture;
         public TextView price;
         public TextView count;
         public TextView orderedAt;
         public TextView archiveParams;
+        public TextView orderId;
         public Button archiveAddToBasket;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemMainContainer = (CardView) itemView.findViewById(R.id.itemArchiveContainer);
             name = (TextView) itemView.findViewById(R.id.archiveName);
             picture = (ImageView) itemView.findViewById(R.id.archivePicture);
             price = (TextView) itemView.findViewById(R.id.archivePrice);
@@ -121,11 +147,27 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
             orderedAt = (TextView) itemView.findViewById(R.id.archiveOrderedAt);
             archiveParams = (TextView) itemView.findViewById(R.id.archiveParams);
             archiveAddToBasket = (Button) itemView.findViewById(R.id.archiveAddToBasket);
+            orderId = (TextView) itemView.findViewById(R.id.orderId);
         }
     }
 
     public ArchiveAdapter(Activity activity, ArrayList<BasketItem> arrayList) {
         this.activity = activity;
         this.arrayList = arrayList;
+    }
+
+    int lastId = 0;
+
+    public boolean isShowNew(BasketItem item) {
+        lastId = Integer.parseInt(item.getOrder_id());
+
+        ArrayList<BasketItem> newItems = new ArrayList<>();
+        for(int i = 0;i < arrayList.size(); i++) {
+            if(arrayList.get(i).getOrder_id().equals(item.getOrder_id())) {
+                newItems.add(arrayList.get(i));
+            }
+        }
+
+        return newItems.get(0).getId().equals(item.getId());
     }
 }

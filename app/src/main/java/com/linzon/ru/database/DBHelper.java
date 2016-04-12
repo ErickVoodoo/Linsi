@@ -249,6 +249,7 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 BasketItem offer = new BasketItem();
                 offer.setId(rows.getString(rows.getColumnIndex("id")));
+                offer.setOrder_id(rows.getString(rows.getColumnIndex("order_id")));
                 offer.setPrice(rows.getString(rows.getColumnIndex("price")));
                 offer.setName(rows.getString(rows.getColumnIndex("name")));
                 offer.setCount(rows.getString(rows.getColumnIndex("count")));

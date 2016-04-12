@@ -41,6 +41,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
         holder.name.setText(arrayList.get(position).getName());
         holder.price.setText(this.activity.getResources().getString(R.string.static_price) + " " + arrayList.get(position).getPrice() + " " + this.activity.getResources().getString(R.string.static_exchange));
         holder.rate.setText(this.activity.getResources().getString(R.string.static_rate) + " " + arrayList.get(position).getRate());
+        holder.rate.setVisibility(View.GONE);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -71,14 +71,14 @@
                         android:layout_marginTop="8dp" />
 
                     <Button
-                        android:layout_marginTop="16dp"
                         android:id="@+id/offerButtonShowDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
                         android:drawableLeft="@drawable/ic_expand_more_black_24dp"
                         android:drawableStart="@drawable/ic_expand_more_black_24dp"
-                        android:text="ПОДРОБНОСТИ"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:text="ПОДРОБНОСТИ" />
 
                     <TextView
                         android:id="@+id/offerVendor"

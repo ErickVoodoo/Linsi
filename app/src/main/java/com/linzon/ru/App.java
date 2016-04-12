@@ -2,10 +2,7 @@ package com.linzon.ru;
 
 import android.app.Application;
 import android.content.Intent;
-import android.util.Log;
 
-import com.linzon.ru.api.ApiConnector;
-import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.POffer;
@@ -33,17 +30,6 @@ public class App extends Application {
         /*Intent service = new Intent(this, BasketService.class);
         service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startService(service);*/
-        ApiConnector.asyncSimpleGetRequest(Constants.STATIC_ORDER_STATE + "62", new ApiConnector.CallbackString() {
-            @Override
-            public void onSuccess(String success) {
-                Log.e("STATE", success);
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
     }
 
     public ArrayList<POffer> getPriceOffers() {

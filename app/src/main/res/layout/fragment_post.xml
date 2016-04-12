@@ -11,14 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Base.TextAppearance.AppCompat.Title"
-        android:padding="8dp"
-        android:gravity="center"
-        android:paddingBottom="8dp"/>
+        android:gravity="center" />
 
     <TextView
         android:text="@string/postText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.TextAppearance.AppCompat.Body2"
-        android:padding="8dp" />
+        style="@style/Base.TextAppearance.AppCompat.Body2" />
 </LinearLayout>

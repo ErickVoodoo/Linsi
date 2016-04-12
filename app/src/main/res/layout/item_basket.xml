@@ -16,7 +16,8 @@
 
         <com.linzon.ru.common.CustomTextView
             android:id="@+id/basketName"
-            style="@style/Base.TextAppearance.AppCompat.Title"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -48,13 +49,13 @@
 
                 <com.linzon.ru.common.CustomTextView
                     android:id="@+id/basketPrice"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <com.linzon.ru.common.CustomTextView
                     android:id="@+id/basketParams"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -93,7 +94,7 @@
                     android:text="-"
                     android:background="@drawable/blue_button"
                     android:gravity="center"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:textColor="@android:color/white"/>
@@ -101,7 +102,7 @@
                 <com.linzon.ru.common.CustomTextView
                     android:gravity="center"
                     android:id="@+id/basketCount"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="42dp"
                     android:layout_height="42dp" />
 
@@ -110,7 +111,7 @@
                     android:text="+"
                     android:background="@drawable/blue_button"
                     android:gravity="center"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    style="@style/Base.TextAppearance.AppCompat.Body2"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:textColor="@android:color/white"/>

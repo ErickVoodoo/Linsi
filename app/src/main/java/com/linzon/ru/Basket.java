@@ -27,7 +27,6 @@ public class Basket extends AppCompatActivity {
         setContentView(R.layout.activity_basket);
 
         mainPage = (ViewPager) findViewById(R.id.basketPager);
-
         setToolbar();
         setProgressBar();
         setTablayout();

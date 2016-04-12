@@ -221,8 +221,9 @@ public class BasketF extends Fragment {
                         dialogButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(username.getText().toString().length() == 0 ||
+                                /*if(username.getText().toString().length() == 0 ||
                                         phone.getText().toString().length() == 0 ) {
+                                    final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) BasketF.this.getActivity().findViewById(android.R.id.content)).getChildAt(0);
                                     Values.showTopSnackBar(BasketF.this.getActivity(), "Пожалуйста, заполните имя и телефон", null, null, Snackbar.LENGTH_SHORT);
                                     return;
                                 }
@@ -231,7 +232,8 @@ public class BasketF extends Fragment {
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, phone.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, city.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, street.getText().toString());
-                                Values.showTopSnackBar(BasketF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);
+                                Values.showTopSnackBar(BasketF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);*/
+
                                 dialog.dismiss();
                             }
                         });
