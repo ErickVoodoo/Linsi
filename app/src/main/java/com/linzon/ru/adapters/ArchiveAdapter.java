@@ -99,7 +99,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
             ApiConnector.asyncSimpleGetRequest(Constants.STATIC_ORDER_STATE + arrayList.get(position).getOrder_id(), new ApiConnector.CallbackString() {
                 @Override
                 public void onSuccess(String success) {
-                    RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
+                    /*RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
                             RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
 
                     params.setMargins(0, (int) TypedValue.applyDimension(
@@ -107,8 +107,9 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
                             8,
                             ArchiveAdapter.this.activity.getResources().getDisplayMetrics()
                     ), 0, 0);
-                    holder.itemMainContainer.setLayoutParams(params);
-                    holder.orderId.setText(success + "|" + arrayList.get(position).getOrder_id());
+                    holder.itemMainContainer.setLayoutParams(params);*/
+                    holder.orderId.setText("Заказ №" + arrayList.get(position).getOrder_id() + " "  + Constants.OrderStatuses[Integer.parseInt(success.replace("\"","")) - 1]);
+                    holder.marginTopArchive.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -117,6 +118,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
                 }
             });
         } else {
+            holder.marginTopArchive.setVisibility(View.GONE);
             holder.orderId.setVisibility(View.GONE);
         }
     }
@@ -127,6 +129,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public View marginTopArchive;
         public CardView itemMainContainer;
         public TextView name;
         public ImageView picture;
@@ -139,6 +142,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
+            marginTopArchive = (View) itemView.findViewById(R.id.marginTopArchive);
             itemMainContainer = (CardView) itemView.findViewById(R.id.itemArchiveContainer);
             name = (TextView) itemView.findViewById(R.id.archiveName);
             picture = (ImageView) itemView.findViewById(R.id.archivePicture);

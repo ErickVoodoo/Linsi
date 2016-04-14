@@ -2,6 +2,7 @@ package com.linzon.ru;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,9 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.fragments.UserF;
 import com.linzon.ru.fragments.CategoryOffersF;
 import com.linzon.ru.fragments.ContactsF;
@@ -29,19 +34,19 @@ import com.linzon.ru.fragments.PostSendF;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private NavigationView navigationView;
     private TextView navHeaderUsername;
+    private EditText globalSearch;
+    private Button searchButton;
+
     public FloatingActionButton fab;
     private DrawerLayout drawer;
     private Toolbar toolbar;
 
     private final static String CATEGORY_TAG = "CATEGORY_FRAGMENT";
-    private final static String POPULAR_TAG = "POPULAR_FRAGMENT";
-    private final static String OFFER_TAG = "OFFER_FRAGMENT";
     private final static String USER_TAG = "ABOUT_FRAGMENT";
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
     private final static String POST_TAG = "POST_FRAGMENT";
-
-    private NavigationView navigationView;
 
     //private PopularF popularFragment;
     private CategoryOffersF categoryOffersFragment;
@@ -198,7 +203,12 @@ public class MainActivity extends AppCompatActivity
     private void initDrawer() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                hideKeyboard();
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
     }
@@ -215,10 +225,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initTextViews() {
-        /*navHeaderUsername = (TextView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.navHeaderUsername);
-        navHeaderUsername.setText("Привет, ");*/
+        navHeaderUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.helloUserTextView);
+        navHeaderUsername.setText("Привет, " + SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
+
+        globalSearch = (EditText) navigationView.getHeaderView(0).findViewById(R.id.globalSearchEditText);
+        searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawer(GravityCompat.START);
+                hideKeyboard();
+            }
+        });
     }
 
+    public void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     @Override
     public void onBackPressed() {

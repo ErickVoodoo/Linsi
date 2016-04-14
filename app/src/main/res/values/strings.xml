@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Linsi</string>
+    <string name="app_name">linzon.ru</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,10 +8,11 @@
     <string name="networkException">Проверьте интернет соединение и повторите попытку позже</string>
     <string name="networkExceptionSmall">Ошибка интернет соединения</string>
     <string name="errorNotValidEmail">Не валидная почта, проверьте данные</string>
-    <string name="errorNotFilled">Заполните все поля перед сохранением</string>
+    <string name="errorNotFilled">Заполните обязательное поле</string>
     <string name="notificationNewData">Появилось обновление товаров в магазине! Загружаем...</string>
 
-
+    <string name="drawer_brands">Бренды</string>
+    <string name="drawer_filter">Фильтр</string>
     <string name="drawer_popular">Популярные</string>
     <string name="drawer_nav_1">Однодневные линзы</string>
     <string name="drawer_nav_14">Двухнедельные линзы</string>

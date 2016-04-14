@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -251,19 +252,6 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerCOLORLeft = (Spinner) findViewById(R.id.offerCOLORLeft);
         offerCOLORRight = (Spinner) findViewById(R.id.offerCOLORRight);
 
-        offerCountRight.setOnItemSelectedListener(Offer.this);
-        offerCountLeft.setOnItemSelectedListener(Offer.this);
-        offerPWRLeft.setOnItemSelectedListener(Offer.this);
-        offerPWRRight.setOnItemSelectedListener(Offer.this);
-        offerBCLeft.setOnItemSelectedListener(Offer.this);
-        offerBCRight.setOnItemSelectedListener(Offer.this);
-        offerAXLeft.setOnItemSelectedListener(Offer.this);
-        offerAXRight.setOnItemSelectedListener(Offer.this);
-        offerCYLLeft.setOnItemSelectedListener(Offer.this);
-        offerCYLRight.setOnItemSelectedListener(Offer.this);
-        offerCOLORLeft.setOnItemSelectedListener(Offer.this);
-        offerCOLORRight.setOnItemSelectedListener(Offer.this);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Constants.linsCount);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         offerCountLeft.setAdapter(adapter);
@@ -385,6 +373,25 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
 
                 Offer.this.hideProgressBar();
                 offerScrollView.setVisibility(View.VISIBLE);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        offerCountRight.setOnItemSelectedListener(Offer.this);
+                        offerCountLeft.setOnItemSelectedListener(Offer.this);
+                        offerPWRLeft.setOnItemSelectedListener(Offer.this);
+                        offerPWRRight.setOnItemSelectedListener(Offer.this);
+                        offerBCLeft.setOnItemSelectedListener(Offer.this);
+                        offerBCRight.setOnItemSelectedListener(Offer.this);
+                        offerAXLeft.setOnItemSelectedListener(Offer.this);
+                        offerAXRight.setOnItemSelectedListener(Offer.this);
+                        offerCYLLeft.setOnItemSelectedListener(Offer.this);
+                        offerCYLRight.setOnItemSelectedListener(Offer.this);
+                        offerCOLORLeft.setOnItemSelectedListener(Offer.this);
+                        offerCOLORRight.setOnItemSelectedListener(Offer.this);
+                    }
+                }, 2000);
             }
 
             @Override

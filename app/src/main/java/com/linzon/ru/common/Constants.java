@@ -30,8 +30,11 @@ public class Constants {
         put("10", "Раствор для линз");
     }};
 
+
+
     public static final String[] NotALins = {"10", "6"};
-    public static final String[] OrderStatuses = {"Заказано", "Выполняется", "Доставлено"};
+    public static final String[] OrderStatuses = {"Ожидает проверки", "Ждём оплаты", "Выполняется", "Доставляется", "Доставлен", "Отменён", "Собирается", "Готов к отгрузке", "Перенос заказа", "Поступил на пункт самовывоза", "Поступил в отделение почты"};
+    public static final String[] Brends = {"ACUVUE", "AIR OPTIX", "PUREVISION", "FRESHLOOK", "SOFLENS", "DAILIES", "BIOMEDICS", "RENU", "OPTIMA", ""};
     public static final String[] Month = {"Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"};
     public static final String[] SortArray = { "По названию", "По цене(по возрастанию)", "По цене(по убыванию)" };
 

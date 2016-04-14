@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class BasketF extends Fragment {
     RecyclerView recyclerView;
     Button buyButton;
     TextView basketTotalCount;
+    boolean isFormError = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,6 +130,7 @@ public class BasketF extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 if(Values.isOnline(BasketF.this.getActivity())) {
+                                    approve.setEnabled(false);
                                     ApiConnector.asyncSendToServer(new ApiConnector.CallbackString() {
                                         @Override
                                         public void onSuccess(String success) {
@@ -157,7 +160,8 @@ public class BasketF extends Fragment {
 
                                         @Override
                                         public void onError(String error) {
-                                            Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), error, Snackbar.LENGTH_SHORT).show();
+                                            Values.showTopSnackBar(BasketF.this.getActivity(),error, null, null, Snackbar.LENGTH_SHORT);
+                                            send.dismiss();
                                         }
                                     });
                                 } else {
@@ -167,39 +171,6 @@ public class BasketF extends Fragment {
                         });
 
                         send.show();
-                        /*AlertDialog.Builder builder = new AlertDialog.Builder(BasketF.this.getActivity());
-                        builder.setMessage("Отправить заявку в магазин?")
-                                .setPositiveButton("Заказать", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(Values.isOnline(BasketF.this.getActivity())) {
-                                            ApiConnector.asyncSendToServer(new ApiConnector.CallbackString() {
-                                                @Override
-                                                public void onSuccess(String success) {
-                                                    Log.e("SUCCESS", success);
-                                                    DBHelper.sendToArchive();
-                                                    Intent intent = new Intent();
-                                                    intent.setAction(Constants.BROADCAST_ADD_TO_ARCHIVE);
-                                                    LocalBroadcastManager.getInstance(BasketF.this.getActivity()).sendBroadcast(intent);
-                                                }
-
-                                                @Override
-                                                public void onError(String error) {
-                                                    Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), error, Snackbar.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                        } else {
-                                            Snackbar.make(BasketF.this.getActivity().findViewById(android.R.id.content), BasketF.this.getActivity().getResources().getString(R.string.networkException), Snackbar.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                })
-                                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        builder.create().show();*/
                     } else {
                         final Dialog dialog = new Dialog(BasketF.this.getActivity());
                         dialog.setTitle("Заполните контактные данные");
@@ -221,10 +192,26 @@ public class BasketF extends Fragment {
                         dialogButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                /*if(username.getText().toString().length() == 0 ||
-                                        phone.getText().toString().length() == 0 ) {
-                                    final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) BasketF.this.getActivity().findViewById(android.R.id.content)).getChildAt(0);
-                                    Values.showTopSnackBar(BasketF.this.getActivity(), "Пожалуйста, заполните имя и телефон", null, null, Snackbar.LENGTH_SHORT);
+                                TextInputLayout userUserInput = (TextInputLayout) dialog.findViewById(R.id.userNameInput);
+                                TextInputLayout userProneInput = (TextInputLayout) dialog.findViewById(R.id.userPhoneInput);
+                                if (username.getText().toString().length() == 0) {
+                                    userUserInput.setErrorEnabled(true);
+                                    userUserInput.setError(BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled));
+                                    isFormError = true;
+                                } else {
+                                    userUserInput.setErrorEnabled(false);
+                                }
+
+                                if (phone.getText().toString().length() == 0) {
+                                    userProneInput.setErrorEnabled(true);
+                                    userProneInput.setError(BasketF.this.getActivity().getResources().getString(R.string.errorNotFilled));
+                                    isFormError = true;
+                                } else {
+                                    userProneInput.setErrorEnabled(false);
+                                }
+
+                                if (isFormError) {
+                                    isFormError = false;
                                     return;
                                 }
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_NAME, username.getText().toString());
@@ -232,8 +219,7 @@ public class BasketF extends Fragment {
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_PHONE, phone.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_CITY, city.getText().toString());
                                 SharedProperty.getInstance().setValue(SharedProperty.USER_STREET, street.getText().toString());
-                                Values.showTopSnackBar(BasketF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);*/
-
+                                Values.showTopSnackBar(BasketF.this.getActivity(), "Данные сохранены", null, null, Snackbar.LENGTH_SHORT);
                                 dialog.dismiss();
                             }
                         });
