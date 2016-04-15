@@ -26,10 +26,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linzon.ru.common.SharedProperty;
-import com.linzon.ru.fragments.UserF;
+import com.linzon.ru.fragments.BrandsF;
 import com.linzon.ru.fragments.CategoryOffersF;
 import com.linzon.ru.fragments.ContactsF;
+import com.linzon.ru.fragments.FilterF;
 import com.linzon.ru.fragments.PostSendF;
+import com.linzon.ru.fragments.UserF;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private Toolbar toolbar;
 
+    private final static String BRANDS_TAG = "BRANDS_FRAGMENT";
+    private final static String FILTER_TAG = "FILTER_FRAGMENT";
     private final static String CATEGORY_TAG = "CATEGORY_FRAGMENT";
     private final static String USER_TAG = "ABOUT_FRAGMENT";
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     private UserF userFFragment;
     private PostSendF postSendFragment;
     private ContactsF contactsFragment;
+    private BrandsF brandsFragment;
+    private FilterF filterFragment;
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
@@ -83,22 +89,35 @@ public class MainActivity extends AppCompatActivity
         progressBarMain = (ProgressBar) findViewById(R.id.progressBarMain);
     }
 
-    /*private void showPopular() {
-        if (!(selectedFragment instanceof PopularF)) {
+    private void showBrands() {
+        if (!(selectedFragment instanceof BrandsF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
-            if (null == popularFragment) {
-                popularFragment = new PopularF();
-                fragmentTransaction.add(R.id.mainPager, popularFragment, POPULAR_TAG);
+            if (null == brandsFragment) {
+                brandsFragment = new BrandsF();
+                fragmentTransaction.add(R.id.mainPager, brandsFragment, BRANDS_TAG);
             }
-            fragmentTransaction.show(popularFragment);
+            fragmentTransaction.show(brandsFragment);
             fragmentTransaction.commit();
             getFragmentManager().executePendingTransactions();
-            selectedFragment = popularFragment;
+            selectedFragment = brandsFragment;
         }
-        if(categoryOffersFragment.selectedCategory != 0)
-            categoryOffersFragment.setCategory(0);
-    }*/
+    }
+
+    private void showFilter() {
+        if (!(selectedFragment instanceof FilterF)) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            hideFragments();
+            if (null == filterFragment) {
+                filterFragment = new FilterF();
+                fragmentTransaction.add(R.id.mainPager, filterFragment, FILTER_TAG);
+            }
+            fragmentTransaction.show(filterFragment);
+            fragmentTransaction.commit();
+            getFragmentManager().executePendingTransactions();
+            selectedFragment = filterFragment;
+        }
+    }
 
     private void showCategory(int id) {
         if (!(selectedFragment instanceof CategoryOffersF)) {
@@ -183,6 +202,16 @@ public class MainActivity extends AppCompatActivity
         contactsFragment = (ContactsF) getFragmentManager().findFragmentByTag(CONTACTS_TAG);
         if (null != contactsFragment) {
             fragmentTransaction.hide(contactsFragment);
+        }
+
+        brandsFragment = (BrandsF) getFragmentManager().findFragmentByTag(BRANDS_TAG);
+        if (null != brandsFragment) {
+            fragmentTransaction.hide(brandsFragment);
+        }
+
+        filterFragment = (FilterF) getFragmentManager().findFragmentByTag(FILTER_TAG);
+        if (null != filterFragment) {
+            fragmentTransaction.hide(filterFragment);
         }
 
         fragmentTransaction.commit();
@@ -296,6 +325,14 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
         showFab();
         switch (item.getItemId()) {
+            case R.id.nav_brands: {
+                showBrands();
+                break;
+            }
+            case R.id.nav_filter: {
+                showFilter();
+                break;
+            }
             case R.id.nav_popular: {
                 showCategory(0);
                 break;

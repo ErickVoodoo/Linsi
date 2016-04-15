@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Baskets"
+        android:text="FIlters"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
