@@ -297,6 +297,69 @@ public class DBHelper extends SQLiteOpenHelper {
         return totalPrice;
     }
 
+    public static String[] getVendors() {
+        Cursor rows = getInstance().selectRows(OFFERS, null, null, "vendor", "vendor");
+        String[] result = new String[rows.getCount() + 1];
+        int index = 0;
+        result[index] = "Выберите";
+        if (rows.moveToFirst()) {
+            do {
+                if(rows.getString(rows.getColumnIndex("vendor")) != null) {
+                    index++;
+                    result[index] = rows.getString(rows.getColumnIndex("vendor"));
+                }
+            }
+            while (rows.moveToNext());
+        }
+        return result;
+    }
+
+    public static ArrayList<OOffer> getFilteredOrders(String brand, String vendor, String bc, String pwr, String color) {
+        String whereString = "";
+        ArrayList<OOffer> arrayList = new ArrayList<>();
+        if(brand != null) {
+            whereString += "name LIKE '%"+ brand.toLowerCase() + "%' and ";
+        }
+        if(vendor != null) {
+            whereString += "vendor LIKE '%"+ vendor.toLowerCase() + "%' and ";
+        }
+        if(bc != null) {
+            whereString += "param_BC LIKE '%"+ bc.toLowerCase() + "%' and ";
+        }
+        if(pwr != null) {
+            whereString += "param_PWR LIKE '%"+ pwr.toLowerCase() + "%' and ";
+        }
+        if(color != null) {
+            whereString += "param_COLOR LIKE '%"+ color.toLowerCase() + "%' and ";
+        }
+
+        whereString = whereString.substring(0, whereString.length() - 5);
+
+        Cursor rows = getInstance().selectRows(OFFERS, null, whereString, null, "name COLLATE NOCASE");
+        if (rows.moveToFirst()) {
+            do {
+                OOffer offer = new OOffer();
+                offer.setId(rows.getString(rows.getColumnIndex("id")));
+                offer.setPrice(rows.getString(rows.getColumnIndex("price")));
+                offer.setName(rows.getString(rows.getColumnIndex("name")));
+                offer.setDescription(rows.getString(rows.getColumnIndex("description")));
+                offer.setCategoryId(rows.getString(rows.getColumnIndex("categoryId")));
+                offer.setVendor(rows.getString(rows.getColumnIndex("vendor")));
+                offer.setPicture(rows.getString(rows.getColumnIndex("picture")));
+                offer.setCurrencyId(rows.getString(rows.getColumnIndex("currencyId")));
+                offer.setParam_AX(rows.getString(rows.getColumnIndex("param_AX")).split(","));
+                offer.setParam_BC(rows.getString(rows.getColumnIndex("param_BC")).split(","));
+                offer.setParam_CYL(rows.getString(rows.getColumnIndex("param_CYL")).split(","));
+                Log.e("PWR", rows.getString(rows.getColumnIndex("param_PWR")));
+                offer.setParam_PWR(rows.getString(rows.getColumnIndex("param_PWR")).split(","));
+                offer.setParam_COLOR(rows.getString(rows.getColumnIndex("param_COLOR")).split(","));
+                arrayList.add(offer);
+            }
+            while (rows.moveToNext());
+        }
+        return arrayList;
+    }
+
     public static void updateBasketCount(final String id, final String count) {
         ContentValues basketValues = DBHelper.setBasketContentValues(null, null, null, count, null, null, null, null, null);
         DBHelper.getInstance().updateRows(DBHelper.BASKET, basketValues, "id = '" + id + "'");

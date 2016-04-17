@@ -44,10 +44,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 .load(Constants.STATIC_SERVER + arrayList.get(position).getPicture())
                 .into(holder.picture);
 
-        /*ViewGroup.LayoutParams params = holder.picture.getLayoutParams();
-        params.height = (int) this.width / 2;
-        holder.picture.setLayoutParams(params);*/
-
         holder.description.setText(arrayList.get(position).getDescription());
         holder.name.setText(arrayList.get(position).getName());
         holder.vendor.setText(this.activity.getResources().getString(R.string.static_vendor) + " " + arrayList.get(position).getVendor());

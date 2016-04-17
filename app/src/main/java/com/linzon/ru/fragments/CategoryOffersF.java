@@ -24,8 +24,11 @@ import com.linzon.ru.adapters.PopularAdapter;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.common.RViewScroll;
 import com.linzon.ru.database.DBAsync;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
 import com.linzon.ru.models.POffer;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,12 +40,15 @@ public class CategoryOffersF extends Fragment {
     Spinner categorySortSpinner;
     public int selectedCategory = -1;
     private ArrayList<OOffer> offers;
+    private TextView filterCountTextView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_category, container, false);
         setRecycler();
         setFab();
         setSpinner();
+        setTextView();
         return view;
     }
 
@@ -78,6 +84,9 @@ public class CategoryOffersF extends Fragment {
         }
     }
 
+    private void setTextView() {
+        filterCountTextView = (TextView) view.findViewById(R.id.filterCountTextView);
+    }
 
     private void setSpinner() {
         categorySortSpinner = (Spinner) view.findViewById(R.id.categorySortSpinner);
@@ -130,20 +139,34 @@ public class CategoryOffersF extends Fragment {
             ((MainActivity) this.getActivity()).showProgressBar();
             this.selectedCategory = categoryId;
             recyclerView.setAdapter(null);
-            loadCategoryItems();
+            loadCategoryItems(null);
         }
     }
 
-    public void loadCategoryItems() {
+    public void setFilter(String[] params) {
+        ((MainActivity) this.getActivity()).showProgressBar();
+        this.selectedCategory = -2;
+        recyclerView.setAdapter(null);
+        loadCategoryItems(params);
+    }
+
+    public void loadCategoryItems(String[] filterParams) {
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        filterCountTextView.setVisibility(View.GONE);
+        categorySortSpinner.setVisibility(View.VISIBLE);
         if(this.selectedCategory == 0) {
             categorySortSpinner.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
             ArrayList<POffer> popularOffers = ((App) this.getActivity().getApplication()).getPriceOffers();
             recyclerView.setAdapter(new PopularAdapter(popularOffers, this.getActivity()));
             ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
+        } else if(this.selectedCategory == -2) {
+            ArrayList<OOffer> filteredOffers = DBHelper.getInstance().getFilteredOrders(filterParams[0], filterParams[1], filterParams[2], filterParams[3], filterParams[4]);
+            offers = filteredOffers;
+            filterCountTextView.setText("Количество результатов: " + filteredOffers.size());
+            filterCountTextView.setVisibility(View.VISIBLE);
+            recyclerView.setAdapter(new CategoryAdapter(filteredOffers, this.getActivity()));
         } else {
-            categorySortSpinner.setVisibility(View.VISIBLE);
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
             DBAsync.asyncGetOfferList(this.selectedCategory, new DBAsync.CallbackGetCategory() {
                 @Override
                 public void onSuccess(ArrayList<OOffer> success) {
@@ -163,9 +186,6 @@ public class CategoryOffersF extends Fragment {
                             break;
                         }
                     }
-                    ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
-                    /*recyclerView.setAdapter(new CategoryAdapter(offers, CategoryOffersF.this.getActivity()));
-                    ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();*/
                 }
 
                 @Override
@@ -174,6 +194,7 @@ public class CategoryOffersF extends Fragment {
                 }
             });
         }
+        ((MainActivity) CategoryOffersF.this.getActivity()).hideProgressBar();
     }
 
     private void setFab() {

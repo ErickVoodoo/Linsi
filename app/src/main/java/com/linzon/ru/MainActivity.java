@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +28,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linzon.ru.common.SharedProperty;
+import com.linzon.ru.common.Values;
+import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.fragments.BrandsF;
 import com.linzon.ru.fragments.CategoryOffersF;
 import com.linzon.ru.fragments.ContactsF;
 import com.linzon.ru.fragments.FilterF;
 import com.linzon.ru.fragments.PostSendF;
 import com.linzon.ru.fragments.UserF;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
+    private TextView filterCountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showCategory(int id) {
+    public void showCategory(int id, String... params) {
         if (!(selectedFragment instanceof CategoryOffersF)) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             hideFragments();
@@ -132,8 +139,12 @@ public class MainActivity extends AppCompatActivity
             getFragmentManager().executePendingTransactions();
             selectedFragment = categoryOffersFragment;
         }
-        if(categoryOffersFragment.selectedCategory != id)
-            categoryOffersFragment.setCategory(id);
+        if(params.length != 0) {
+            categoryOffersFragment.setFilter(params);
+        } else {
+            if(categoryOffersFragment.selectedCategory != id)
+                categoryOffersFragment.setCategory(id);
+        }
     }
 
     private void showUser() {
@@ -255,15 +266,22 @@ public class MainActivity extends AppCompatActivity
 
     private void initTextViews() {
         navHeaderUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.helloUserTextView);
-        navHeaderUsername.setText("Привет, " + SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
+        navHeaderUsername.setText("Привет, " + (SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) == null ? "пользователь" : SharedProperty.getInstance().getValue(SharedProperty.USER_NAME)));
 
         globalSearch = (EditText) navigationView.getHeaderView(0).findViewById(R.id.globalSearchEditText);
         searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(globalSearch.getText().toString().length() == 0) {
+                    Values.showTopSnackBar(MainActivity.this, "Нельзя искать пустую строку", null , null, Snackbar.LENGTH_SHORT);
+                    return;
+                }
                 drawer.closeDrawer(GravityCompat.START);
                 hideKeyboard();
+                showCategory(-2, new String[]{globalSearch.getText().toString(), null, null, null, null});
+                toolbar.setTitle("Поиск:" + globalSearch.getText());
+                globalSearch.setText("");
             }
         });
     }

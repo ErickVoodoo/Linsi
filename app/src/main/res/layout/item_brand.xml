@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/brandLinearLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/brandTextView"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:padding="16dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <View
+        android:layout_width="0px"
+        android:layout_height="2px"
+        android:layout_below="@+id/brandTextView"
+        android:layout_alignLeft="@+id/brandTextView"
+        android:layout_alignRight="@+id/brandTextView"
+        android:background="@color/colorAccent"/>
+</RelativeLayout>
