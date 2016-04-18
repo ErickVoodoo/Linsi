@@ -2,6 +2,7 @@ package com.linzon.ru.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import com.linzon.ru.MainActivity;
 import com.linzon.ru.R;
 import com.linzon.ru.common.Constants;
+import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBHelper;
 
 /**
@@ -42,23 +44,19 @@ public class FilterF extends Fragment {
         pwrSpinner = (Spinner) view.findViewById(R.id.filterPWRparam);
         colorSpinner = (Spinner) view.findViewById(R.id.filterCOLORparam);
 
-        ArrayAdapter<String> adapterVENDOR = new ArrayAdapter<String>(FilterF.this.getActivity(), android.R.layout.simple_spinner_item, DBHelper.getInstance().getVendors());
-        adapterVENDOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterVENDOR = new ArrayAdapter<String>(FilterF.this.getActivity(), R.layout.spinner_center_item, DBHelper.getInstance().getVendors());
         vendorSpinner.setAdapter(adapterVENDOR);
         vendorSpinner.setSelection(0);
 
-        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(FilterF.this.getActivity(), android.R.layout.simple_spinner_item, Constants.Filter_BC);
-        adapterVENDOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(FilterF.this.getActivity(), R.layout.spinner_center_item, Constants.Filter_BC);
         bcSpinner.setAdapter(adapterBC);
         bcSpinner.setSelection(0);
 
-        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(FilterF.this.getActivity(), android.R.layout.simple_spinner_item, Constants.Filter_PWR);
-        adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(FilterF.this.getActivity(), R.layout.spinner_center_item, Constants.Filter_PWR);
         pwrSpinner.setAdapter(adapterPWR);
         pwrSpinner.setSelection(0);
 
-        ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(FilterF.this.getActivity(), android.R.layout.simple_spinner_item, Constants.Filter_COLOR);
-        adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(FilterF.this.getActivity(), R.layout.spinner_center_item, Constants.Filter_COLOR);
         colorSpinner.setAdapter(adapterCOLOR);
         colorSpinner.setSelection(0);
     }
@@ -68,6 +66,13 @@ public class FilterF extends Fragment {
         offerAddToChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(vendorSpinner.getSelectedItemPosition() == 0 &&
+                        bcSpinner.getSelectedItemPosition() == 0 &&
+                        pwrSpinner.getSelectedItemPosition() == 0 &&
+                        colorSpinner.getSelectedItemPosition() == 0) {
+                    Values.showTopSnackBar(FilterF.this.getActivity(), "Выберите хотя бы 1 параметр для поиска", null, null, Snackbar.LENGTH_SHORT);
+                    return;
+                }
                 ((MainActivity) FilterF.this.getActivity()).showCategory(-2,
                         new String[]{
                                 null,

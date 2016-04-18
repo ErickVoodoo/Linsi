@@ -74,7 +74,7 @@
 
     <TextView
         android:padding="8dp"
-        android:text="ЦВЕТ"
+        android:text="Цвет"
         android:textColor="@color/colorPrimary"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"

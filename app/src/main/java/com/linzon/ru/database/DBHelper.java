@@ -321,7 +321,7 @@ public class DBHelper extends SQLiteOpenHelper {
             whereString += "name LIKE '%"+ brand.toLowerCase() + "%' and ";
         }
         if(vendor != null) {
-            whereString += "vendor LIKE '%"+ vendor.toLowerCase() + "%' and ";
+            whereString += "vendor LIKE '%"+ vendor + "%' and ";
         }
         if(bc != null) {
             whereString += "param_BC LIKE '%"+ bc.toLowerCase() + "%' and ";
