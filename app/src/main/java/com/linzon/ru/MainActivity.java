@@ -15,7 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,15 +29,12 @@ import android.widget.TextView;
 
 import com.linzon.ru.common.SharedProperty;
 import com.linzon.ru.common.Values;
-import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.fragments.BrandsF;
 import com.linzon.ru.fragments.CategoryOffersF;
 import com.linzon.ru.fragments.ContactsF;
 import com.linzon.ru.fragments.FilterF;
 import com.linzon.ru.fragments.PostSendF;
 import com.linzon.ru.fragments.UserF;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -269,6 +266,34 @@ public class MainActivity extends AppCompatActivity
         navHeaderUsername.setText("Привет, " + (SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) == null ? "пользователь" : SharedProperty.getInstance().getValue(SharedProperty.USER_NAME)));
 
         globalSearch = (EditText) navigationView.getHeaderView(0).findViewById(R.id.globalSearchEditText);
+        globalSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            if(globalSearch.getText().toString().length() == 0) {
+                                Values.showTopSnackBar(MainActivity.this, "Нельзя искать пустую строку", null , null, Snackbar.LENGTH_SHORT);
+                                return false;
+                            }
+                            drawer.closeDrawer(GravityCompat.START);
+                            hideKeyboard();
+                            showCategory(-2, new String[]{globalSearch.getText().toString(), null, null, null, null});
+                            toolbar.setTitle("Поиск:" + globalSearch.getText());
+                            globalSearch.setText("");
+                            globalSearch.setFocusable(true);
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

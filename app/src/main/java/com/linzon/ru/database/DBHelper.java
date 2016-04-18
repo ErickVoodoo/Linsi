@@ -299,7 +299,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static String[] getVendors() {
         Cursor rows = getInstance().selectRows(OFFERS, null, null, "vendor", "vendor");
-        String[] result = new String[rows.getCount() + 1];
+        String[] result = new String[rows.getCount()];
         int index = 0;
         result[index] = "Выберите";
         if (rows.moveToFirst()) {
@@ -350,7 +350,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 offer.setParam_AX(rows.getString(rows.getColumnIndex("param_AX")).split(","));
                 offer.setParam_BC(rows.getString(rows.getColumnIndex("param_BC")).split(","));
                 offer.setParam_CYL(rows.getString(rows.getColumnIndex("param_CYL")).split(","));
-                Log.e("PWR", rows.getString(rows.getColumnIndex("param_PWR")));
                 offer.setParam_PWR(rows.getString(rows.getColumnIndex("param_PWR")).split(","));
                 offer.setParam_COLOR(rows.getString(rows.getColumnIndex("param_COLOR")).split(","));
                 arrayList.add(offer);
