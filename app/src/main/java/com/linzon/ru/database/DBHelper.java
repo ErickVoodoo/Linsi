@@ -396,11 +396,11 @@ public class DBHelper extends SQLiteOpenHelper {
         JSONObject info = new JSONObject();
         JSONArray offers = new JSONArray();
         try {
-            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME).replaceAll("[-+.^:,&%!]", ""));
-            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL).replaceAll("[-+.^:,&%!]", ""));
-            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE).replaceAll("[-+.^:,&%!]", ""));
-            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY).replaceAll("[-+.^:,&%!]", ""));
-            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET).replaceAll("[-+.^:,&%!]", ""));
+            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
+            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
+            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
+            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
+            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
             root.put("client", client);
 
             ArrayList<BasketItem> offersList = getBasketOffers(Constants.STATUS_OPEN);

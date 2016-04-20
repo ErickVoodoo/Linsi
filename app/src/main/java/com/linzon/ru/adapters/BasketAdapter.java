@@ -75,7 +75,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         DBAsync.asyncGetOfferInfo(Integer.parseInt(arrayList.get(position).getOffer_id()), new DBAsync.CallbackGetOffer() {
             @Override
             public void onSuccess(OOffer success) {
-                holder.basketName.setText(success.getName());
+                holder.basketName.setText(success.getName().replace("контактные", "").replace("линзы", "").replace("Контактные", "").trim());
                 Picasso.with(activity)
                         .load(Constants.STATIC_SERVER + success.getPicture())
                         .into(holder.picture);

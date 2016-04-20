@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
         DBAsync.asyncGetOfferInfo(Integer.parseInt(arrayList.get(position).getOffer_id()), new DBAsync.CallbackGetOffer() {
             @Override
             public void onSuccess(OOffer success) {
-                holder.name.setText(success.getName());
+                holder.name.setText(success.getName().replace("контактные", "").replace("линзы", "").replace("Контактные", "").trim());
                 Picasso.with(activity)
                         .load(Constants.STATIC_SERVER + success.getPicture())
                         .into(holder.picture);
