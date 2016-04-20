@@ -147,17 +147,17 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerButtonShowDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isDescriptionOpened) {
+                if (!isDescriptionOpened) {
                     isDescriptionOpened = true;
                     offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_less_black_24dp, 0, 0, 0);
-                   // offerDescription.setMaxLines(100);
+                    // offerDescription.setMaxLines(100);
                     ObjectAnimator animation = ObjectAnimator.ofInt(
                             offerDescription,
                             "maxLines",
                             25);
                     animation.setDuration(350);
                     animation.start();
-                } else if(isDescriptionOpened){
+                } else if (isDescriptionOpened) {
                     isDescriptionOpened = false;
                     ObjectAnimator animation = ObjectAnimator.ofInt(
                             offerDescription,
@@ -165,70 +165,88 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                             3);
                     animation.setDuration(350);
                     animation.start();
-                    offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_black_24dp, 0, 0, 0 );
+                    offerButtonShowDescription.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_black_24dp, 0, 0, 0);
                 }
             }
         });
         addToBasket = (Button) findViewById(R.id.offerAddToChart);
         addToBasket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != selectedOfferObject) {
-                    if (count != 0) {
-                        if (checkBoxLeftEye.isChecked()) {
-                            ContentValues order = DBHelper.setBasketContentValues(
-                                    selectedOfferObject.getId(),
-                                    null,
-                                    selectedOfferObject.getName(),
-                                    offerCountLeft.getSelectedItem().toString(),
-                                    selectedOfferObject.getPrice(),
-                                    !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
-                                            "левый",
-                                            offerBCLeft.getSelectedItem(),
-                                            offerPWRLeft.getSelectedItem(),
-                                            offerAXLeft.getSelectedItem(),
-                                            offerCYLLeft.getSelectedItem(),
-                                            offerCOLORLeft.getSelectedItem()
-                                    ) : null,
-                                    Constants.STATUS_OPEN,
-                                    String.valueOf(TimeCommon.getUnixTime()),
-                                    "");
-                            DBHelper.getInstance().insertToBasket(order, offerCountLeft.getSelectedItem().toString());
-                        }
-                        if (checkBoxRightEye.isChecked()) {
-                            ContentValues order = DBHelper.setBasketContentValues(
-                                    selectedOfferObject.getId(),
-                                    null,
-                                    selectedOfferObject.getName(),
-                                    offerCountRight.getSelectedItem().toString(),
-                                    selectedOfferObject.getPrice(),
-                                    !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
-                                            "правый",
-                                            offerBCRight.getSelectedItem(),
-                                            offerPWRRight.getSelectedItem(),
-                                            offerAXRight.getSelectedItem(),
-                                            offerCYLRight.getSelectedItem(),
-                                            offerCOLORRight.getSelectedItem()
-                                    ) : null,
-                                    Constants.STATUS_OPEN,
-                                    String.valueOf(TimeCommon.getUnixTime()),
-                                    "");
-                            DBHelper.getInstance().insertToBasket(order, offerCountRight.getSelectedItem().toString());
-                        }
+           @Override
+           public void onClick(View v) {
+               if (null != selectedOfferObject) {
+                   if (checkBoxRightEye.isChecked() && (offerAXRight.getSelectedItemPosition() == 0 ||
+                           offerBCRight.getSelectedItemPosition() == 0 ||
+                           offerPWRRight.getSelectedItemPosition() == 0 ||
+                           offerCYLRight.getSelectedItemPosition() == 0 ||
+                           offerCOLORRight.getSelectedItemPosition() == 0)) {
+                       Values.showTopSnackBar(Offer.this, "Выберите все параметры", null, null, Snackbar.LENGTH_SHORT);
+                       return;
+                   }
+                   if (checkBoxLeftEye.isChecked() && (offerAXLeft.getSelectedItemPosition() == 0 ||
+                           offerBCLeft.getSelectedItemPosition() == 0 ||
+                           offerPWRLeft.getSelectedItemPosition() == 0 ||
+                           offerCYLLeft.getSelectedItemPosition() == 0 ||
+                           offerCOLORLeft.getSelectedItemPosition() == 0)) {
+                       Values.showTopSnackBar(Offer.this, "Выберите все параметры", null, null, Snackbar.LENGTH_SHORT);
+                       return;
+                   }
+                   if (count != 0) {
+                       if (checkBoxLeftEye.isChecked()) {
+                           ContentValues order = DBHelper.setBasketContentValues(
+                                   selectedOfferObject.getId(),
+                                   null,
+                                   selectedOfferObject.getName(),
+                                   offerCountLeft.getSelectedItem().toString(),
+                                   selectedOfferObject.getPrice(),
+                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
+                                           "левый",
+                                           offerBCLeft.getSelectedItem(),
+                                           offerPWRLeft.getSelectedItem(),
+                                           offerAXLeft.getSelectedItem(),
+                                           offerCYLLeft.getSelectedItem(),
+                                           offerCOLORLeft.getSelectedItem()
+                                   ) : null,
+                                   Constants.STATUS_OPEN,
+                                   String.valueOf(TimeCommon.getUnixTime()),
+                                   "");
+                           DBHelper.getInstance().insertToBasket(order, offerCountLeft.getSelectedItem().toString());
+                       }
+                       if (checkBoxRightEye.isChecked()) {
+                           ContentValues order = DBHelper.setBasketContentValues(
+                                   selectedOfferObject.getId(),
+                                   null,
+                                   selectedOfferObject.getName(),
+                                   offerCountRight.getSelectedItem().toString(),
+                                   selectedOfferObject.getPrice(),
+                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
+                                           "правый",
+                                           offerBCRight.getSelectedItem(),
+                                           offerPWRRight.getSelectedItem(),
+                                           offerAXRight.getSelectedItem(),
+                                           offerCYLRight.getSelectedItem(),
+                                           offerCOLORRight.getSelectedItem()
+                                   ) : null,
+                                   Constants.STATUS_OPEN,
+                                   String.valueOf(TimeCommon.getUnixTime()),
+                                   "");
+                           DBHelper.getInstance().insertToBasket(order, offerCountRight.getSelectedItem().toString());
+                       }
 
-                        Values.showTopSnackBar(Offer.this, "Добавлено в корзину", "В корзину", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(Offer.this, Basket.class);
-                                Offer.this.startActivity(intent);
-                            }
-                        }, Snackbar.LENGTH_LONG);
-                    } else {
-                        Values.showTopSnackBar(Offer.this, "Нельзя добавить пустой заказ в корзину", null, null, Snackbar.LENGTH_SHORT);
-                    }
-                }
-            }
-        });
+                       Values.showTopSnackBar(Offer.this, "Добавлено в корзину", "В корзину", new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               Intent intent = new Intent(Offer.this, Basket.class);
+                               Offer.this.startActivity(intent);
+                           }
+                       }, Snackbar.LENGTH_LONG);
+                   } else {
+                       Values.showTopSnackBar(Offer.this, "Нельзя добавить пустой заказ в корзину", null, null, Snackbar.LENGTH_SHORT);
+                   }
+               }
+           }
+       }
+
+        );
     }
 
     public void setTextView() {
@@ -320,8 +338,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     if (success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
                         Double[] ss = stringToDouble(success.getParam_PWR());
                         Arrays.sort(ss);
-
-                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, doubleToString(ss));
+                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, doubleToString(ss)));
                         adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerPWRLeft.setAdapter(adapterPWR);
                         offerPWRRight.setAdapter(adapterPWR);
@@ -331,7 +348,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     }
 
                     if (success.getParam_BC() != null && success.getParam_BC().length != 0 && !success.getParam_BC()[0].equals("")) {
-                        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_BC());
+                        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, success.getParam_BC()));
                         adapterBC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerBCLeft.setAdapter(adapterBC);
                         offerBCRight.setAdapter(adapterBC);
@@ -341,7 +358,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     }
 
                     if (success.getParam_AX() != null && success.getParam_AX().length != 0 && !success.getParam_AX()[0].equals("")) {
-                        ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_AX());
+                        ArrayAdapter<String> adapterAX = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, success.getParam_AX()));
                         adapterAX.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerAXLeft.setAdapter(adapterAX);
                         offerAXRight.setAdapter(adapterAX);
@@ -351,7 +368,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     }
 
                     if (success.getParam_CYL() != null && success.getParam_CYL().length != 0 && !success.getParam_CYL()[0].equals("")) {
-                        ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_CYL());
+                        ArrayAdapter<String> adapterCYL = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, success.getParam_CYL()));
                         adapterCYL.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerCYLLeft.setAdapter(adapterCYL);
                         offerCYLRight.setAdapter(adapterCYL);
@@ -361,7 +378,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     }
 
                     if (success.getParam_COLOR() != null && success.getParam_COLOR().length != 0 && !success.getParam_COLOR()[0].equals("")) {
-                        ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, success.getParam_COLOR());
+                        ArrayAdapter<String> adapterCOLOR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, success.getParam_COLOR()));
                         adapterCOLOR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerCOLORLeft.setAdapter(adapterCOLOR);
                         offerCOLORRight.setAdapter(adapterCOLOR);
@@ -470,8 +487,8 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         recalculatePrice();
         switch (parent.getId()) {
-            case R.id.offerAXLeft :
-            case R.id.offerBCLeft :
+            case R.id.offerAXLeft:
+            case R.id.offerBCLeft:
             case R.id.offerCOLORLeft:
             case R.id.offerCYLLeft:
             case R.id.offerCountLeft:
@@ -479,8 +496,8 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                 checkBoxLeftEye.setChecked(true);
                 break;
             }
-            case R.id.offerAXRight :
-            case R.id.offerBCRight :
+            case R.id.offerAXRight:
+            case R.id.offerBCRight:
             case R.id.offerCOLORRight:
             case R.id.offerCYLRight:
             case R.id.offerCountRight:

@@ -396,11 +396,11 @@ public class DBHelper extends SQLiteOpenHelper {
         JSONObject info = new JSONObject();
         JSONArray offers = new JSONArray();
         try {
-            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME));
-            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL));
-            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE));
-            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY));
-            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET));
+            client.put("username", SharedProperty.getInstance().getValue(SharedProperty.USER_NAME).replace("\"", "").replace("\'",""));
+            client.put("email", SharedProperty.getInstance().getValue(SharedProperty.USER_EMAIL).replace("\"", "").replace("\'",""));
+            client.put("phone", SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE).replace("\"", "").replace("\'",""));
+            client.put("city", SharedProperty.getInstance().getValue(SharedProperty.USER_CITY).replace("\"", "").replace("\'",""));
+            client.put("address", SharedProperty.getInstance().getValue(SharedProperty.USER_STREET).replace("\"", "").replace("\'",""));
             root.put("client", client);
 
             ArrayList<BasketItem> offersList = getBasketOffers(Constants.STATUS_OPEN);
@@ -420,7 +420,7 @@ public class DBHelper extends SQLiteOpenHelper {
             info.put("total", getTotalPrice(Constants.STATUS_OPEN) + Constants.DELIVER_PRICE);
             info.put("shop", "LP");
             info.put("timestamp", new Date());
-            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT) != null ? SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT).replaceAll("[-+.^:,&%!]", "") : "");
+            info.put("comment", SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT) != null ? SharedProperty.getInstance().getValue(SharedProperty.USER_COMMENT).replace("\"", "").replace("\'","") : "");
             root.put("info", info);
         } catch (JSONException e) {
             e.printStackTrace();

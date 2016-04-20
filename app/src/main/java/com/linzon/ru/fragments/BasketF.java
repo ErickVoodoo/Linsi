@@ -92,7 +92,9 @@ public class BasketF extends Fragment {
                 } else {
                     if(SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) != null &&
                             SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE) != null) {
+
                         final Dialog send = new Dialog(BasketF.this.getActivity());
+                        final Window window = send.getWindow();
                         send.setCancelable(true);
                         send.setContentView(R.layout.send_basket);
                         send.setTitle(R.string.static_send_title);

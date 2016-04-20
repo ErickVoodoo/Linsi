@@ -107,6 +107,11 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
                             ArchiveAdapter.this.activity.getResources().getDisplayMetrics()
                     ), 0, 0);
                     holder.itemMainContainer.setLayoutParams(params);*/
+                    if(success.equals("")) {
+                        holder.orderId.setText("Заказ №" + arrayList.get(position).getOrder_id());
+                        holder.marginTopArchive.setVisibility(View.VISIBLE);
+                        return;
+                    }
                     holder.orderId.setText("Заказ №" + arrayList.get(position).getOrder_id() + " "  + Constants.OrderStatuses[Integer.parseInt(success.replace("\"","")) - 1]);
                     holder.marginTopArchive.setVisibility(View.VISIBLE);
                 }
