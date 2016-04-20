@@ -23,21 +23,7 @@
                 android:id="@+id/userName"
                 android:hint="@string/userName"
                 android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/userEmailInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/userEmail"
-                android:inputType="textEmailAddress"
-                android:hint="@string/userEmail"
-                android:maxLines="1"
+                android:inputType="textVisiblePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"/>
@@ -55,6 +41,21 @@
                 android:hint="@string/userPhone"
                 android:maxLines="1"
                 android:digits="0123456789+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/userEmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/userEmail"
+                android:inputType="textVisiblePassword"
+                android:hint="@string/userEmail"
+                android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"/>
@@ -82,6 +83,7 @@
             <EditText
                 android:id="@+id/userStreet"
                 android:hint="@string/userStreet"
+                android:inputType="textVisiblePassword"
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
