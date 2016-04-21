@@ -285,13 +285,12 @@ public class MainActivity extends AppCompatActivity
                             showCategory(-2, new String[]{globalSearch.getText().toString(), null, null, null, null});
                             toolbar.setTitle("Поиск:" + globalSearch.getText());
                             globalSearch.setText("");
-                            globalSearch.setFocusable(true);
                             return true;
                         default:
                             break;
                     }
                 }
-                return false;
+                return true;
             }
         });
         searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
