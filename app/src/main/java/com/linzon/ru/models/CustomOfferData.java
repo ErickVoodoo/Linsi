@@ -79,6 +79,6 @@ public class CustomOfferData {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return dataString.substring(0, dataString.length() - 3);
+        return dataString.length() != 0 ?  dataString.substring(0, dataString.length() - 3) : dataString;
     }
 }
