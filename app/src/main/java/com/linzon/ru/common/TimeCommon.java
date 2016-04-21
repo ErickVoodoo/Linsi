@@ -34,11 +34,11 @@ public class TimeCommon {
     }
 
     public static int getHourFromUnix(int unix){
-        return (int)(unix - (int)(Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis()/1000 - getHourNumber()*3600 - getMinuteNumber()*60 - getSecondNumber()))/3600;
+        return (unix - (int)(Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis()/1000 - getHourNumber()*3600 - getMinuteNumber()*60 - getSecondNumber())) /3600;
     }
 
     public static int getMinuteFromUnix(int unix){
-        return (int)(unix - (int)(Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis()/1000 - getHourNumber()*3600 - getMinuteNumber()*60 - getSecondNumber()))/3600;
+        return (unix - (int)(Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis()/1000 - getHourNumber()*3600 - getMinuteNumber()*60 - getSecondNumber())) /3600;
     }
 
     public static int getUnixFromTime(int hour, int minute) {

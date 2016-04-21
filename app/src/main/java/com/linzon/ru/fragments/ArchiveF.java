@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import com.linzon.ru.R;
 import com.linzon.ru.adapters.ArchiveAdapter;
-import com.linzon.ru.adapters.BasketAdapter;
 import com.linzon.ru.common.Constants;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.models.BasketItem;

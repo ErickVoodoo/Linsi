@@ -74,12 +74,11 @@ public class FilterF extends Fragment {
                     return;
                 }
                 ((MainActivity) FilterF.this.getActivity()).showCategory(-2,
-                        new String[]{
-                                null,
-                                vendorSpinner.getSelectedItemPosition() == 0 ? null : vendorSpinner.getSelectedItem().toString(),
-                                bcSpinner.getSelectedItemPosition() == 0 ? null : bcSpinner.getSelectedItem().toString(),
-                                pwrSpinner.getSelectedItemPosition() == 0 ? null : pwrSpinner.getSelectedItem().toString(),
-                                colorSpinner.getSelectedItemPosition() == 0 ? null : colorSpinner.getSelectedItem().toString()});
+                        null,
+                        vendorSpinner.getSelectedItemPosition() == 0 ? null : vendorSpinner.getSelectedItem().toString(),
+                        bcSpinner.getSelectedItemPosition() == 0 ? null : bcSpinner.getSelectedItem().toString(),
+                        pwrSpinner.getSelectedItemPosition() == 0 ? null : pwrSpinner.getSelectedItem().toString(),
+                        colorSpinner.getSelectedItemPosition() == 0 ? null : colorSpinner.getSelectedItem().toString());
             }
         });
     }

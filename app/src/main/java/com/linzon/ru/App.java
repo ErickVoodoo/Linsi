@@ -26,18 +26,6 @@ public class App extends Application {
         Intent service = new Intent(this, BasketService.class);
         service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.startService(service);
-
-        double index = -20.25;
-        String result = "";
-        for(int i = 0; i < 200;i++) {
-            index = index  + 0.25;
-            result += "\"" + index + "\", ";
-         }
-        Log.e("RESULT", result);
-        //DBHelper.getInstance().dropDatabase();
-        /*Intent service = new Intent(this, BasketService.class);
-        service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startService(service);*/
     }
 
     public ArrayList<POffer> getPriceOffers() {

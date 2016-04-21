@@ -40,6 +40,7 @@
     <string name="static_send_edittext_comment">Ваш комментарий к заказу</string>
     <string name="static_send_button_send">Отправить</string>
     <string name="static_send_button_cancel">Отмена</string>
+    <string name="static_order">Заказ №</string>
 
     <string name="offer_params">Параметры</string>
     <string name="offer_leftPart">Левый</string>
@@ -74,4 +75,6 @@
     <string name="userStreet">Улица/Дом</string>
     <string name="userFAQ">Данная информация будет использована для связи оператора с Вами. Перед отправкой заказа необходимо заполнить данные поля.</string>
     <string name="userSaveButton">СОХРАНИТЬ</string>
+
+
 </resources>

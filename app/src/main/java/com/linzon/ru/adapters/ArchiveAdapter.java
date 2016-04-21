@@ -98,21 +98,12 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
             ApiConnector.asyncSimpleGetRequest(Constants.STATIC_ORDER_STATE + arrayList.get(position).getOrder_id(), new ApiConnector.CallbackString() {
                 @Override
                 public void onSuccess(String success) {
-                    /*RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
-                            RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-
-                    params.setMargins(0, (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP,
-                            8,
-                            ArchiveAdapter.this.activity.getResources().getDisplayMetrics()
-                    ), 0, 0);
-                    holder.itemMainContainer.setLayoutParams(params);*/
                     if(success.equals("")) {
-                        holder.orderId.setText("Заказ №" + arrayList.get(position).getOrder_id());
+                        holder.orderId.setText(ArchiveAdapter.this.activity.getResources().getString(R.string.static_order) + arrayList.get(position).getOrder_id());
                         holder.marginTopArchive.setVisibility(View.VISIBLE);
                         return;
                     }
-                    holder.orderId.setText("Заказ №" + arrayList.get(position).getOrder_id() + " "  + Constants.OrderStatuses[Integer.parseInt(success.replace("\"","")) - 1]);
+                    holder.orderId.setText(ArchiveAdapter.this.activity.getResources().getString(R.string.static_order) + arrayList.get(position).getOrder_id() + " "  + Constants.OrderStatuses[Integer.parseInt(success.replace("\"","")) - 1]);
                     holder.marginTopArchive.setVisibility(View.VISIBLE);
                 }
 
@@ -146,7 +137,7 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            marginTopArchive = (View) itemView.findViewById(R.id.marginTopArchive);
+            marginTopArchive = itemView.findViewById(R.id.marginTopArchive);
             itemMainContainer = (CardView) itemView.findViewById(R.id.itemArchiveContainer);
             name = (TextView) itemView.findViewById(R.id.archiveName);
             picture = (ImageView) itemView.findViewById(R.id.archivePicture);

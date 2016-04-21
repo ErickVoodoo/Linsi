@@ -17,8 +17,8 @@ import com.linzon.ru.R;
 public class ContactsF extends Fragment {
     View view;
 
-    Button callMSbutton;
-    Button callSPbutton;
+    Button callMoscowButton;
+    Button callSaintPetersburgButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
@@ -29,10 +29,10 @@ public class ContactsF extends Fragment {
     }
 
     private void initButtons() {
-        callMSbutton = (Button) view.findViewById(R.id.callMSButton);
-        callSPbutton = (Button) view.findViewById(R.id.callSpButton);
+        callMoscowButton = (Button) view.findViewById(R.id.callMSButton);
+        callSaintPetersburgButton = (Button) view.findViewById(R.id.callSpButton);
 
-        callMSbutton.setOnClickListener(new View.OnClickListener() {
+        callMoscowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -41,7 +41,7 @@ public class ContactsF extends Fragment {
             }
         });
 
-        callSPbutton.setOnClickListener(new View.OnClickListener() {
+        callSaintPetersburgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);

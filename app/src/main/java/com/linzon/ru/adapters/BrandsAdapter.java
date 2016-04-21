@@ -1,13 +1,11 @@
 package com.linzon.ru.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,7 +36,7 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 Log.e("BRAND", itemList[position]);
-                ((MainActivity) BrandsAdapter.this.activity).showCategory(-2, new String[]{itemList[position], null, null, null, null});
+                ((MainActivity) BrandsAdapter.this.activity).showCategory(-2, itemList[position], null, null, null, null);
             }
         });
     }

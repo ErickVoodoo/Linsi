@@ -40,9 +40,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavigationView navigationView;
-    private TextView navHeaderUsername;
     private EditText globalSearch;
-    private Button searchButton;
 
     public FloatingActionButton fab;
     private DrawerLayout drawer;
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity
     private final static String CONTACTS_TAG = "CONTACTS_FRAGMENT";
     private final static String POST_TAG = "POST_FRAGMENT";
 
-    //private PopularF popularFragment;
     private CategoryOffersF categoryOffersFragment;
     private UserF userFFragment;
     private PostSendF postSendFragment;
@@ -65,7 +62,6 @@ public class MainActivity extends AppCompatActivity
     private Fragment selectedFragment = null;
 
     private ProgressBar progressBarMain;
-    private TextView filterCountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,7 +258,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initTextViews() {
-        navHeaderUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.helloUserTextView);
+        TextView navHeaderUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.helloUserTextView);
         navHeaderUsername.setText("Привет, " + (SharedProperty.getInstance().getValue(SharedProperty.USER_NAME) == null ? "пользователь" : SharedProperty.getInstance().getValue(SharedProperty.USER_NAME)));
 
         globalSearch = (EditText) navigationView.getHeaderView(0).findViewById(R.id.globalSearchEditText);
@@ -282,7 +278,7 @@ public class MainActivity extends AppCompatActivity
                             }
                             drawer.closeDrawer(GravityCompat.START);
                             hideKeyboard();
-                            showCategory(-2, new String[]{globalSearch.getText().toString(), null, null, null, null});
+                            showCategory(-2, globalSearch.getText().toString(), null, null, null, null);
                             toolbar.setTitle("Поиск:" + globalSearch.getText());
                             globalSearch.setText("");
                             return true;
@@ -293,17 +289,17 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-        searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
+        Button searchButton = (Button) navigationView.getHeaderView(0).findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(globalSearch.getText().toString().length() == 0) {
-                    Values.showTopSnackBar(MainActivity.this, "Нельзя искать пустую строку", null , null, Snackbar.LENGTH_SHORT);
+                if (globalSearch.getText().toString().length() == 0) {
+                    Values.showTopSnackBar(MainActivity.this, "Нельзя искать пустую строку", null, null, Snackbar.LENGTH_SHORT);
                     return;
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 hideKeyboard();
-                showCategory(-2, new String[]{globalSearch.getText().toString(), null, null, null, null});
+                showCategory(-2, globalSearch.getText().toString(), null, null, null, null);
                 toolbar.setTitle("Поиск:" + globalSearch.getText());
                 globalSearch.setText("");
             }
@@ -329,7 +325,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -362,7 +357,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         toolbar.setTitle(item.getTitle());
-        uncheckItems();
+        unCheckItems();
         item.setChecked(true);
         invalidateOptionsMenu();
         showFab();
@@ -430,7 +425,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void uncheckItems() {
+    private void unCheckItems() {
         Menu items = navigationView.getMenu();
 
         for (int i = 0; i < items.size(); i++) {

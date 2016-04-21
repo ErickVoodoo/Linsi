@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.linzon.ru.Basket;
+import com.linzon.ru.models.CustomOfferData;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -49,7 +50,7 @@ public class Values {
     }
 
     public static int getHourFromUnix(int unix){
-        return (int)(unix - (int)(System.currentTimeMillis() / 1000 - Values.getHourNumber()*3600 - Values.getMinuteNumber()*60 - Values.getSecondNumber()))/3600;
+        return (unix - (int)(System.currentTimeMillis() / 1000 - Values.getHourNumber()*3600 - Values.getMinuteNumber()*60 - Values.getSecondNumber())) /3600;
     }
 
     public static boolean isOnline(Context context) {
@@ -76,5 +77,35 @@ public class Values {
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
         return result;
+    }
+
+    public static String createCustomJsonData(Object TYPE, Object BC, Object PWR, Object AX, Object CYL, Object COLOR) {
+        CustomOfferData data = new CustomOfferData(
+                TYPE != null ? TYPE.toString() : null,
+                BC != null ? BC.toString() : null,
+                PWR != null ? PWR.toString() : null,
+                AX != null ? AX.toString() : null,
+                CYL != null ? CYL.toString() : null,
+                COLOR != null ? COLOR.toString() : null
+        );
+        return data.toString();
+    }
+
+    public static Double[] stringToDouble(String[] array) {
+        Double[] result = new Double[array.length];
+        for (int i = 0; i < array.length; i++) {
+            result[i] = Double.parseDouble(array[i].substring(1, array[i].length()));
+        }
+
+        return result;
+    }
+
+    public static String[] doubleToString(Double[] array) {
+        String[] s = new String[array.length];
+
+        for (int i = 0; i < s.length; i++)
+            s[i] = array[i] > 0 ? "+" + String.valueOf(array[i]) : String.valueOf(array[i]);
+
+        return s;
     }
 }

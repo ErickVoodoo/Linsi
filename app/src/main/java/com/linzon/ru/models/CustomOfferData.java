@@ -51,7 +51,7 @@ public class CustomOfferData {
     }
 
     public static String toCompactString(String data) {
-        JSONObject dataObj = null;
+        JSONObject dataObj;
         String dataString = "";
         if(data == null) {
             return "";

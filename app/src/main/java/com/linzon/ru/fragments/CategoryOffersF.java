@@ -28,8 +28,6 @@ import com.linzon.ru.database.DBHelper;
 import com.linzon.ru.models.OOffer;
 import com.linzon.ru.models.POffer;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,19 +50,19 @@ public class CategoryOffersF extends Fragment {
         return view;
     }
 
-    public class SpinnerAdapter extends ArrayAdapter<String> {
+    private class SpinnerAdapter extends ArrayAdapter<String> {
         public SpinnerAdapter(Context ctx, int txtViewResourceId, String[] objects) {
             super(ctx, txtViewResourceId, objects);
         }
 
         @Override
-        public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
-            return getCustomView(position, cnvtView, prnt, Color.BLACK);
+        public View getDropDownView(int position, View childrenView, ViewGroup parentView) {
+            return getCustomView(position, childrenView, parentView, Color.BLACK);
         }
 
         @Override
-        public View getView(int pos, View cnvtView, ViewGroup prnt) {
-            return getCustomView(pos, cnvtView, prnt, Color.WHITE);
+        public View getView(int pos, View childrenView, ViewGroup parentView) {
+            return getCustomView(pos, childrenView, parentView, Color.WHITE);
         }
 
         public View getCustomView(int position, View convertView, ViewGroup parent, int color) {
@@ -90,7 +88,6 @@ public class CategoryOffersF extends Fragment {
 
     private void setSpinner() {
         categorySortSpinner = (Spinner) view.findViewById(R.id.categorySortSpinner);
-        ArrayAdapter<String> adapterBC = new ArrayAdapter<String>(CategoryOffersF.this.getActivity(), android.R.layout.simple_spinner_dropdown_item, Constants.SortArray);
         SpinnerAdapter adapter = new SpinnerAdapter(this.getActivity().getApplicationContext(), R.layout.spinner_item, Constants.SortArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -123,7 +120,7 @@ public class CategoryOffersF extends Fragment {
         });
     }
 
-    public void setRecycler() {
+    private void setRecycler() {
         recyclerView = (RecyclerView) view.findViewById(R.id.categoryRecycler);
         recyclerView.setAdapter(null);
 
@@ -150,7 +147,7 @@ public class CategoryOffersF extends Fragment {
         loadCategoryItems(params);
     }
 
-    public void loadCategoryItems(String[] filterParams) {
+    private void loadCategoryItems(String[] filterParams) {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         filterCountTextView.setVisibility(View.GONE);
         categorySortSpinner.setVisibility(View.VISIBLE);

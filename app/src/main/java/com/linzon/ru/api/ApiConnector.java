@@ -60,22 +60,8 @@ public class ApiConnector {
 
                     JSONObject rootObj = new JSONObject(result);
                     JSONObject shopObj = rootObj.getJSONObject("shop");
-                    //JSONArray caregotiesArray = shopObj.getJSONObject("categories").getJSONArray("category");
                     JSONArray offersArray = shopObj.getJSONObject("offers").getJSONArray("offer");
 
-                    /*ArrayList<OCategory> categoryArrayList = new ArrayList<>();
-
-                    ArrayList<OOffer> offerArrayList = new ArrayList<>();
-
-                    for (int i = 0; i < caregotiesArray.length(); i++) {
-                        JSONObject currentCategory = caregotiesArray.getJSONObject(i);
-                        OCategory category = new OCategory();
-                        if (currentCategory.has("id"))
-                            category.setId(currentCategory.getString("id"));
-                        if (currentCategory.has("name"))
-                            category.setName(currentCategory.getString("name"));
-                        categoryArrayList.add(category);
-                    }*/
                     DBHelper.getInstance().dropDatabase();
                     for(int j = 0; j < offersArray.length(); j++) {
                         JSONObject currentOffer = offersArray.getJSONObject(j);
@@ -134,7 +120,6 @@ public class ApiConnector {
                                 newString = newString.substring(1, newString.length()).substring(0, newString.length() - 2).replace("\"", "");
                             offer.setParam_PWR(newString.split(","));
                         }
-                        //offerArrayList.add(offer);
 
                         String param_BC = Arrays.toString(offer.getParam_BC());
                         String param_AX = Arrays.toString(offer.getParam_AX());
@@ -178,7 +163,6 @@ public class ApiConnector {
         new AsyncTask<String, Void, ArrayList<POffer>>() {
             @Override
             protected ArrayList<POffer> doInBackground(String... params) {
-                Log.e("START_PARSING", "------------------------------");
                 String result = "";
                 String responseLine = "";
                 ArrayList<POffer> offerArrayList = new ArrayList<>();
@@ -246,7 +230,6 @@ public class ApiConnector {
                     httpURLConnection.setRequestProperty("Content-Length", String.valueOf(bodyString.length()));
                     httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     httpURLConnection.setDoOutput(true);
-                    Log.e("DBHELPER", bodyString);
                     DataOutputStream outputStream = new DataOutputStream(httpURLConnection.getOutputStream());
                     outputStream.writeBytes(bodyString);
                     outputStream.flush();

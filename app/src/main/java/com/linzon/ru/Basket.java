@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -29,16 +30,20 @@ public class Basket extends AppCompatActivity {
         mainPage = (ViewPager) findViewById(R.id.basketPager);
         setToolbar();
         setProgressBar();
-        setTablayout();
+        setTabLayout();
         setupTabIcons();
     }
 
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_shopping_cart_white_24dp);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_business_center_white_24dp);
+        try {
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_shopping_cart_white_24dp);
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_business_center_white_24dp);
+        } catch(NullPointerException np) {
+            Log.e("ERROR", np.getMessage());
+        }
     }
 
-    private void setTablayout() {
+    private void setTabLayout() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new BasketF(), "КОРЗИНА");
         adapter.addFragment(new ArchiveF(), "АРХИВ");
@@ -51,6 +56,7 @@ public class Basket extends AppCompatActivity {
     private void setToolbar() {
         basketToolbar = (Toolbar) findViewById(R.id.basketToolbar);
         setSupportActionBar(basketToolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

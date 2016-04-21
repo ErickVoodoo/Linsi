@@ -26,24 +26,6 @@ public class DBAsync {
         public abstract void onError(String error);
     }
 
-    /*public static abstract class CallbackGetBasketOffer {
-        public abstract void onSuccess(BasketItem  success);
-
-        public abstract void onError(String error);
-    }
-
-    public static abstract class CallbackGetBasketTotal {
-        public abstract void onSuccess(int  success);
-
-        public abstract void onError(String error);
-    }
-
-    public static abstract class CallbackUpdateCount {
-        public abstract void onSuccess(Boolean success);
-
-        public abstract void onError(String error);
-    }*/
-
     public static void asyncGetOfferList(final Integer query, final CallbackGetCategory callback) {
         new AsyncTask<Integer, Void, ArrayList<OOffer>>() {
             @Override
@@ -85,32 +67,4 @@ public class DBAsync {
             }
         }.execute(query);
     }
-
-    /*public static void asyncGetBasketOffer(final String query, final CallbackGetBasketOffer callback) {
-        new AsyncTask<String, Void, BasketItem>() {
-            @Override
-            protected BasketItem doInBackground(String... params) {
-                return DBHelper.getInstance().getBasketOffer(query);
-            }
-
-            @Override
-            protected void onPostExecute(BasketItem result) {
-                callback.onSuccess(result);
-            }
-        }.execute(query);
-    }*/
-
-//    public static void asyncGetBasketTotalPrice(final String query, final CallbackGetBasketTotal callback) {
-//        new AsyncTask<String, Void, Integer>() {
-//            @Override
-//            protected Integer doInBackground(String... params) {
-//                return DBHelper.getInstance().getTotalPrice(query);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Integer result) {
-//                callback.onSuccess(result);
-//            }
-//        }.execute(query);
-//    }
 }

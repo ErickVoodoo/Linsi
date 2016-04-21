@@ -3,27 +3,20 @@ package com.linzon.ru;
 import android.animation.ObjectAnimator;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -41,7 +34,6 @@ import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
-import java.util.Date;
 
 public class Offer extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
     int selectedOffer;
@@ -101,7 +93,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         setButton();
     }
 
-    public void setOffer() {
+    private void setOffer() {
         showProgressBar();
         loadOfferInfo();
     }
@@ -134,15 +126,15 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         toolbar.setTitle(Constants.CATEGORIES.get(selectedCategory));
     }
 
-    public void setProgressBar() {
+    private void setProgressBar() {
         progressBar = (ProgressBar) findViewById(R.id.progressBarOffer);
     }
 
-    public void setImageView() {
+    private void setImageView() {
         offerPicture = (ImageView) findViewById(R.id.offerPicture);
     }
 
-    public void setButton() {
+    private void setButton() {
         offerButtonShowDescription = (Button) findViewById(R.id.offerButtonShowDescription);
         offerButtonShowDescription.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +149,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                             25);
                     animation.setDuration(350);
                     animation.start();
-                } else if (isDescriptionOpened) {
+                } else {
                     isDescriptionOpened = false;
                     ObjectAnimator animation = ObjectAnimator.ofInt(
                             offerDescription,
@@ -198,7 +190,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                    selectedOfferObject.getName(),
                                    offerCountLeft.getSelectedItem().toString(),
                                    selectedOfferObject.getPrice(),
-                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
+                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? Values.createCustomJsonData(
                                            "левый",
                                            offerBCLeft.getSelectedItem(),
                                            offerPWRLeft.getSelectedItem(),
@@ -218,7 +210,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                    selectedOfferObject.getName(),
                                    offerCountRight.getSelectedItem().toString(),
                                    selectedOfferObject.getPrice(),
-                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? createCustomJsonData(
+                                   !Arrays.asList(Constants.NotALins).contains(selectedCategory) ? Values.createCustomJsonData(
                                            "правый",
                                            offerBCRight.getSelectedItem(),
                                            offerPWRRight.getSelectedItem(),
@@ -249,14 +241,14 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         );
     }
 
-    public void setTextView() {
+    private void setTextView() {
         offerName = (TextView) findViewById(R.id.offerName);
         offerVendor = (TextView) findViewById(R.id.offerVendor);
         offerDescription = (TextView) findViewById(R.id.offerDescription);
         offerPrice = (TextView) findViewById(R.id.offerPrice);
     }
 
-    public void setSpinners() {
+    private void setSpinners() {
         offerCountRight = (Spinner) findViewById(R.id.offerCountRight);
         offerCountLeft = (Spinner) findViewById(R.id.offerCountLeft);
         offerPWRLeft = (Spinner) findViewById(R.id.offerPWRLeft);
@@ -279,11 +271,11 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerCountRight.setSelection(0);
     }
 
-    public void setScrollView() {
+    private void setScrollView() {
         offerScrollView = (ScrollView) findViewById(R.id.offerScrollView);
     }
 
-    public void loadOfferInfo() {
+    private void loadOfferInfo() {
         offerScrollView.setVisibility(View.GONE);
         DBAsync.asyncGetOfferInfo(this.selectedOffer, new DBAsync.CallbackGetOffer() {
             @Override
@@ -336,9 +328,9 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                     });
 
                     if (success.getParam_PWR() != null && success.getParam_PWR().length != 0 && !success.getParam_PWR()[0].equals("")) {
-                        Double[] ss = stringToDouble(success.getParam_PWR());
+                        Double[] ss = Values.stringToDouble(success.getParam_PWR());
                         Arrays.sort(ss);
-                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, doubleToString(ss)));
+                        ArrayAdapter<String> adapterPWR = new ArrayAdapter<String>(Offer.this, android.R.layout.simple_spinner_item, Values.combine(new String[]{"Выбрать"}, Values.doubleToString(ss)));
                         adapterPWR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         offerPWRLeft.setAdapter(adapterPWR);
                         offerPWRRight.setAdapter(adapterPWR);
@@ -424,31 +416,13 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
         offerPrice.setText(Offer.this.getResources().getString(R.string.static_price) + " " + Integer.parseInt(selectedOfferObject.getPrice()) * count + " " + Offer.this.getResources().getString(R.string.static_exchange));
     }
 
-    public void hideNotNecessaryView() {
+    private void hideNotNecessaryView() {
         findViewById(R.id.mainOfferLayoutEye).setVisibility(View.GONE);
         findViewById(R.id.viewLineEye).setVisibility(View.GONE);
         findViewById(R.id.offerParamLayout).setVisibility(View.GONE);
         offerCountRight.setVisibility(View.GONE);
         offerCountLeft.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 2f));
-    }
-
-    public Double[] stringToDouble(String[] array) {
-        Double[] result = new Double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            result[i] = Double.parseDouble(array[i].substring(1, array[i].length()));
-        }
-
-        return result;
-    }
-
-    public String[] doubleToString(Double[] array) {
-        String[] s = new String[array.length];
-
-        for (int i = 0; i < s.length; i++)
-            s[i] = array[i] > 0 ? "+" + String.valueOf(array[i]) : String.valueOf(array[i]);
-
-        return s;
     }
 
     public void showProgressBar() {
@@ -511,17 +485,5 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    private String createCustomJsonData(Object TYPE, Object BC, Object PWR, Object AX, Object CYL, Object COLOR) {
-        CustomOfferData data = new CustomOfferData(
-                TYPE != null ? TYPE.toString() : null,
-                BC != null ? BC.toString() : null,
-                PWR != null ? PWR.toString() : null,
-                AX != null ? AX.toString() : null,
-                CYL != null ? CYL.toString() : null,
-                COLOR != null ? COLOR.toString() : null
-        );
-        return data.toString();
     }
 }

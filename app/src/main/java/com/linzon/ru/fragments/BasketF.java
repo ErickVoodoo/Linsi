@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +93,6 @@ public class BasketF extends Fragment {
                             SharedProperty.getInstance().getValue(SharedProperty.USER_PHONE) != null) {
 
                         final Dialog send = new Dialog(BasketF.this.getActivity());
-                        final Window window = send.getWindow();
                         send.setCancelable(true);
                         send.setContentView(R.layout.send_basket);
                         send.setTitle(R.string.static_send_title);
@@ -136,7 +134,6 @@ public class BasketF extends Fragment {
                                     ApiConnector.asyncSendToServer(new ApiConnector.CallbackString() {
                                         @Override
                                         public void onSuccess(String success) {
-                                            Log.e("SUCCESS", success);
                                             SharedProperty.getInstance().setValue(SharedProperty.USER_COMMENT, "");
                                             DBHelper.sendToArchive(success);
                                             Intent intent = new Intent();

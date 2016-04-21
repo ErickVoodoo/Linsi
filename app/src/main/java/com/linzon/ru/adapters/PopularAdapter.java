@@ -77,7 +77,6 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
     }
 
     public PopularAdapter(ArrayList<POffer> arrayList, Activity activity) {
-        //this.width =  Values.GET_SCREEN_WIDTH(activity.getApplicationContext()) - Values.dpToPx(activity.getApplicationContext(), 8);
         this.arrayList = arrayList;
         this.activity = activity;
     }
