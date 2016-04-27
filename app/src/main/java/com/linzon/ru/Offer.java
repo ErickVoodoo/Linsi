@@ -29,7 +29,6 @@ import com.linzon.ru.common.TimeCommon;
 import com.linzon.ru.common.Values;
 import com.linzon.ru.database.DBAsync;
 import com.linzon.ru.database.DBHelper;
-import com.linzon.ru.models.CustomOfferData;
 import com.linzon.ru.models.OOffer;
 import com.squareup.picasso.Picasso;
 
@@ -196,7 +195,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                            offerPWRLeft.getSelectedItem(),
                                            offerAXLeft.getSelectedItem(),
                                            offerCYLLeft.getSelectedItem(),
-                                           offerCOLORLeft.getSelectedItem()
+                                           offerCOLORLeft.getSelectedItem() != null ? offerCOLORLeft.getSelectedItem() : "прозрачный"
                                    ) : null,
                                    Constants.STATUS_OPEN,
                                    String.valueOf(TimeCommon.getUnixTime()),
@@ -216,7 +215,7 @@ public class Offer extends AppCompatActivity implements CompoundButton.OnChecked
                                            offerPWRRight.getSelectedItem(),
                                            offerAXRight.getSelectedItem(),
                                            offerCYLRight.getSelectedItem(),
-                                           offerCOLORRight.getSelectedItem()
+                                           offerCOLORRight.getSelectedItem() != null ? offerCOLORRight.getSelectedItem() : "прозрачный"
                                    ) : null,
                                    Constants.STATUS_OPEN,
                                    String.valueOf(TimeCommon.getUnixTime()),
