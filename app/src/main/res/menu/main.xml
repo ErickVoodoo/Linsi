@@ -4,11 +4,24 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_post"
         android:orderInCategory="200"
-        android:title="Search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/toolbarPost"
+        android:icon="@drawable/ic_local_shipping_white_24dp"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_contacts"
+        android:orderInCategory="200"
+        android:title="@string/toolbarContacts"
+        android:icon="@drawable/ic_local_phone_white_24dp"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_user"
+        android:orderInCategory="200"
+        android:title="@string/toolbarUser"
+        android:icon="@drawable/ic_account_circle_white_24dp"
+        app:showAsAction="always"/>
 </menu>
+    <!--app:actionViewClass="android.support.v7.widget.SearchView"-->

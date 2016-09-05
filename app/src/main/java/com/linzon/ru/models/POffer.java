@@ -1,8 +1,5 @@
 package com.linzon.ru.models;
 
-/**
- * Created by Admin on 17.03.2016.
- */
 public class POffer {
     private String picture;
 
@@ -11,6 +8,16 @@ public class POffer {
     private String price;
 
     private String name;
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    private String rate;
 
     public String getPicture() {
         return picture;

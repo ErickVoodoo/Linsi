@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:padding="8dp"
+        android:text="Москва"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:weightSum="10"
+        android:gravity="center">
+
+        <TextView
+            android:layout_weight="6"
+            android:text="@string/contactPhoneMoscow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Title" />
+
+        <Button
+            android:layout_weight="4"
+            android:id="@+id/callMSButton"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:text="позвонить"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="@string/contactPhoneMoscowText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:paddingBottom="32dp" />
+
+    <TextView
+        android:padding="8dp"
+        android:text="Санкт-Петербург"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:weightSum="10"
+        android:gravity="center">
+
+        <TextView
+            android:layout_weight="6"
+            android:text="@string/contactPhoneSP"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Title" />
+
+        <Button
+            android:layout_weight="4"
+            android:id="@+id/callSpButton"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:text="позвонить"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:text="@string/contactPhoneSPText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"/>
+</LinearLayout>

@@ -2,9 +2,6 @@ package com.linzon.ru.models;
 
 import java.util.ArrayList;
 
-/**
- * Created by erick on 17.3.16.
- */
 public class OCategories {
     private ArrayList<OCategory> category;
 

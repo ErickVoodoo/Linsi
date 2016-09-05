@@ -1,18 +1,14 @@
 package com.linzon.ru.common;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by erick on 14.10.15.
- */
 public class SharedProperty {
     private static SharedProperty instance;
-    private static Activity activity;
+    private static Context context;
 
-    public static void init(Activity activity) {
-        SharedProperty.activity = activity;
+    public static void init(Context context) {
+        SharedProperty.context = context;
     }
 
     public static synchronized SharedProperty getInstance() {
@@ -22,23 +18,24 @@ public class SharedProperty {
         return instance;
     }
 
-    public boolean isCurrentName() {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
-        return (! sharedPreferences.getString("username", "").equals(""));
+    public String getValue(String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, null);
     }
 
-    public String getCurrentName() {
-        if(activity == null) {
-            return "noName";
-        }
-        SharedPreferences sharedPreferences = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
-        return sharedPreferences.getString("username", "");
-    }
-
-    public void setCurrentName(String username) {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences("user", Context.MODE_PRIVATE);
+    public void setValue(String key, String value) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", username);
+        editor.putString(key, value);
         editor.apply();
     }
+
+    public static final String APP_VERSION = "app_version";
+    public static final String LAST_ORDER = "last_order";
+    public static final String USER_NAME = "username";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_PHONE = "phone";
+    public static final String USER_CITY = "city";
+    public static final String USER_STREET = "street";
+    public static final String USER_COMMENT = "comment";
 }

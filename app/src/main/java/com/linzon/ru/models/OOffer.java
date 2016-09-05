@@ -2,9 +2,6 @@ package com.linzon.ru.models;
 
 import java.io.Serializable;
 
-/**
- * Created by erick on 16.10.15.
- */
 public class OOffer implements Serializable{
     private String picture;
 
